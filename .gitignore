@@ -32,6 +32,11 @@ dist-ssr
 !.yarn/sdks
 !.yarn/versions
 
+# firebase
+.firebase
+firebase-debug-log
+
 # project specific
+.env
 private.md
 
