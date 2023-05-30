@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Home from "./pages/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Wishlist from "./pages/wishlist";
+import Cart from "./pages/cart";
+import Orders from "./pages/orders";
+import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";
+import Profile from "./pages/Profile";
+import Categories from "./pages/Categories";
+import { SubCategories } from "./pages/Categories";
+import Checkout from "./pages/Checkout";
 
-function App() {
-  const [count, setCount] = useState(0)
+export const appName = import.meta.env.VITE_APP_NAME;
 
+const App = () => {
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/wishlist" element={<Wishlist />} />
+          <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/orders" element={<Orders />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/settings" element={<Settings />} />
+          <Route exact path="/notifications" element={<Notifications />} />
+          <Route exact path="/recommended-products" element={<Orders />} />
+          <Route exact path="/popular-products" element={<Orders />} />
+          <Route exact path="/new-products" element={<Orders />} />
+          <Route exact path="/categories" element={<Categories />} />
+          <Route exact path="/subcategories" element={<SubCategories />} />
+          <Route exact path="/checkout" element={<Checkout />} />
+        </Routes>
+      </BrowserRouter>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
