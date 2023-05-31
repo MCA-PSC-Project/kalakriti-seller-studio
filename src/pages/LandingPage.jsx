@@ -3,6 +3,7 @@ import BannerCarousel from "../components/BannerCarousel";
 import Footer from "../components/Footer";
 import Logo from "../assets/logo.jpeg";
 import { appName } from "../App";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
@@ -112,9 +113,7 @@ function LandingPage() {
             <div className="col-md-7">
               <h2 className="featurette-heading fw-normal lh-1">
                 Become a Seller on Kalakriti &nbsp;
-                <span className="text-body-secondary">
-                  Promote your craft
-                </span>
+                <span className="text-body-secondary">Promote your craft</span>
               </h2>
               <p className="lead">
                 Make your products available to crores of customers & businesses
@@ -248,7 +247,7 @@ function LandingPageNavBar() {
       <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div className="col-md-3 mb-2 mb-md-0">
           <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
-          <b>{appName}</b>
+          <b>{appName + " Seller Studio"}</b>
         </div>
         <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           <li>
@@ -278,12 +277,16 @@ function LandingPageNavBar() {
           </li>
         </ul>
         <div className="col-md-3 text-end">
-          <button type="button" className="btn btn-primary me-2">
-            Login
-          </button>
-          <button type="button" className="btn btn-success">
-            Register
-          </button>
+          <Link to="/login" title="login">
+            <button type="button" className="btn btn-primary me-2">
+              Login
+            </button>
+          </Link>
+          <Link to="/register" title="register">
+            <button type="button" className="btn btn-success">
+              Register
+            </button>
+          </Link>
         </div>
       </header>
     </div>
