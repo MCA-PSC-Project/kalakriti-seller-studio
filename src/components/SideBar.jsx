@@ -87,60 +87,15 @@ function SideBar() {
                     to="/orders"
                     title="Orders"
                   >
+                    &nbsp;
                     <FontAwesomeIcon
                       icon={faClipboardList}
                       size="xl"
                       style={{ color: "#27511f" }}
                     />
-                    &nbsp; Orders
+                    &nbsp;&nbsp; Orders
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-users align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                      <circle cx={9} cy={7} r={4} />
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    Customers
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-bar-chart-2 align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <line x1={18} y1={20} x2={18} y2={10} />
-                      <line x1={12} y1={20} x2={12} y2={4} />
-                      <line x1={6} y1={20} x2={6} y2={14} />
-                    </svg>
-                    Reports
-                  </a>
-                </li>
-                <li className="nav-item"></li>
               </ul>
 
               <hr />
@@ -166,15 +121,10 @@ function SideBar() {
                   aria-labelledby="dropdownUser1"
                 >
                   <li>
-                    <a className="dropdown-item" href="#">
-                      New project...
-                    </a>
-                  </li>
-                  <li>
                     <Link className="dropdown-item" to="/">
                       <FontAwesomeIcon
                         icon={faUser}
-                        style={{ color: "#646464" }}
+                        style={{ color: "#964B00" }}
                       />
                       &nbsp; Profile
                     </Link>
