@@ -22,13 +22,10 @@ import { useState } from "react";
 
 function NavBar({ isLoggedIn = true }) {
   const [iconsHoveredState, setIconsHoveredState] = useState({
-    wishlist: false,
-    cart: false,
     profile: false,
     notifications: false,
     orders: false,
     settings: false,
-    search: false,
   });
   const handleIconHovered = (item) => {
     setIconsHoveredState((prevState) => ({
@@ -40,7 +37,7 @@ function NavBar({ isLoggedIn = true }) {
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
-        <b>{appName}</b>
+        <b>{appName + " Seller Studio"}</b>
         <button
           className="navbar-toggler"
           type="button"
@@ -70,18 +67,7 @@ function NavBar({ isLoggedIn = true }) {
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link
-                className="nav-link active"
-                aria-current="page"
-                to="/categories"
-                title="Categories"
-              >
-                Categories
-              </Link>
-            </li>
-
-            <form className="d-flex" role="search">
+            {/* <form className="d-flex" role="search">
               <input
                 className="form-control me-2"
                 type="search"
@@ -89,7 +75,6 @@ function NavBar({ isLoggedIn = true }) {
                 aria-label="Search"
               />
               <button className="btn border px-2" type="submit" title="search">
-                {/* Search */}
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
                   size="xl"
@@ -99,7 +84,7 @@ function NavBar({ isLoggedIn = true }) {
                   fade={iconsHoveredState.search ? "fade" : undefined}
                 />
               </button>
-            </form>
+            </form> */}
           </ul>
           <div
             className="collapse navbar-collapse justify-content-end"
@@ -125,7 +110,7 @@ function NavBar({ isLoggedIn = true }) {
               </li>
 
               <li className="nav-item">
-                <Link to="/orders" title="My orders">
+                <Link to="/orders" title="orders">
                   <button type="button" className="btn border px-2 me-2">
                     {/* My Orders */}
                     <FontAwesomeIcon
@@ -175,7 +160,7 @@ function NavBar({ isLoggedIn = true }) {
                       onMouseLeave={() => handleIconHovered("profile")}
                       bounce={iconsHoveredState.profile ? "bounce" : undefined}
                     />
-                    Hello, <b>Username</b>
+                    Hello, <b>seller_name</b>
                   </Link>
                   <ul className="dropdown-menu dropdown-menu-end">
                     <li>
@@ -193,7 +178,7 @@ function NavBar({ isLoggedIn = true }) {
                           icon={faHeadset}
                           style={{ color: "#d84f22" }}
                         />
-                        &nbsp; Customer Support
+                        &nbsp; Support/Help
                       </Link>
                     </li>
                     <li>
