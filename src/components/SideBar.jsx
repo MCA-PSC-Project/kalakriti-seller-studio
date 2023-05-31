@@ -7,6 +7,7 @@ import {
   faHouse,
   faCubes,
   faClipboardList,
+  faGear,
   faUser,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +17,10 @@ function SideBar() {
   return (
     <>
       <header className="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+        <div className="">
+          <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
+          <b>{appName + " Seller Studio"}</b>
+        </div>
         <button
           className="navbar-toggler position-relative d-md-none collapsed"
           type="button"
@@ -27,26 +32,13 @@ function SideBar() {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
-        <b w-100>{appName + " Seller Studio"}</b>
+
         {/* <input
           className="form-control form-control-light w-100 rounded-0 border-0"
           type="text"
           placeholder="Search"
           aria-label="Search"
         /> */}
-
-        <div className="navbar-nav">
-          <div className="nav-item text-nowrap">
-            <Link className="dropdown-item" to="/">
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                style={{ color: "#4dbad5" }}
-              />
-              &nbsp; Logout
-            </Link>
-          </div>
-        </div>
       </header>
       <div className="container-fluid">
         <div className="row">
@@ -150,130 +142,6 @@ function SideBar() {
                 </li>
                 <li className="nav-item"></li>
               </ul>
-              <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-                <span>Saved reports</span>
-                <a
-                  className="link-secondary"
-                  href="#"
-                  aria-label="Add a new report"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="feather feather-plus-circle align-text-bottom"
-                    aria-hidden="true"
-                  >
-                    <circle cx={12} cy={12} r={10} />
-                    <line x1={12} y1={8} x2={12} y2={16} />
-                    <line x1={8} y1={12} x2={16} y2={12} />
-                  </svg>
-                </a>
-              </h6>
-              <ul className="nav flex-column mb-2">
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-file-text align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1={16} y1={13} x2={8} y2={13} />
-                      <line x1={16} y1={17} x2={8} y2={17} />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    Current month
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-file-text align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1={16} y1={13} x2={8} y2={13} />
-                      <line x1={16} y1={17} x2={8} y2={17} />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    Last quarter
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-file-text align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1={16} y1={13} x2={8} y2={13} />
-                      <line x1={16} y1={17} x2={8} y2={17} />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    Social engagement
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-file-text align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1={16} y1={13} x2={8} y2={13} />
-                      <line x1={16} y1={17} x2={8} y2={17} />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    Year-end sale
-                  </a>
-                </li>
-              </ul>
 
               <hr />
               <div className="dropdown">
@@ -303,22 +171,34 @@ function SideBar() {
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      Settings
-                    </a>
+                    <Link className="dropdown-item" to="/">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ color: "#646464" }}
+                      />
+                      &nbsp; Profile
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      Profile
-                    </a>
+                    <Link className="dropdown-item" to="/">
+                      <FontAwesomeIcon
+                        icon={faGear}
+                        style={{ color: "#646464" }}
+                      />
+                      &nbsp; Settings
+                    </Link>
                   </li>
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      Sign out
-                    </a>
+                    <Link className="dropdown-item" to="/">
+                      <FontAwesomeIcon
+                        icon={faRightFromBracket}
+                        style={{ color: "#4dbad5" }}
+                      />
+                      &nbsp; Logout
+                    </Link>
                   </li>
                 </ul>
               </div>
