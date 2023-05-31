@@ -3,7 +3,14 @@ import Logo from "../assets/logo.jpeg";
 import { appName } from "../App";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHouse,
+  faCubes,
+  faClipboardList,
+  faUser,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+// import {  } from "@fortawesome/free-regular-svg-icons";
 
 function SideBar() {
   return (
@@ -31,9 +38,13 @@ function SideBar() {
 
         <div className="navbar-nav">
           <div className="nav-item text-nowrap">
-            <a className="nav-link px-3" href="#">
-              Log out
-            </a>
+            <Link className="dropdown-item" to="/">
+              <FontAwesomeIcon
+                icon={faRightFromBracket}
+                style={{ color: "#4dbad5" }}
+              />
+              &nbsp; Logout
+            </Link>
           </div>
         </div>
       </header>
@@ -47,68 +58,50 @@ function SideBar() {
             <div className="position-sticky pt-3 sidebar-sticky">
               <ul className="nav flex-column">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-home align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                    Dashboard
-                  </a>
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/"
+                    title="Home"
+                  >
+                    {/* Home */}
+                    <FontAwesomeIcon
+                      icon={faHouse}
+                      size="xl"
+                      style={{ color: "#dd13a7" }}
+                    />
+                    &nbsp; Dashboard
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-file align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                      <polyline points="13 2 13 9 20 9" />
-                    </svg>
-                    Orders
-                  </a>
+                  <Link
+                    className="nav-link"
+                    aria-current="page"
+                    to="/products"
+                    title="Products"
+                  >
+                    <FontAwesomeIcon
+                      icon={faCubes}
+                      size="xl"
+                      style={{ color: "#45b58a" }}
+                    />
+                    &nbsp; Products
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-shopping-cart align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <circle cx={9} cy={21} r={1} />
-                      <circle cx={20} cy={21} r={1} />
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                    </svg>
-                    Products
-                  </a>
+                  <Link
+                    className="nav-link"
+                    aria-current="page"
+                    to="/orders"
+                    title="Orders"
+                  >
+                    <FontAwesomeIcon
+                      icon={faClipboardList}
+                      size="xl"
+                      style={{ color: "#27511f" }}
+                    />
+                    &nbsp; Orders
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">
@@ -155,28 +148,7 @@ function SideBar() {
                     Reports
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-layers align-text-bottom"
-                      aria-hidden="true"
-                    >
-                      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                      <polyline points="2 17 12 22 22 17" />
-                      <polyline points="2 12 12 17 22 12" />
-                    </svg>
-                    Integrations
-                  </a>
-                </li>
+                <li className="nav-item"></li>
               </ul>
               <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
                 <span>Saved reports</span>
@@ -302,6 +274,54 @@ function SideBar() {
                   </a>
                 </li>
               </ul>
+
+              <hr />
+              <div className="dropdown">
+                <a
+                  href="#"
+                  className="d-flex align-items-center  text-decoration-none dropdown-toggle"
+                  id="dropdownUser1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src=""
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="rounded-circle me-2"
+                  />
+                  <strong>seller_name</strong>
+                </a>
+                <ul
+                  className="dropdown-menu dropdown-menu-light text-small shadow"
+                  aria-labelledby="dropdownUser1"
+                >
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      New project...
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Profile
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Sign out
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </nav>
           {/* <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
