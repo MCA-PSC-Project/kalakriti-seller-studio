@@ -1,153 +1,15 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import BannerCarousel from "../components/BannerCarousel";
+import Footer from "../components/Footer";
+import Logo from "../assets/logo.jpeg";
+import { appName } from "../App";
 
-function Home() {
+function LandingPage() {
   return (
     <>
-      <NavBar />
+      <LandingPageNavBar />
       <main>
-        <div
-          id="myCarousel"
-          className="carousel slide mb-6"
-          data-bs-ride="carousel"
-        >
-          <div className="carousel-indicators">
-            <button
-              type="button"
-              data-bs-target="#myCarousel"
-              data-bs-slide-to={0}
-              className=""
-              aria-label="Slide 1"
-            />
-            <button
-              type="button"
-              data-bs-target="#myCarousel"
-              data-bs-slide-to={1}
-              aria-label="Slide 2"
-              className="active"
-              aria-current="true"
-            />
-            <button
-              type="button"
-              data-bs-target="#myCarousel"
-              data-bs-slide-to={2}
-              aria-label="Slide 3"
-            />
-          </div>
-          <div className="carousel-inner">
-            <div className="carousel-item">
-              <svg
-                className="bd-placeholder-img"
-                width="100%"
-                height="100%"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              >
-                <rect
-                  width="100%"
-                  height="100%"
-                  fill="var(--bs-secondary-color)"
-                />
-              </svg>
-              <div className="container">
-                <div className="carousel-caption text-start">
-                  <h1>Example headline.</h1>
-                  <p className="opacity-75">
-                    Some representative placeholder content for the first slide
-                    of the carousel.
-                  </p>
-                  <p>
-                    <a className="btn btn-lg btn-primary" href="#">
-                      Sign up today
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="carousel-item active">
-              <svg
-                className="bd-placeholder-img"
-                width="100%"
-                height="100%"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              >
-                <rect
-                  width="100%"
-                  height="100%"
-                  fill="var(--bs-secondary-color)"
-                />
-              </svg>
-              <div className="container">
-                <div className="carousel-caption">
-                  <h1>Another example headline.</h1>
-                  <p>
-                    Some representative placeholder content for the second slide
-                    of the carousel.
-                  </p>
-                  <p>
-                    <a className="btn btn-lg btn-primary" href="#">
-                      Learn more
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <svg
-                className="bd-placeholder-img"
-                width="100%"
-                height="100%"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              >
-                <rect
-                  width="100%"
-                  height="100%"
-                  fill="var(--bs-secondary-color)"
-                />
-              </svg>
-              <div className="container">
-                <div className="carousel-caption text-end">
-                  <h1>One more for good measure.</h1>
-                  <p>
-                    Some representative placeholder content for the third slide
-                    of this carousel.
-                  </p>
-                  <p>
-                    <a className="btn btn-lg btn-primary" href="#">
-                      Browse gallery
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide="prev"
-          >
-            <span className="carousel-control-prev-icon" aria-hidden="true" />
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide="next"
-          >
-            <span className="carousel-control-next-icon" aria-hidden="true" />
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
+        <BannerCarousel />
         {/* Wrap the rest of the page in another container to center all the content. */}
         <div className="container marketing">
           {/* Three columns of text below the carousel */}
@@ -249,14 +111,14 @@ function Home() {
           <div className="row featurette">
             <div className="col-md-7">
               <h2 className="featurette-heading fw-normal lh-1">
-                First featurette heading.{" "}
+                Become a Seller on Kalakriti &nbsp;
                 <span className="text-body-secondary">
-                  It’ll blow your mind.
+                  Promote your craft
                 </span>
               </h2>
               <p className="lead">
-                Some great placeholder content for the first featurette here.
-                Imagine some exciting prose here.
+                Make your products available to crores of customers & businesses
+                24x7
               </p>
             </div>
             <div className="col-md-5">
@@ -374,19 +236,58 @@ function Home() {
           {/* /END THE FEATURETTES */}
         </div>
         {/* /.container */}
-        {/* FOOTER */}
-        <footer className="container">
-          <p className="float-end">
-            <a href="#">Back to top</a>
-          </p>
-          <p>
-            © 2017–2023 Company, Inc. · <a href="#">Privacy</a> ·{" "}
-            <a href="#">Terms</a>
-          </p>
-        </footer>
+        <Footer />
       </main>
     </>
   );
 }
 
-export default Home;
+function LandingPageNavBar() {
+  return (
+    <div className="container">
+      <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div className="col-md-3 mb-2 mb-md-0">
+          <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
+          <b>{appName}</b>
+        </div>
+        <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li>
+            <a href="#" className="nav-link px-2 link-secondary">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link px-2">
+              Features
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link px-2">
+              Pricing
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link px-2">
+              FAQs
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link px-2">
+              About
+            </a>
+          </li>
+        </ul>
+        <div className="col-md-3 text-end">
+          <button type="button" className="btn btn-primary me-2">
+            Login
+          </button>
+          <button type="button" className="btn btn-success">
+            Register
+          </button>
+        </div>
+      </header>
+    </div>
+  );
+}
+
+export default LandingPage;

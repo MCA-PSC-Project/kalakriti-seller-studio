@@ -125,41 +125,6 @@ function NavBar({ isLoggedIn = true }) {
               </li>
 
               <li className="nav-item">
-                <Link to="/wishlist" title="wishlist">
-                  <button type="button" className="btn border px-2 me-2">
-                    {/* <img src={WishlistSvg} alt="Wishlist" /> */}
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      size="xl"
-                      style={{ color: "#ff0000" }}
-                      onMouseEnter={() => handleIconHovered("wishlist")}
-                      onMouseLeave={() => handleIconHovered("wishlist")}
-                      beatFade={
-                        iconsHoveredState.wishlist ? "beatfade" : undefined
-                      }
-                    />
-                  </button>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/cart" title="cart">
-                  <button type="button" className="btn border px-2 me-2">
-                    {/* <img src={CartSvg} alt="Cart" /> */}
-                    <FontAwesomeIcon
-                      icon={faCartShopping}
-                      size="xl"
-                      style={{ color: "#006eff" }}
-                      onMouseEnter={() => handleIconHovered("cart")}
-                      onMouseLeave={() => handleIconHovered("cart")}
-                      shake={iconsHoveredState.cart ? "shake" : undefined}
-                    />
-                    <span className="badge bg-dark text-white ms-1 rounded-pill">
-                      2
-                    </span>
-                  </button>
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link to="/orders" title="My orders">
                   <button type="button" className="btn border px-2 me-2">
                     {/* My Orders */}
