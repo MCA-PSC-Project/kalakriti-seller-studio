@@ -1,11 +1,13 @@
 import React from "react";
-import SideBar from "../components/SideBar";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 function Products() {
   return (
     <div>
-      <SideBar />
+      <NavBar />
       Products
+      <Footer />
     </div>
   );
 }

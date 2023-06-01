@@ -115,7 +115,7 @@ function NavBar({ isLoggedIn = true }) {
                   aria-expanded="false"
                 >
                   <img
-                    src="https://github.com/mdo.png"
+                    src={Logo}
                     alt="mdo"
                     width={32}
                     height={32}
