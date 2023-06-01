@@ -5,8 +5,8 @@ import NavBar from "../components/NavBar";
 function Home() {
   return (
     <>
-      <SideBar />
-      {/* <NavBar /> */}
+      {/* <SideBar /> */}
+      <NavBar />
     </>
   );
 }
