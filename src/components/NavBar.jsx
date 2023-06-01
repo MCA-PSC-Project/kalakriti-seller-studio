@@ -36,10 +36,10 @@ function NavBar({ isLoggedIn = true }) {
     }));
   };
   return (
-    <div className="px-3 py-2 text-bg-dark border-bottom">
+    <div className="px-3 py-2 text-bg-white border-bottom">
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <div className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <div className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-black text-decoration-none">
             <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
             <b>{appName + " Seller Studio"}</b>
           </div>
@@ -91,21 +91,62 @@ function NavBar({ isLoggedIn = true }) {
               </Link>
               Orders
             </li>
-            <li>
-              <a href="#" className="nav-link text-white">
-                <svg className="bi d-block mx-auto mb-1" width={24} height={24}>
-                  <use xlinkHref="#grid" />
-                </svg>
-                Products
-              </a>
+            <li className="nav-item me-3">
+              <Link
+                className="nav-link"
+                aria-current="page"
+                to="/settings"
+                title="settings"
+              >
+                <FontAwesomeIcon
+                  icon={faGear}
+                  size="xl"
+                  style={{ color: "#646464" }}
+                />
+              </Link>
+              Settings
             </li>
-            <li>
-              <a href="#" className="nav-link text-white">
-                <svg className="bi d-block mx-auto mb-1" width={24} height={24}>
-                  <use xlinkHref="#people-circle" />
-                </svg>
-                Customers
-              </a>
+            <li className="nav-item me-3 mt-2">
+              <div className="dropdown">
+                <a
+                  href="#"
+                  className="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="https://github.com/mdo.png"
+                    alt="mdo"
+                    width={32}
+                    height={32}
+                    className="rounded-circle"
+                  />
+                  seller_name
+                </a>
+                <ul className="dropdown-menu text-small">
+                  <li>
+                    <Link className="dropdown-item" to="/">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ color: "#964B00" }}
+                      />
+                      &nbsp; Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/">
+                      <FontAwesomeIcon
+                        icon={faRightFromBracket}
+                        style={{ color: "#4dbad5" }}
+                      />
+                      &nbsp; Logout
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
