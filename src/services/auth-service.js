@@ -1,50 +1,38 @@
-import { baseUrl } from "../utils/axios-client";
+import api from "../utils/api";
+import TokenService from "./token-service";
 
-export async function login(email, password) {
-  try {
-    const response = await axios.post(`${baseUrl}/auth/login`, {
+const register = (data) => {
+  return api.post("/sellers/auth/register", data);
+};
+
+const login = (email, password) => {
+  return api
+    .post("/sellers/auth/login", {
       email,
       password,
-    });
-
-    if (response.status === 202) {
-      localStorage.setItem("access_token", response.data.access_token);
-      localStorage.setItem("refresh_token", response.data.refresh_token);
-    //   return getUser();
-    }
-  } catch (_) {
-    return null;
-  }
-}
-
-export async function refresh() {
-  try {
-    const response = await axios.post(
-      `${baseUrl}/auth/refresh`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + getRefreshToken(),
-        },
+    })
+    .then((response) => {
+      if (response.data.access_token) {
+        TokenService.setUser(response.data);
       }
-    );
-    localStorage.setItem("access_token", response.data.access_token);
-    localStorage.setItem("refresh_token", response.data.refresh_token);
-  } catch (e) {
-    logout();
-  }
-}
 
-export function getAccessToken() {
-  return localStorage.getItem("access_token");
-}
+      return response.data;
+    });
+};
 
-export function getRefreshToken() {
-  return localStorage.getItem("refresh_token");
-}
+const logout = () => {
+  TokenService.removeUser();
+};
 
-export function logout() {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
-  //   clearUser();
-}
+const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem("seller"));
+};
+
+const AuthService = {
+  register,
+  login,
+  logout,
+  getCurrentUser,
+};
+
+export default AuthService;

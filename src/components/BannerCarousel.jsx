@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosClient } from "../utils/axios-client";
+import api from "../utils/api";
 import { Link } from "react-router-dom";
 
 function BannerCarousel() {
