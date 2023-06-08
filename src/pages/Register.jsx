@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AuthService from "../services/auth-service";
+import "./Register.css";
 
 const schema = yup
   .object({
@@ -100,13 +101,13 @@ function Register() {
         <div className="row">
           <div className="mx-auto col-10 col-md-8 col-lg-6">
             <form
-              className="needs-validation"
+              className="seller-register-form"
               noValidate=""
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="row g-3">
                 <div className="col-12">
-                  <label htmlFor="sellerName" className="form-label">
+                  <label htmlFor="sellerName" className="form-label required">
                     Seller name
                   </label>
                   <input
@@ -126,7 +127,7 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="email" className="form-label">
+                  <label htmlFor="email" className="form-label required">
                     Email
                   </label>
                   <input
@@ -144,7 +145,7 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="password" className="form-label">
+                  <label htmlFor="password" className="form-label required">
                     Password
                   </label>
                   <input
@@ -163,7 +164,10 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="confirmPassword" className="form-label">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="form-label required"
+                  >
                     Confirm Password
                   </label>
                   <input
@@ -182,7 +186,7 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="sellerName" className="form-label">
+                  <label htmlFor="sellerName" className="form-label required">
                     PAN
                   </label>
                   <input
@@ -209,7 +213,6 @@ function Register() {
                     id="GSTIN"
                     placeholder="Enter GSTIN Number"
                     defaultValue=""
-                    required=""
                     {...register("GSTIN")}
                   />
                   {errors.GSTIN && (
