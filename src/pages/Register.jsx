@@ -9,9 +9,7 @@ import AuthService from "../services/auth-service";
 
 const schema = yup
   .object({
-    firstName: yup.string().required("First Name is required"),
-    lastName: yup.string().required("Last Name is required"),
-    gender: yup.string().required("Gender is required"),
+    sellerName: yup.string().required("Seller Name is required"),
     email: yup
       .string()
       .required("Email is required")
@@ -30,10 +28,20 @@ const schema = yup
       .oneOf([yup.ref("password")], "Mismatched passwords")
       .required("Please confirm your password"),
 
-    dob: yup
-      .date()
-      .max(new Date(), "Please enter a valid date of birth")
-      .typeError("Date of birth is required"),
+    PAN: yup
+      .string()
+      .required("PAN is required")
+      .matches(
+        /[a-z]{3}[cphfatblj][a-z]\d{4}[a-z]/i,
+        "This is not a valid PAN number"
+      ),
+
+    GSTIN: yup
+      .string()
+      .matches(
+        /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,
+        "This is not a valid GSTIN number"
+      ),
 
     // dp: yup.string().required("Please provide a profile picture"),
   })
@@ -52,12 +60,11 @@ function Register() {
     console.log(data);
     try {
       const bodyContent = JSON.stringify({
+        seller_name: data.sellerName,
         email: data.email,
         password: data.password,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        dob: new Date(data.dob).toISOString(),
-        gender: data.gender,
+        PAN: data.PAN,
+        GSTIN: data.GSTIN,
       });
       const response = await AuthService.register(bodyContent);
       // if (result.data) {
@@ -81,7 +88,7 @@ function Register() {
             alt="Logo"
             style={{ width: 200, height: 200 }}
           />
-          <h5>KalaKriti</h5>
+          <h5>KalaKriti Seller Studio</h5>
           <h1>Register Here</h1>
           <FontAwesomeIcon
             icon={faCircleDown}
@@ -99,41 +106,21 @@ function Register() {
             >
               <div className="row g-3">
                 <div className="col-12">
-                  <label htmlFor="firstName" className="form-label">
-                    First name
+                  <label htmlFor="sellerName" className="form-label">
+                    Seller name
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="firstName"
-                    placeholder="First name"
+                    id="sellerName"
+                    placeholder="Seller name"
                     defaultValue=""
                     required=""
-                    {...register("firstName")}
+                    {...register("sellerName")}
                   />
-                  {errors.firstName && (
+                  {errors.sellerName && (
                     <span style={{ color: "red" }}>
-                      {errors.firstName.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="col-12">
-                  <label htmlFor="lastName" className="form-label">
-                    Last name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lastName"
-                    placeholder="Last name"
-                    defaultValue=""
-                    required=""
-                    {...register("lastName")}
-                  />
-                  {errors.lastName && (
-                    <span style={{ color: "red" }}>
-                      {errors.lastName.message}
+                      {errors.sellerName.message}
                     </span>
                   )}
                 </div>
@@ -195,36 +182,40 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="dob" className="form-label">
-                    Date of Birth
+                  <label htmlFor="sellerName" className="form-label">
+                    PAN
                   </label>
                   <input
-                    type="date"
+                    type="text"
                     className="form-control"
-                    id="dob"
+                    id="pan"
+                    placeholder="Enter PAN Number"
                     defaultValue=""
                     required=""
-                    {...register("dob")}
+                    {...register("PAN")}
                   />
-                  {errors.dob && (
-                    <span style={{ color: "red" }}>{errors.dob.message}</span>
+                  {errors.PAN && (
+                    <span style={{ color: "red" }}>{errors.PAN.message}</span>
                   )}
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="gender" className="form-label">
-                    Gender
+                  <label htmlFor="sellerName" className="form-label">
+                    GSTIN
                   </label>
-                  <select className="form-control" {...register("gender")}>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                  {errors.gender && (
-                    <span style={{ color: "red" }}>
-                      {errors.gender.message}
-                    </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="GSTIN"
+                    placeholder="Enter GSTIN Number"
+                    defaultValue=""
+                    required=""
+                    {...register("GSTIN")}
+                  />
+                  {errors.GSTIN && (
+                    <sGSTIN style={{ color: "red" }}>
+                      {errors.GSTIN.message}
+                    </sGSTIN>
                   )}
                 </div>
 
