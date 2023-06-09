@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AuthService from "../services/auth-service";
 import "./Register.css";
 
-const schema = yup
+const registerSchema = yup
   .object({
     sellerName: yup.string().required("Seller Name is required"),
     email: yup
@@ -54,7 +54,7 @@ function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(registerSchema),
   });
 
   const onSubmit = async (data) => {
@@ -216,15 +216,13 @@ function Register() {
                     {...register("GSTIN")}
                   />
                   {errors.GSTIN && (
-                    <sGSTIN style={{ color: "red" }}>
-                      {errors.GSTIN.message}
-                    </sGSTIN>
+                    <span style={{ color: "red" }}>{errors.GSTIN.message}</span>
                   )}
                 </div>
 
                 <div className="col-12">
                   <label htmlFor="dp" className="form-label">
-                    UPLOAD YOUR PROFILE PICTURE (optional)
+                    UPLOAD YOUR PROFILE PICTURE
                   </label>
                   <input
                     type="file"
