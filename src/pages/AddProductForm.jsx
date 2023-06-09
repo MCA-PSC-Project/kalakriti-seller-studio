@@ -235,17 +235,16 @@ function AddProductForm() {
                     >
                       Minimum order quantity per Order
                     </label>
-                    <select
-                      className="form-select"
+                    <input
+                      type="number"
+                      className="form-control"
                       id="minOrderQuantity"
-                      aria-label="Floating label select example"
+                      placeholder=""
+                      defaultValue={1}
                       required=""
-                    >
-                      <option selected>1</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
-                    </select>
+                      min={1}
+                      {...addProductForm("minOrderQuantity")}
+                    />
                   </div>
                   {errors.minOrderQuantity && (
                     <span style={{ color: "red" }}>
@@ -262,17 +261,16 @@ function AddProductForm() {
                     >
                       Maximum order quantity per Order
                     </label>
-                    <select
-                      className="form-select"
+                    <input
+                      type="number"
+                      className="form-control"
                       id="maxOrderQuantity"
-                      aria-label="Floating label select example"
+                      placeholder=""
+                      defaultValue={5}
                       required=""
-                    >
-                      <option selected>Select</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
-                    </select>
+                      min={0}
+                      {...addProductForm("maxOrderQuantity")}
+                    />
                   </div>
                   {errors.maxOrderQuantity && (
                     <span style={{ color: "red" }}>
@@ -351,7 +349,7 @@ function AddProductForm() {
                     Offer Price
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control"
                     id="offerPrice"
                     placeholder=""
