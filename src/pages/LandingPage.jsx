@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Logo from "../assets/logo.jpeg";
 import { appName } from "../App";
 import { Link } from "react-router-dom";
-import banner1 from "../assets/banner1.jpg";
+
 
 import feature1 from "../assets/feature1.jpg";
 import feature2 from "../assets/feature2.png";
@@ -26,7 +26,7 @@ function LandingPage() {
       <main>
         <BannerCarousel />
         {/* Wrap the rest of the page in another container to center all the content. */}
-        <div className="container marketing" >
+        <div className="container marketing" style={{marginTop:40}} >
           {/* Three columns of text below the carousel */}
           <div className="row">
             <div className="col-lg-4">
