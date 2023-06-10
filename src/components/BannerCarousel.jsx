@@ -3,6 +3,9 @@ import banner2 from "../assets/banner2.jpg";
 import banner3 from "../assets/banner3.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightDots } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import api from "../utils/api";
+import { Link } from "react-router-dom";
 
 function BannerCarousel() {
   return (

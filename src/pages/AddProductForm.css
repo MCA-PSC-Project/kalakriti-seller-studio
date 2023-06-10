@@ -1,0 +1,5 @@
+.add-product-form .required:after {
+    content: " *";
+    color: red;
+    font-weight: 100;
+}

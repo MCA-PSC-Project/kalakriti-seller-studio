@@ -7,6 +7,7 @@ import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
+import AddProductForm from "./pages/AddProductForm";
 
 export const appName = import.meta.env.VITE_APP_NAME;
 
@@ -23,6 +24,7 @@ const App = () => {
           <Route exact path="/settings" element={<Settings />} />
           <Route exact path="/notifications" element={<Notifications />} />
           <Route exact path="/products" element={<Products />} />
+          <Route exact path="/products/add" element={<AddProductForm />} />
         </Routes>
       </BrowserRouter>
     </div>

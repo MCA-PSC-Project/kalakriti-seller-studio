@@ -198,7 +198,7 @@ This will be applicable to verticals listed only on Kalakriti.            </p>
                 <span className="text-body-secondary">Promote your craft</span>
               </h2>
               <p className="lead">
-                Make your products available to crores of customers & businesses
+                Make your products available to crores of sellers & businesses
                 24x7
               </p>
             </div>
