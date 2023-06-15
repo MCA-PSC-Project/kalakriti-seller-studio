@@ -53,8 +53,7 @@ const addProductSchema = yup
       .max(999999, "Maximum 999.999")
       // .transform((value) => (isNaN(value) ? undefined : value))
       .required("Offer Price is required"),
-
-    // dp: yup.string().required("Please provide a profile picture"),
+    mediaList: yup.string().required("Please provide media for product"),
   })
   .required();
 
@@ -81,6 +80,7 @@ function AddProductForm() {
         SKU: data.SKU,
         original_price: data.originalPrice,
         offer_price: data.offerPrice,
+        media_list: data.mediaList,
       });
       const response = await AuthService.register(bodyContent);
       // if (result.data) {
@@ -366,19 +366,22 @@ function AddProductForm() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="dp" className="form-label">
-                    UPLOAD YOUR PROFILE PICTURE
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/* , /pdf"
-                    className="btn btn-outline-primary"
-                    id="dp"
-                    name="choose-file"
-                  />
-                  <br />
-                  {errors.dp && (
-                    <span style={{ color: "red" }}>{errors.dp.message}</span>
+                  <div>
+                    <label htmlFor="mediaList" className="form-label required">
+                      Upload medias for the product
+                    </label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="mediaList"
+                      multiple=""
+                      required=""
+                    />
+                  </div>
+                  {errors.mediaList && (
+                    <span style={{ color: "red" }}>
+                      {errors.mediaList.message}
+                    </span>
                   )}
                 </div>
 
