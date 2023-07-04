@@ -1,15 +1,16 @@
-import Footer from "../components/Footer";
-import Logo from "../assets/logo.jpeg";
+import Footer from "../../components/Footer";
+import Logo from "../../assets/logo.jpeg";
 import "./Login.css";
 import { useState } from "react";
-import AuthService from "../services/auth-service";
+import AuthService from "../../services/auth-service";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import useAuth from "../hooks/useAuth";
-import AuthConsumer from "../hooks/useAuth";
+import AuthConsumer from "../../hooks/useAuth";
 
 function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [loginUnsuccessful, setLoginUnsuccessful] = useState(false);
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -46,10 +47,12 @@ function Login() {
     const success = await login(email, password);
     if (success) {
       // Login was successful
-      // navigate("/");
+      // navigate("/home");
       navigate(state?.path || "/home");
     } else {
       // Login failed
+      console.log("Login failed");
+      setLoginUnsuccessful(true);
     }
   };
   return (
@@ -63,7 +66,12 @@ function Login() {
             style={{ width: 200, height: 200 }}
           />
           <h3 className="h3 mb-3 fw-normal">KalaKriti Seller Studio</h3>
-          <h2 className="h2 mb-2 fw-normal">Please sign in</h2>
+          <h2 className="h2 mb-2 fw-normal">Please login</h2>
+          {loginUnsuccessful && (
+            <div className="alert alert-danger" role="alert">
+              Login unsuccessful!!
+            </div>
+          )}
           <div className="form-floating">
             <input
               type="email"
@@ -89,15 +97,23 @@ function Login() {
               <input type="checkbox" defaultValue="remember-me" /> Remember me
             </label>
           </div>
+          <div className="form-floating">
+            <input
+              className="w-100 btn btn-lg btn-primary"
+              type="submit"
+              value="Login"
+              onClick={(event) => handleLogin(event)}
+            />
+          </div>
+          <div className="mb-3">
+            <Link to="/forgot-password">Forgot Password</Link>
+          </div>
+          <div className="mb-3">
+            <Link to="/login/mobile">Login using Mobile</Link>
+          </div>
           <div className="mb-3">
             <Link to="/register">Don't have an account? Register</Link>
           </div>
-          <input
-            className="w-100 btn btn-lg btn-primary"
-            type="submit"
-            value="Login"
-            onClick={(event) => handleLogin(event)}
-          />
         </form>
       </main>
       {/* <div className="fixed-bottom"> */}

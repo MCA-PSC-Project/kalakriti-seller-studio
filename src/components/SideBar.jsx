@@ -18,7 +18,11 @@ function SideBar() {
     <>
       <header className="navbar sticky-top bg-light flex-md-nowrap p-0 shadow">
         <div className="">
-          <img src={Logo} alt="KalaKriti" style={{ width: 50, height: 50 }} />
+          <img
+            src={Logo}
+            alt="KalaKriti Seller Studio"
+            style={{ width: 50, height: 50 }}
+          />
           <b>{appName + " Seller Studio"}</b>
         </div>
         <button

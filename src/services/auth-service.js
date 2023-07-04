@@ -12,11 +12,34 @@ const login = (email, password) => {
       password,
     })
     .then((response) => {
-      if (response.data.access_token) {
+      if (response.status === 202 && response.data.access_token) {
         TokenService.setUser(response.data);
       }
+      // when the user is not verified
+      else if (response.status === 201) {
+        window.alert(response.data);
+        return;
+      }
+      return response;
+    });
+};
 
-      return response.data;
+const loginMotp = (mobileNo, motp) => {
+  return api
+    .post("/sellers/auth/motp/login", {
+      mobile_no: mobileNo,
+      motp,
+    })
+    .then((response) => {
+      if (response.status === 202 && response.data.access_token) {
+        TokenService.setUser(response.data);
+      }
+      // // when the user is not verified
+      // else if (response.status === 201) {
+      //   window.alert(response.data);
+      //   return;
+      // }
+      return response;
     });
 };
 
@@ -31,6 +54,7 @@ const getCurrentUser = () => {
 const AuthService = {
   register,
   login,
+  loginMotp,
   logout,
   getCurrentUser,
 };

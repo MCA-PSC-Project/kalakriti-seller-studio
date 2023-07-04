@@ -2079,6 +2079,7 @@ __metadata:
     react-dom: ^18.2.0
     react-hook-form: ^7.44.3
     react-router-dom: ^6.9.0
+    react-router-hash-link: ^2.4.3
     vite: ^4.2.0
     yup: ^1.2.0
   languageName: unknown
@@ -2455,7 +2456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -2569,6 +2570,18 @@ __metadata:
     react: ">=16.8"
     react-dom: ">=16.8"
   checksum: 885528986b6e32bde0cc6ff1f318186ce6931cf4a2a36511fe12eafb380576b448a991d43fe473dbb9bc97bb7efa0c87ac179a7470345a1d3534a34b65578677
+  languageName: node
+  linkType: hard
+
+"react-router-hash-link@npm:^2.4.3":
+  version: 2.4.3
+  resolution: "react-router-hash-link@npm:2.4.3"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ">=15"
+    react-router-dom: ">=4"
+  checksum: 7dad53ebbd726e8a1ab379f4e68bce3a6b406e55af3de8a9c128510a81ad4a681ce9a5e25c0efc3d3c283b276145729b6228d0173d1d0c6e04b9cc6fb10738d4
   languageName: node
   linkType: hard
 

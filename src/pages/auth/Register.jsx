@@ -1,16 +1,17 @@
-import Footer from "../components/Footer";
-import Logo from "../assets/logo.jpeg";
+import Footer from "../../components/Footer";
+import Logo from "../../assets/logo.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import AuthService from "../services/auth-service";
-import "./Register.css";
+import AuthService from "../../services/auth-service";
 
-const registerSchema = yup
+const schema = yup
   .object({
-    sellerName: yup.string().required("Seller Name is required"),
+    firstName: yup.string().required("First Name is required"),
+    lastName: yup.string().required("Last Name is required"),
+    gender: yup.string().required("Gender is required"),
     email: yup
       .string()
       .required("Email is required")
@@ -29,20 +30,10 @@ const registerSchema = yup
       .oneOf([yup.ref("password")], "Mismatched passwords")
       .required("Please confirm your password"),
 
-    PAN: yup
-      .string()
-      .required("PAN is required")
-      .matches(
-        /[a-z]{3}[cphfatblj][a-z]\d{4}[a-z]/i,
-        "This is not a valid PAN number"
-      ),
-
-    GSTIN: yup
-      .string()
-      .matches(
-        /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,
-        "This is not a valid GSTIN number"
-      ),
+    dob: yup
+      .date()
+      .max(new Date(), "Please enter a valid date of birth")
+      .typeError("Date of birth is required"),
 
     // dp: yup.string().required("Please provide a profile picture"),
   })
@@ -54,18 +45,19 @@ function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const bodyContent = JSON.stringify({
-        seller_name: data.sellerName,
         email: data.email,
         password: data.password,
-        PAN: data.PAN,
-        GSTIN: data.GSTIN,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        dob: new Date(data.dob).toISOString(),
+        gender: data.gender,
       });
       const response = await AuthService.register(bodyContent);
       // if (result.data) {
@@ -101,33 +93,53 @@ function Register() {
         <div className="row">
           <div className="mx-auto col-10 col-md-8 col-lg-6">
             <form
-              className="seller-register-form"
+              className="needs-validation"
               noValidate=""
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="row g-3">
                 <div className="col-12">
-                  <label htmlFor="sellerName" className="form-label required">
-                    Seller name
+                  <label htmlFor="firstName" className="form-label">
+                    First name
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="sellerName"
-                    placeholder="Seller name"
+                    id="firstName"
+                    placeholder="First name"
                     defaultValue=""
                     required=""
-                    {...register("sellerName")}
+                    {...register("firstName")}
                   />
-                  {errors.sellerName && (
+                  {errors.firstName && (
                     <span style={{ color: "red" }}>
-                      {errors.sellerName.message}
+                      {errors.firstName.message}
                     </span>
                   )}
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="email" className="form-label required">
+                  <label htmlFor="lastName" className="form-label">
+                    Last name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastName"
+                    placeholder="Last name"
+                    defaultValue=""
+                    required=""
+                    {...register("lastName")}
+                  />
+                  {errors.lastName && (
+                    <span style={{ color: "red" }}>
+                      {errors.lastName.message}
+                    </span>
+                  )}
+                </div>
+
+                <div className="col-12">
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
                   <input
@@ -145,7 +157,7 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="password" className="form-label required">
+                  <label htmlFor="password" className="form-label">
                     Password
                   </label>
                   <input
@@ -164,10 +176,7 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="form-label required"
-                  >
+                  <label htmlFor="confirmPassword" className="form-label">
                     Confirm Password
                   </label>
                   <input
@@ -186,43 +195,42 @@ function Register() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="sellerName" className="form-label required">
-                    PAN
+                  <label htmlFor="dob" className="form-label">
+                    Date of Birth
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     className="form-control"
-                    id="pan"
-                    placeholder="Enter PAN Number"
+                    id="dob"
                     defaultValue=""
                     required=""
-                    {...register("PAN")}
+                    {...register("dob")}
                   />
-                  {errors.PAN && (
-                    <span style={{ color: "red" }}>{errors.PAN.message}</span>
+                  {errors.dob && (
+                    <span style={{ color: "red" }}>{errors.dob.message}</span>
                   )}
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="sellerName" className="form-label">
-                    GSTIN
+                  <label htmlFor="gender" className="form-label">
+                    Gender
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="GSTIN"
-                    placeholder="Enter GSTIN Number"
-                    defaultValue=""
-                    {...register("GSTIN")}
-                  />
-                  {errors.GSTIN && (
-                    <span style={{ color: "red" }}>{errors.GSTIN.message}</span>
+                  <select className="form-control" {...register("gender")}>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {errors.gender && (
+                    <span style={{ color: "red" }}>
+                      {errors.gender.message}
+                    </span>
                   )}
                 </div>
 
                 <div className="col-12">
                   <label htmlFor="dp" className="form-label">
-                    UPLOAD YOUR PROFILE PICTURE
+                    UPLOAD YOUR PROFILE PICTURE (optional)
                   </label>
                   <input
                     type="file"
