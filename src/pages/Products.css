@@ -1,0 +1,35 @@
+.zoom-image{
+    width: 200px;
+    height: 200px;
+    overflow: hidden
+    margin 0 auto;
+}
+.zoom-image img{
+    width: 100%;
+    transition: 0.5s all ease-in-out;
+}
+.zoom-image img:hover {
+    transform: scale(1.2);
+}
+.containermy{
+    height: 300px;
+    width: 100%;
+}
+
+.cont .button{
+    position: relative;
+    margin-top: 140px;
+    padding: 10px 15px;
+    text-align: center;
+    color: #111;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s ease-in;
+}
+
+.cont:hover .button{
+    visibility: visible;
+    opacity: 1;
+    margin-top: 30px;
+    transition-delay: 0.5s ease-in;
+}
