@@ -205,9 +205,9 @@ function Settings() {
         setSellerName(response.data.seller_name);
         setGSTIN(response.data.GSTIN);
         setPAN(response.data.PAN);
-        // setEmail(response.data.email);
-        // setCurrentMobileNo(response.data.mobile_no);
-        // setSelectedImage(response.data.dp?.path);
+        setEmail(response.data.email);
+        setCurrentMobileNo(response.data.mobile_no);
+        setSelectedImage(response.data.dp?.path);
       })
       .catch((err) => {
         console.error(err);
