@@ -337,9 +337,7 @@ function Settings() {
           onClose={handleModalClose}
         />
       )}
-      <div>
-        <NavBar/>
-      </div>
+      <NavBar />
       <div className="container light-style flex-grow-1 container-p-y">
         <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
         <div className="card overflow-hidden">
@@ -477,12 +475,12 @@ function Settings() {
                         style={{ marginTop: 20, marginLeft: 60 }}
                         className="btn btn-success"
                         onClick={() => {
-                          console.log({ sellerName,GSTIN, PAN});
+                          console.log({ sellerName, GSTIN, PAN });
                           api
                             .put("/sellers/profile", {
                               seller_name: sellerName,
-                               GSTIN:GSTIN,
-                               PAN:PAN
+                              GSTIN: GSTIN,
+                              PAN: PAN,
                             })
                             .then((response) => {
                               console.log(response);
