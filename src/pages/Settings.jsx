@@ -9,6 +9,7 @@ import Modal from "../components/Modal";
 import AddressCard from "../components/AddressCard";
 import AuthConsumer from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 function Settings() {
   const [isActiveGeneral, setActiveGeneral] = useState(true);
@@ -25,10 +26,9 @@ function Settings() {
   const [showModal, setShowModal] = useState(true);
   const [modalProperties, setModalProperties] = useState({});
 
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [dob, setDob] = useState(null);
-  const [gender, setGender] = useState(null);
+  const [sellerName, setSellerName] = useState(null);
+  const [GSTIN, setGSTIN] = useState(null);
+  const [PAN, setPAN] = useState(null);
   const [email, setEmail] = useState(null);
   const [newEmail, setNewEmail] = useState(null);
   const [currentMobileNo, setCurrentMobileNo] = useState(null);
@@ -174,17 +174,14 @@ function Settings() {
   const handleInputChange = (event) => {
     const { id, value } = event.target;
 
-    if (id === "firstName") {
-      setFirstName(value);
+    if (id === "sellerName") {
+      setSellerName(value);
     }
-    if (id === "lastName") {
-      setLastName(value);
+    if (id === "gstin") {
+      setGSTIN(value);
     }
-    if (id === "dob") {
-      setDob(value);
-    }
-    if (id === "gender") {
-      setGender(value);
+    if (id === "pan") {
+      setPAN(value);
     }
   };
 
@@ -205,10 +202,9 @@ function Settings() {
       .then((response) => {
         setGeneral(response.data === null ? {} : response.data);
         console.log(response.data);
-        setFirstName(response.data.first_name);
-        setLastName(response.data.last_name);
-        setDob(response.data.dob);
-        setGender(response.data.gender);
+        setSellerName(response.data.seller_name);
+        setGSTIN(response.data.GSTIN);
+        setPAN(response.data.PAN);
         setEmail(response.data.email);
         setCurrentMobileNo(response.data.mobile_no);
         setSelectedImage(response.data.dp?.path);
@@ -341,6 +337,9 @@ function Settings() {
           onClose={handleModalClose}
         />
       )}
+      <div>
+        <NavBar/>
+      </div>
       <div className="container light-style flex-grow-1 container-p-y">
         <h4 className="font-weight-bold py-3 mb-4">Account settings</h4>
         <div className="card overflow-hidden">
@@ -437,78 +436,53 @@ function Settings() {
                   <form>
                     <div className="card-body">
                       <div className="form-group">
-                        <label className="form-label" htmlFor="firstName">
-                          First Name
+                        <label className="form-label" htmlFor="sellerName">
+                          Seller Name
                         </label>
                         <input
-                          id="firstName"
+                          id="sellerName"
                           type="text"
                           className="form-control mb-1"
-                          defaultValue={general.first_name}
+                          defaultValue={general.seller_name}
                           onChange={(event) => handleInputChange(event)}
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" htmlFor="lastName">
-                          Last Name
+                        <label className="form-label" htmlFor="gstin">
+                          GSTIN
                         </label>
                         <input
-                          id="lastName"
+                          id="gstin"
                           type="text"
                           className="form-control"
-                          defaultValue={general.last_name}
+                          defaultValue={general.GSTIN}
                           onChange={(event) => handleInputChange(event)}
                         />
                       </div>
                       <div className="form-group">
-                        <label className="form-label" htmlFor="dob">
-                          Date of Birth
+                        <label className="form-label" htmlFor="pan">
+                          PAN
                         </label>
                         <input
-                          id="dob"
-                          type="date"
+                          id="pan"
+                          type="text"
                           className="form-control mb-1"
-                          defaultValue={general.dob}
+                          defaultValue={general.PAN}
                           onChange={(event) => handleInputChange(event)}
                         />
                       </div>
 
-                      <div className="form-group">
-                        <label className="form-label" htmlFor="gender">
-                          Gender
-                        </label>
-                        <select
-                          className="form-control"
-                          id="gender"
-                          onChange={(event) => handleInputChange(event)}
-                        >
-                          <option value="">Select Gender</option>
-                          <option value="" selected>
-                            {general.gender}
-                          </option>
-                          {general.gender !== "male" && (
-                            <option value="male">Male</option>
-                          )}
-                          {general.gender !== "female" && (
-                            <option value="female">Female</option>
-                          )}
-                          {general.gender !== "other" && (
-                            <option value="other">Other</option>
-                          )}
-                        </select>
-                      </div>
                       <button
                         type="button"
                         style={{ marginTop: 20, marginLeft: 60 }}
                         className="btn btn-success"
                         onClick={() => {
-                          console.log({ firstName, lastName, dob, gender });
+                          console.log({ sellerName,GSTIN, PAN});
                           api
                             .put("/sellers/profile", {
-                              first_name: firstName,
-                              last_name: lastName,
-                              dob: dob,
-                              gender: gender,
+                              seller_name: sellerName,
+                               GSTIN:GSTIN,
+                               PAN:PAN
                             })
                             .then((response) => {
                               console.log(response);
