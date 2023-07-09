@@ -35,8 +35,6 @@ function Products() {
       });
   }, []);
 
-
-
   return (
     <>
       {showToast && (
@@ -47,31 +45,46 @@ function Products() {
         />
       )}
       <NavBar />
-      <h1 style={{backgroundColor:"orange",textAlign:"center"}}>Your Products</h1>
+      <h1 style={{ backgroundColor: "orange", textAlign: "center" }}>
+        Your Products
+      </h1>
       <div className="d-flex justify-content-center align-items-center">
         <div className="text-left">
           {products && products.length > 0 ? (
             products.map((product) => {
               return (
-                <ProductsHorizontalCard
+                // <ProductHorizontalCard
+                //   key={product.product_id}
+
+                //   imgSrc={product.base_product_item.media.path}
+                //   cardTitle={product.product_name}
+                //   productStatus={product.product_status}
+                //   addedAt={product.added_at}
+                //   updatedAt={product.updated_at}
+                //   originalPrice={product.base_product_item.original_price}
+                //   offerPrice={product.base_product_item.offer_price}
+                //   // onDelete={() => handleDelete(product.product_item.id)}
+                //   // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
+                // />
+                <ProductHorizontalCard
                   key={product.product_id}
-        
                   imgSrc={product.base_product_item.media.path}
                   cardTitle={product.product_name}
-                  productStatus={product.product_status}
-                  addedAt={product.added_at}
-                  updatedAt={product.updated_at}
                   originalPrice={product.base_product_item.original_price}
                   offerPrice={product.base_product_item.offer_price}
+                  average_rating={product.average_rating}
+                  ratingCount={product.rating_count}
+                  quantityInStock={product.base_product_item.quantity_in_stock}
                   // onDelete={() => handleDelete(product.product_item.id)}
                   // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
                 />
               );
             })
           ) : (
-            <h1 style={{backgroundColor:"red",textAlign:"center"}}>No Products Found!!</h1>
+            <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+              No Products Found!!
+            </h1>
           )}
-
         </div>
       </div>
       <Footer />
@@ -79,49 +92,64 @@ function Products() {
   );
 }
 
-function ProductsHorizontalCard({
+function ProductHorizontalCard({
   imgSrc,
   cardTitle,
- productStatus,
- addedAt,
- updatedAt,
- originalPrice,
- offerPrice,
+  originalPrice,
+  offerPrice,
+  average_rating,
+  ratingCount,
+  quantityInStock,
 }) {
   return (
-    <div className="card mb-3 " style={{ maxWidth: 1000 }}>
-      <div className="row g-0  containermy">
-        <div className="col-md-4 zoom-image">
-          <img src={imgSrc} className="img-fluid rounded-start " alt="..." />
+    <div className="card mb-3" style={{ maxWidth: 1000 }}>
+      <div className="row g-0">
+        <div className="col-md-4">
+          <img src={imgSrc} className="img-fluid rounded-start" alt="..." />
         </div>
-        <div className="col-md-8 cont">
+        <div className="col-md-8">
           <div className="card-body">
             <h2 className="card-title">{cardTitle}</h2>
-            <hr/>
-            <div style={{marginTop:20,}}>
-             <p>
-            <b>Product Status - </b>{productStatus}<br/>
-            <b>Added At - </b>{addedAt}<br/>
-            <b>Updated At -</b>{updatedAt}<br/>
-            <b>Price -</b>
+            {quantityInStock > 0 ? (
+              <h5 className="text-success">
+                In Stock : {quantityInStock} left
+              </h5>
+            ) : (
+              <h5 className="text-danger">Out Of Stock</h5>
+            )}
+            <div className="card-text">
+              <Rating ratingValue={average_rating} ratingCount={ratingCount} />
+              <p
+                className="card-text"
+                style={{ display: quantityInStock > 0 ? null : "none" }}
+              >
                 <span>&#8377;</span>
                 <del>{originalPrice}</del>&nbsp;
                 <span>&#8377;</span>
                 {offerPrice}
               </p>
-          
             </div>
-            
-            <div className="card-text button">
-            <button
+            {/* <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+              <button
                 type="button"
                 className="btn btn-outline-primary me-2"
-                // onClick={getProducts}
+                onClick={onAddToCart}
               >
-                View Details
-              </button>  
-          
-            </div>
+                Add To Cart
+              </button>
+
+              <button type="button" className="btn btn-outline-success me-2">
+                Buy Now
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-outline-danger me-2"
+                onClick={onDelete}
+              >
+                Remove From productlist
+              </button>
+            </div> */}
           </div>
         </div>
       </div>
