@@ -209,6 +209,10 @@ function Product() {
                     />
                   </button>
                 </div>
+                <div className="col-12">
+                  <input type="text" defaultValue="published"/>
+                  <button type="button" className="btn btn-warning">Update Product Status</button>
+                </div>
                 <h4 className="title text-dark">{product?.product_name}</h4>
                 <h6 className="title text-dark">
                   sold by &nbsp;
@@ -592,10 +596,12 @@ function ProductUpdateForm() {
   return (
     <form className="needs-validation" noValidate="">
       <div className="row g-3">
-        <div className="col-12">
-          <label htmlFor="productName" className="form-label">
+      <div className="col-12">
+          <div style={{textAlign:"left"}}>
+          <label htmlFor="productName" className="form-label" >
             Product name
           </label>
+          </div>
           <input
             type="text"
             className="form-control"
@@ -607,9 +613,11 @@ function ProductUpdateForm() {
         </div>
 
         <div className="col-12">
+        <div style={{textAlign:"left"}}>
           <label htmlFor="productDescription" className="form-label">
             Product Descritption
           </label>
+          </div>
           <textarea
             className="form-control"
             id="productDescription"
@@ -620,10 +628,11 @@ function ProductUpdateForm() {
         </div>
 
         <div className="col-12">
-           <div>
+           <div style={{textAlign:"left"}}>
                     <label htmlFor="category" className="form-label required">
                       Category
                     </label>
+                    </div>
                     <select
                       className="form-select"
                       id="category"
@@ -635,18 +644,19 @@ function ProductUpdateForm() {
                       <option value={2}>Two</option>
                       <option value={3}>Three</option>
                     </select>
-                  </div>
+                 
         </div>
 
          
-        <div className="col-md-6">
-        <div>
+        <div className="col-12">
+        <div style={{textAlign:"left"}}>
                     <label
                       htmlFor="subcategory"
                       className="form-label required"
                     >
                       Subcategory
                     </label>
+                    </div>
                     <select
                       className="form-select"
                       id="subcategory"
@@ -659,14 +669,14 @@ function ProductUpdateForm() {
                       <option value={3}>Three</option>
                     </select>
                   </div>
-                  </div>
    
 
-        <div className="col-md-4">
-                  <div>
+        <div className="col-12">
+        <div style={{textAlign:"left"}}>
                     <label htmlFor="currency" className="form-label required">
                       Currency
                     </label>
+                    </div>
                     <select
                       className="form-select"
                       id="currency"
@@ -679,16 +689,17 @@ function ProductUpdateForm() {
                       <option value={3}>Three</option>
                     </select>
                   </div>
-        </div>
+        
 
-        <div className="col-md-4">
-                  <div>
+        <div className="col-12">
+        <div style={{textAlign:"left"}}>
                     <label
                       htmlFor="minOrderQuantity"
                       className="form-label required"
                     >
                       Minimum order quantity per Order
                     </label>
+                    </div>
                     <input
                       type="number"
                       className="form-control"
@@ -700,15 +711,16 @@ function ProductUpdateForm() {
                       
                     />
                   </div>
-                  </div>
-                  <div className="col-md-4">
-                  <div>
+                
+                  <div className="col-12">
+                  <div style={{textAlign:"left"}}>
                     <label
                       htmlFor="maxOrderQuantity"
                       className="form-label required"
                     >
                       Maximum order quantity per Order
                     </label>
+                    </div>
                     <input
                       type="number"
                       className="form-control"
@@ -719,7 +731,7 @@ function ProductUpdateForm() {
                       min={0}
                      
                     />
-                  </div>
+      
                   </div>
 
         </div>
@@ -734,8 +746,10 @@ function ProductUpdateForm() {
         >
           Close
         </button>
-        <button type="button" className="btn btn-success">
-          Save changes
+        <button type="button" className="btn btn-success"
+        // onClick={}
+        >
+          Update
         </button>
       </div>
     </form>
