@@ -374,7 +374,7 @@ function AddProductForm() {
                       className="form-control"
                       type="file"
                       id="mediaList"
-                      multiple=""
+                      multiple
                       required=""
                     />
                   </div>

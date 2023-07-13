@@ -100,6 +100,15 @@ const App = () => {
               </RequireAuth>
             }
           />
+           <Route
+            path="/products/:productId"
+            element={
+              <RequireAuth>
+            <Product />
+            </RequireAuth>
+            }
+          />
+
           <Route
             exact
             path="/products/add"

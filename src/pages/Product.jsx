@@ -11,6 +11,7 @@ import {
   faPlus,
   faHeart as faHeartFilled,
   faShare,
+  faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Rating from "../components/Rating";
@@ -45,7 +46,7 @@ function Product() {
   const [quantity, setQuantity] = useState(null);
   const [isProductReviewsShown, setIsProductReviewsShown] = useState(false);
   const [mediaSrcList, setMediaSrcList] = useState([]);
-  const [isItemInWishlist, setIsItemInWishlist] = useState(false);
+  // const [isItemInWishlist, setIsItemInWishlist] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -59,6 +60,7 @@ function Product() {
       .then((response) => {
         setProduct(response.data === null ? {} : response.data);
         console.log(response.data);
+        console.log(productId);
       })
       .catch((err) => {
         console.error(err);
@@ -75,36 +77,36 @@ function Product() {
     setQuantity(product?.min_order_quantity);
   }, [product]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // window.scrollTo({
-    //   top: 0,
-    //   left: 0,
-    //   behavior: "smooth",
-    // });
-    if (selectedProductItem) {
-      console.log("selected pi=", selectedProductItem);
-      const localMediaSrcList = [];
-      const media_list = selectedProductItem?.media_list;
-      if (media_list) {
-        for (const media of media_list) {
-          localMediaSrcList.push(media.path);
-        }
-      }
-      setMediaSrcList(localMediaSrcList);
-    }
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  //   // window.scrollTo({
+  //   //   top: 0,
+  //   //   left: 0,
+  //   //   behavior: "smooth",
+  //   // });
+  //   if (selectedProductItem) {
+  //     console.log("selected pi=", selectedProductItem);
+  //     const localMediaSrcList = [];
+  //     const media_list = selectedProductItem?.media_list;
+  //     if (media_list) {
+  //       for (const media of media_list) {
+  //         localMediaSrcList.push(media.path);
+  //       }
+  //     }
+  //     setMediaSrcList(localMediaSrcList);
+  //   }
 
-    api
-      .get(`/check-wishlists/${selectedProductItem?.id}`)
-      .then((response) => {
-        setIsItemInWishlist(response.data === null ? false : response.data);
-        console.log(response.data);
-      })
-      .catch((err) => {
-        setIsItemInWishlist(false);
-        console.error(err);
-      });
-  }, [selectedProductItem]);
+  //   api
+  //     .get(`/check-wishlists/${selectedProductItem?.id}`)
+  //     .then((response) => {
+  //       setIsItemInWishlist(response.data === null ? false : response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((err) => {
+  //       setIsItemInWishlist(false);
+  //       console.error(err);
+  //     });
+  // }, [selectedProductItem]);
 
   useEffect(() => {
     api
@@ -118,55 +120,55 @@ function Product() {
       });
   }, [isProductReviewsShown]);
 
-  const handleWishlistClick = () => {
-    if (!isItemInWishlist) {
-      api
-        .post(`/wishlists`, { product_item_id: selectedProductItem?.id })
-        .then((response) => {
-          console.log(response);
-          if (response.data) {
-            setIsItemInWishlist(true);
-            console.log("item added to wishlist successfully");
-            setShowToast(true);
-            setToastProperties({
-              toastType: "success",
-              toastMessage: "item added to wishlist successfully",
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          setShowToast(true);
-          setToastProperties({
-            toastType: "error",
-            toastMessage: "some error occured in adding item to wishlist",
-          });
-        });
-    } else if (isItemInWishlist) {
-      api
-        .delete(`/wishlists/${selectedProductItem?.id}`)
-        .then((response) => {
-          console.log(response);
-          if (response.data) {
-            console.log("item removed from wishlist successfully");
-            setIsItemInWishlist(false);
-            setShowToast(true);
-            setToastProperties({
-              toastType: "success",
-              toastMessage: "item removed from wishlist successfully",
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          setShowToast(true);
-          setToastProperties({
-            toastType: "error",
-            toastMessage: "some error occured in removing item from wishlist",
-          });
-        });
-    }
-  };
+  // const handleWishlistClick = () => {
+  //   if (!isItemInWishlist) {
+  //     api
+  //       .post(`/wishlists`, { product_item_id: selectedProductItem?.id })
+  //       .then((response) => {
+  //         console.log(response);
+  //         if (response.data) {
+  //           setIsItemInWishlist(true);
+  //           console.log("item added to wishlist successfully");
+  //           setShowToast(true);
+  //           setToastProperties({
+  //             toastType: "success",
+  //             toastMessage: "item added to wishlist successfully",
+  //           });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //         setShowToast(true);
+  //         setToastProperties({
+  //           toastType: "error",
+  //           toastMessage: "some error occured in adding item to wishlist",
+  //         });
+  //       });
+  //   } else if (isItemInWishlist) {
+  //     api
+  //       .delete(`/wishlists/${selectedProductItem?.id}`)
+  //       .then((response) => {
+  //         console.log(response);
+  //         if (response.data) {
+  //           console.log("item removed from wishlist successfully");
+  //           setIsItemInWishlist(false);
+  //           setShowToast(true);
+  //           setToastProperties({
+  //             toastType: "success",
+  //             toastMessage: "item removed from wishlist successfully",
+  //           });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //         setShowToast(true);
+  //         setToastProperties({
+  //           toastType: "error",
+  //           toastMessage: "some error occured in removing item from wishlist",
+  //         });
+  //       });
+  //   }
+  // };
 
   return (
     <>
@@ -190,6 +192,23 @@ function Product() {
             </aside>
             <main className="col-lg-6">
               <div className="ps-lg-3">
+                <div style={{ textAlign: "end" }}>
+                  <EditProductModal />
+                  <button
+                    type="button"
+                    className="btn btn-warning btn-lg"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModalCenteredScrollable"
+                    // onClick={onAddToCart}
+                  >
+                    Edit{" "}
+                    <FontAwesomeIcon
+                      icon={faPencil}
+                      fade
+                      style={{ color: "#0d0d0c" }}
+                    />
+                  </button>
+                </div>
                 <h4 className="title text-dark">{product?.product_name}</h4>
                 <h6 className="title text-dark">
                   sold by &nbsp;
@@ -218,7 +237,7 @@ function Product() {
                   {/* <span className="text-success ms-2">In stock</span> */}
                 </div>
                 <div className="mb-3">
-                  <button
+                  {/* <button
                     type="button"
                     className="btn border px-2 me-2"
                     title={
@@ -243,7 +262,7 @@ function Product() {
                         // beatFade
                       />
                     )}
-                  </button>
+                  </button> */}
 
                   <button
                     type="button"
@@ -370,12 +389,6 @@ function Product() {
                     </>
                   )}
                 </div>
-                <button className="btn btn-success shadow-0 me-2">
-                  Buy now
-                </button>
-                <button className="btn btn-warning shadow-0 me-2">
-                  Add to cart
-                </button>
               </div>
             </main>
           </div>
@@ -534,6 +547,198 @@ function Product() {
       </section>
       <Footer />
     </>
+  );
+}
+
+function EditProductModal() {
+  return (
+    <>
+      {/* Vertically centered scrollable modal */}
+      <div
+        className="modal fade"
+        id="exampleModalCenteredScrollable"
+        tabIndex={-1}
+        aria-labelledby="exampleModalCenteredScrollableTitle"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5
+                className="modal-title"
+                id="exampleModalCenteredScrollableTitle"
+              >
+                Update Product
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <ProductUpdateForm />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ProductUpdateForm() {
+  return (
+    <form className="needs-validation" noValidate="">
+      <div className="row g-3">
+        <div className="col-12">
+          <label htmlFor="productName" className="form-label">
+            Product name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="productName"
+            // placeholder=" name"
+            defaultValue=""
+            required=""
+          />
+        </div>
+
+        <div className="col-12">
+          <label htmlFor="productDescription" className="form-label">
+            Product Descritption
+          </label>
+          <textarea
+            className="form-control"
+            id="productDescription"
+            style={{height:200}}
+            defaultValue=""
+            required=""
+          />
+        </div>
+
+        <div className="col-12">
+           <div>
+                    <label htmlFor="category" className="form-label required">
+                      Category
+                    </label>
+                    <select
+                      className="form-select"
+                      id="category"
+                      aria-label="Floating label select example"
+                      required=""
+                    >
+                      <option selected>Select Category</option>
+                      <option value={1}>One</option>
+                      <option value={2}>Two</option>
+                      <option value={3}>Three</option>
+                    </select>
+                  </div>
+        </div>
+
+         
+        <div className="col-md-6">
+        <div>
+                    <label
+                      htmlFor="subcategory"
+                      className="form-label required"
+                    >
+                      Subcategory
+                    </label>
+                    <select
+                      className="form-select"
+                      id="subcategory"
+                      aria-label="Floating label select example"
+                      required=""
+                    >
+                      <option selected>Select Subcategory</option>
+                      <option value={1}>One</option>
+                      <option value={2}>Two</option>
+                      <option value={3}>Three</option>
+                    </select>
+                  </div>
+                  </div>
+   
+
+        <div className="col-md-4">
+                  <div>
+                    <label htmlFor="currency" className="form-label required">
+                      Currency
+                    </label>
+                    <select
+                      className="form-select"
+                      id="currency"
+                      aria-label="Floating label select example"
+                      required=""
+                    >
+                      <option selected>INR (Indian Rupee)</option>
+                      <option value={1}>One</option>
+                      <option value={2}>Two</option>
+                      <option value={3}>Three</option>
+                    </select>
+                  </div>
+        </div>
+
+        <div className="col-md-4">
+                  <div>
+                    <label
+                      htmlFor="minOrderQuantity"
+                      className="form-label required"
+                    >
+                      Minimum order quantity per Order
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="minOrderQuantity"
+                      placeholder=""
+                      defaultValue={1}
+                      required=""
+                      min={1}
+                      
+                    />
+                  </div>
+                  </div>
+                  <div className="col-md-4">
+                  <div>
+                    <label
+                      htmlFor="maxOrderQuantity"
+                      className="form-label required"
+                    >
+                      Maximum order quantity per Order
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="maxOrderQuantity"
+                      placeholder=""
+                      defaultValue={5}
+                      required=""
+                      min={0}
+                     
+                    />
+                  </div>
+                  </div>
+
+        </div>
+       
+
+
+      <div className="modal-footer">
+        <button
+          type="button"
+          className="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" className="btn btn-success">
+          Save changes
+        </button>
+      </div>
+    </form>
   );
 }
 

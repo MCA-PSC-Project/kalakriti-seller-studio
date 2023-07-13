@@ -6,10 +6,13 @@ import { Link } from "react-router-dom";
 import api from "../utils/api";
 import Toast from "../components/Toast";
 import "./Products.css";
+import { useNavigate } from "react-router-dom";
+
 
 function Products() {
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
+
 
   useEffect(() => {
     if (showToast) {
@@ -45,29 +48,23 @@ function Products() {
         />
       )}
       <NavBar />
-      <h1 style={{ backgroundColor: "orange", textAlign: "center" }}>
+      <h1 style={{ backgroundColor: "#FC4FCE", textAlign: "center" }}>
         Your Products
       </h1>
+      <div className="new-button">
+      <Link to="/products/add" title="addProductForm">
+      <button type="button" className="raise btn btn-warning btn-lg">+ Add New Product</button>
+      </Link>
+      </div>
+
       <div className="d-flex justify-content-center align-items-center">
         <div className="text-left">
           {products && products.length > 0 ? (
             products.map((product) => {
               return (
-                // <ProductHorizontalCard
-                //   key={product.product_id}
-
-                //   imgSrc={product.base_product_item.media.path}
-                //   cardTitle={product.product_name}
-                //   productStatus={product.product_status}
-                //   addedAt={product.added_at}
-                //   updatedAt={product.updated_at}
-                //   originalPrice={product.base_product_item.original_price}
-                //   offerPrice={product.base_product_item.offer_price}
-                //   // onDelete={() => handleDelete(product.product_item.id)}
-                //   // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
-                // />
                 <ProductHorizontalCard
-                  key={product.product_id}
+                  key={product.id}
+                  productId={product.id}
                   imgSrc={product.base_product_item.media.path}
                   cardTitle={product.product_name}
                   originalPrice={product.base_product_item.original_price}
@@ -93,6 +90,7 @@ function Products() {
 }
 
 function ProductHorizontalCard({
+  productId,
   imgSrc,
   cardTitle,
   originalPrice,
@@ -100,10 +98,23 @@ function ProductHorizontalCard({
   average_rating,
   ratingCount,
   quantityInStock,
-}) {
+}) 
+{
+  const navigate = useNavigate();
   return (
-    <div className="card mb-3" style={{ maxWidth: 1000 }}>
-      <div className="row g-0">
+   
+    
+    <div className="card mb-3" style={{ maxWidth: 1000 }}  onClick={(event) => {
+      navigate(`/products/${productId}`);
+    }}
+      >
+     {/* navigate(`/products/${productId}`, {
+        state: {
+          productId: productId,
+        },
+      });
+    }}> */}
+      <div className="row g-0" style={{ cursor: "pointer" }}>
         <div className="col-md-4">
           <img src={imgSrc} className="img-fluid rounded-start" alt="..." />
         </div>
@@ -129,6 +140,8 @@ function ProductHorizontalCard({
                 {offerPrice}
               </p>
             </div>
+            <div>
+            </div>
             {/* <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
               <button
                 type="button"
@@ -151,9 +164,10 @@ function ProductHorizontalCard({
               </button>
             </div> */}
           </div>
+          </div>
+          </div>
         </div>
-      </div>
-    </div>
+     
   );
 }
 
