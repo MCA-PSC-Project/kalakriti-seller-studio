@@ -20,6 +20,7 @@ import LoginMobile from "./pages/auth/LoginMobile";
 import ResetPassword from "./pages/reset/ResetPassword";
 import LoginMotp from "./pages/auth/LoginMotp";
 import { useState } from "react";
+import EditProductForm from "./pages/EditProductForm";
 
 
 export const appName = import.meta.env.VITE_APP_NAME;
@@ -117,6 +118,16 @@ const App = () => {
                 <AddProductForm />
               </RequireAuth>
             }
+          />
+
+          <Route
+               exact
+               path="/products/edit"
+               element={
+                 <RequireAuth>
+                   <EditProductForm/>
+                 </RequireAuth>
+               }
           />
         </Routes>
       </BrowserRouter>

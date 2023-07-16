@@ -8,6 +8,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AuthService from "../services/auth-service";
 import "./AddProductForm.css";
 import NavBar from "../components/NavBar";
+import React, { useState, useEffect, useRef } from "react";
+import profilePicSample from "../assets/profilePicSample.jpg";
+import ProductImage from "../components/ProductImage";
 
 const addProductSchema = yup
   .object({
@@ -58,6 +61,7 @@ const addProductSchema = yup
   .required();
 
 function AddProductForm() {
+
   const {
     register: addProductForm,
     handleSubmit,
@@ -65,6 +69,7 @@ function AddProductForm() {
   } = useForm({
     resolver: yupResolver(addProductSchema),
   });
+
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -92,6 +97,13 @@ function AddProductForm() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const [images, setImages] = useState([]);
+
+  const handleProductImage = () => {
+    console.log('hello in product image');
+    setImages([...images, <ProductImage />]);
   };
 
   return (
@@ -364,26 +376,18 @@ function AddProductForm() {
                     </span>
                   )}
                 </div>
-
-                <div className="col-12">
-                  <div>
-                    <label htmlFor="mediaList" className="form-label required">
-                      Upload medias for the product
-                    </label>
-                    <input
-                      className="form-control"
-                      type="file"
-                      id="mediaList"
-                      multiple
-                      required=""
-                    />
+                <div>
+                  <ProductImage/>
+                  {images}
+                 <div style={{textAlign:"right"}}>
+                    <button 
+                       onClick={()=>{
+                         handleProductImage();
+                      }}
+                    >Add More ++</button>
                   </div>
-                  {errors.mediaList && (
-                    <span style={{ color: "red" }}>
-                      {errors.mediaList.message}
-                    </span>
-                  )}
                 </div>
+             
 
                 <div className="col-12">
                   <button

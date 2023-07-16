@@ -21,10 +21,12 @@ import "./Product.css";
 import api from "../utils/api";
 import AuthConsumer from "../hooks/useAuth";
 import Toast from "../components/Toast";
+import { useNavigate } from "react-router-dom";
 
 function Product() {
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showToast) {
@@ -46,6 +48,7 @@ function Product() {
   const [quantity, setQuantity] = useState(null);
   const [isProductReviewsShown, setIsProductReviewsShown] = useState(false);
   const [mediaSrcList, setMediaSrcList] = useState([]);
+  
   // const [isItemInWishlist, setIsItemInWishlist] = useState(false);
 
   useEffect(() => {
@@ -193,14 +196,19 @@ function Product() {
             <main className="col-lg-6">
               <div className="ps-lg-3">
                 <div style={{ textAlign: "end" }}>
-                  <EditProductModal />
                   <button
-                    type="button"
-                    className="btn btn-warning btn-lg"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModalCenteredScrollable"
-                    // onClick={onAddToCart}
+                   type="button"
+                   className="raise btn btn-warning btn-lg"
+                   onClick={(event) => {
+                    navigate(`/products/edit`, {
+                      state: {
+                        productId: productId,
+                      },
+                    });
+                  }}
+                   
                   >
+                    
                     Edit{" "}
                     <FontAwesomeIcon
                       icon={faPencil}
@@ -209,10 +217,7 @@ function Product() {
                     />
                   </button>
                 </div>
-                <div className="col-12">
-                  <input type="text" defaultValue="published"/>
-                  <button type="button" className="btn btn-warning">Update Product Status</button>
-                </div>
+            
                 <h4 className="title text-dark">{product?.product_name}</h4>
                 <h6 className="title text-dark">
                   sold by &nbsp;
@@ -554,206 +559,5 @@ function Product() {
   );
 }
 
-function EditProductModal() {
-  return (
-    <>
-      {/* Vertically centered scrollable modal */}
-      <div
-        className="modal fade"
-        id="exampleModalCenteredScrollable"
-        tabIndex={-1}
-        aria-labelledby="exampleModalCenteredScrollableTitle"
-        style={{ display: "none" }}
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5
-                className="modal-title"
-                id="exampleModalCenteredScrollableTitle"
-              >
-                Update Product
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div className="modal-body">
-              <ProductUpdateForm />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
-function ProductUpdateForm() {
-  return (
-    <form className="needs-validation" noValidate="">
-      <div className="row g-3">
-      <div className="col-12">
-          <div style={{textAlign:"left"}}>
-          <label htmlFor="productName" className="form-label" >
-            Product name
-          </label>
-          </div>
-          <input
-            type="text"
-            className="form-control"
-            id="productName"
-            // placeholder=" name"
-            defaultValue=""
-            required=""
-          />
-        </div>
-
-        <div className="col-12">
-        <div style={{textAlign:"left"}}>
-          <label htmlFor="productDescription" className="form-label">
-            Product Descritption
-          </label>
-          </div>
-          <textarea
-            className="form-control"
-            id="productDescription"
-            style={{height:200}}
-            defaultValue=""
-            required=""
-          />
-        </div>
-
-        <div className="col-12">
-           <div style={{textAlign:"left"}}>
-                    <label htmlFor="category" className="form-label required">
-                      Category
-                    </label>
-                    </div>
-                    <select
-                      className="form-select"
-                      id="category"
-                      aria-label="Floating label select example"
-                      required=""
-                    >
-                      <option selected>Select Category</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
-                    </select>
-                 
-        </div>
-
-         
-        <div className="col-12">
-        <div style={{textAlign:"left"}}>
-                    <label
-                      htmlFor="subcategory"
-                      className="form-label required"
-                    >
-                      Subcategory
-                    </label>
-                    </div>
-                    <select
-                      className="form-select"
-                      id="subcategory"
-                      aria-label="Floating label select example"
-                      required=""
-                    >
-                      <option selected>Select Subcategory</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
-                    </select>
-                  </div>
-   
-
-        <div className="col-12">
-        <div style={{textAlign:"left"}}>
-                    <label htmlFor="currency" className="form-label required">
-                      Currency
-                    </label>
-                    </div>
-                    <select
-                      className="form-select"
-                      id="currency"
-                      aria-label="Floating label select example"
-                      required=""
-                    >
-                      <option selected>INR (Indian Rupee)</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
-                    </select>
-                  </div>
-        
-
-        <div className="col-12">
-        <div style={{textAlign:"left"}}>
-                    <label
-                      htmlFor="minOrderQuantity"
-                      className="form-label required"
-                    >
-                      Minimum order quantity per Order
-                    </label>
-                    </div>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="minOrderQuantity"
-                      placeholder=""
-                      defaultValue={1}
-                      required=""
-                      min={1}
-                      
-                    />
-                  </div>
-                
-                  <div className="col-12">
-                  <div style={{textAlign:"left"}}>
-                    <label
-                      htmlFor="maxOrderQuantity"
-                      className="form-label required"
-                    >
-                      Maximum order quantity per Order
-                    </label>
-                    </div>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="maxOrderQuantity"
-                      placeholder=""
-                      defaultValue={5}
-                      required=""
-                      min={0}
-                     
-                    />
-      
-                  </div>
-
-        </div>
-       
-
-
-      <div className="modal-footer">
-        <button
-          type="button"
-          className="btn btn-danger"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-        <button type="button" className="btn btn-success"
-        // onClick={}
-        >
-          Update
-        </button>
-      </div>
-    </form>
-  );
-}
 
 export default Product;

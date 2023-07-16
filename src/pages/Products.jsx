@@ -8,11 +8,10 @@ import Toast from "../components/Toast";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
 
-
 function Products() {
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showToast) {
@@ -52,9 +51,15 @@ function Products() {
         Your Products
       </h1>
       <div className="new-button">
-      <Link to="/products/add" title="addProductForm">
-      <button type="button" className="raise btn btn-warning btn-lg">+ Add New Product</button>
-      </Link>
+        <button
+          type="button"
+          className="raise btn btn-warning btn-lg"
+          onClick={() => {
+            navigate(`/products/add`);
+          }}
+        >
+          + Add New Product
+        </button>
       </div>
 
       <div className="d-flex justify-content-center align-items-center">
@@ -98,17 +103,17 @@ function ProductHorizontalCard({
   average_rating,
   ratingCount,
   quantityInStock,
-}) 
-{
+}) {
   const navigate = useNavigate();
   return (
-   
-    
-    <div className="card mb-3" style={{ maxWidth: 1000 }}  onClick={(event) => {
-      navigate(`/products/${productId}`);
-    }}
-      >
-     {/* navigate(`/products/${productId}`, {
+    <div
+      className="card mb-3"
+      style={{ maxWidth: 1000 }}
+      onClick={(event) => {
+        navigate(`/products/${productId}`);
+      }}
+    >
+      {/* navigate(`/products/${productId}`, {
         state: {
           productId: productId,
         },
@@ -140,8 +145,7 @@ function ProductHorizontalCard({
                 {offerPrice}
               </p>
             </div>
-            <div>
-            </div>
+            <div></div>
             {/* <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
               <button
                 type="button"
@@ -164,10 +168,9 @@ function ProductHorizontalCard({
               </button>
             </div> */}
           </div>
-          </div>
-          </div>
         </div>
-     
+      </div>
+    </div>
   );
 }
 
