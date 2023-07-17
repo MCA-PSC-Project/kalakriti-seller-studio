@@ -1,14 +1,33 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import api from "../utils/api";
 function EditProductForm() {
-    
-   const productId = 12;
-  // const { productId } = useParams();
+  const { state } = useLocation();
+  const { productId } = state;
   const navigate = useNavigate();
   const [isDisable, setIsDisable] = useState(true);
   const [productDetail, setProductDetail] = useState([]);
+  const [categories, setCategories] = useState([]);
+  //  const [subCategories, setSubCategories] = useState([]);
+  const categoryRef = useRef(null);
+  // const [categoryID, setCategoryID] = useState([]);
+  var categoryID, categoryIN, categoryIndex;
+
+  const handleSelectChange = (event) => {
+    categoryID = categoryRef.current.value;
+    categoryIN = categoryRef.current.selectedIndex;
+    console.log(categoryID);
+
+    categoryIndex = categoryIN - 1;
+    console.log(categoryIndex);
+    console.log(categories[categoryIndex].subcategories);
+    if (categories[categoryIndex].subcategories){
+    setIsDisable(false);}
+    else{
+      setIsDisable(true);
+    }
+  };
 
   useEffect(() => {
     api
@@ -22,14 +41,27 @@ function EditProductForm() {
         console.log(productId);
       });
   }, []);
+
+  useEffect(() => {
+    api
+      .get(`/categories`)
+      .then((response) => {
+        setCategories(response.data === null ? [] : response.data);
+        console.log(response.data);
+        console.log(categoryID);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <>
-
-<div className="text-center">
-          <h1>Edit product details</h1>
-        </div>
-          <div className="mx-auto col-10 col-md-8 col-lg-6">
-        <form className="edit-product-form" noValidate="" >
+      <div className="text-center">
+        <h1>Edit product details</h1>
+      </div>
+      <div className="mx-auto col-10 col-md-8 col-lg-6">
+        <form className="edit-product-form" noValidate="">
           <div className="row g-3">
             <div className="col-12">
               <div style={{ textAlign: "left" }}>
@@ -73,11 +105,19 @@ function EditProductForm() {
                 id="category"
                 aria-label="Floating label select example"
                 required=""
+                onChange={handleSelectChange}
+                ref={categoryRef}
               >
                 <option selected>Select Category</option>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
+                {categories && categories.length > 0 ? (
+                  categories.map((category) => {
+                    return <option value={category.id}>{category.name}</option>;
+                  })
+                ) : (
+                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+                    No Category Found!!
+                  </h1>
+                )}
               </select>
             </div>
 
@@ -92,11 +132,21 @@ function EditProductForm() {
                 id="subcategory"
                 aria-label="Floating label select example"
                 required=""
+                disabled={isDisable}
               >
                 <option selected>Select Subcategory</option>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
+                {categories[categoryIndex].subcategories &&
+                categories[categoryIndex].subcategories.length > 0 ? (
+                  categories[categoryIndex].subcategories.map((subCategory) => {
+                    return (
+                      <option value={subCategory.id}>{subCategory.name}</option>
+                    );
+                  })
+                ) : (
+                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+                    No subCategory Found!!
+                  </h1>
+                )}
               </select>
             </div>
 
