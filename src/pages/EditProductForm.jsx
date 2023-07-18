@@ -1,20 +1,34 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import api from "../utils/api";
 function EditProductForm() {
   const { state } = useLocation();
   const { productId } = state;
   const navigate = useNavigate();
-  const [isDisable, setIsDisable] = useState(true);
+  const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
+  const [productStatusDisable, setProductStatusDisable] = useState(true);
   const [productDetail, setProductDetail] = useState([]);
   const [categories, setCategories] = useState([]);
-  //  const [subCategories, setSubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+
+  const productNameRef = useRef(null);
+  const productDescriptionRef = useRef(null);
   const categoryRef = useRef(null);
+  const subCategoryRef = useRef(null);
+  const currencyRef = useRef(null);
+  const minOrderRef = useRef(null);
+  const maxOrderRef = useRef(null);
+  const productStatusRef = useRef(null);
   // const [categoryID, setCategoryID] = useState([]);
   var categoryID, categoryIN, categoryIndex;
 
-  const handleSelectChange = (event) => {
+  const handleCategoryChange = (event) => {
     categoryID = categoryRef.current.value;
     categoryIN = categoryRef.current.selectedIndex;
     console.log(categoryID);
@@ -22,11 +36,69 @@ function EditProductForm() {
     categoryIndex = categoryIN - 1;
     console.log(categoryIndex);
     console.log(categories[categoryIndex].subcategories);
-    if (categories[categoryIndex].subcategories){
-    setIsDisable(false);}
-    else{
-      setIsDisable(true);
+    if (categories[categoryIndex].subcategories) {
+      setSubCategoryDisabled(false);
+      setSubCategories(categories[categoryIndex].subcategories);
+    } else {
+      setSubCategoryDisabled(true);
     }
+  };
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({});
+
+  const handleSubmit = () => {
+    console.log("form");
+    console.log(productNameRef.current.value);
+    const productName = productNameRef.current.value;
+    console.log(productDescriptionRef.current.value);
+    const productDescription = productDescriptionRef.current.value;
+    console.log(categoryRef.current.value);
+    const category = categoryRef.current.value;
+    console.log(subCategoryRef.current.value);
+    const subCategory = subCategoryRef.current.value;
+    console.log(currencyRef.current.value);
+    const currency = currencyRef.current.value;
+    console.log(minOrderRef.current.value);
+    const minOrder = minOrderRef.current.value;
+    console.log(maxOrderRef.current.value);
+    const maxOrder = maxOrderRef.current.value ;
+
+    api
+    .put(`/sellers/products/${productId}`, {
+      product_name: productName,
+      product_description :productDescription,
+      category_id: category,
+      subcategory_id: subCategory,
+      currency: currency,
+      min_order_quantity: minOrder,
+      max_order_quantity: maxOrder,
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.status === 201) {
+        console.log("reset password link sent to email ", email);
+        setShowModal(true);
+        setModalProperties({
+          title: "Message",
+          body: "Reset password link sent to email successfully",
+          cancelButtonPresent: false,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      setShowModal(true);
+      setModalProperties({
+        title: "Message",
+        body: "Some error occured in sending reset password link to email",
+        cancelButtonPresent: false,
+      });
+    });
+    // console.log(productStatusRef.current.value);
   };
 
   useEffect(() => {
@@ -61,7 +133,12 @@ function EditProductForm() {
         <h1>Edit product details</h1>
       </div>
       <div className="mx-auto col-10 col-md-8 col-lg-6">
-        <form className="edit-product-form" noValidate="">
+        <form
+          className="edit-product-form"
+          id="product_detail"
+          noValidate=""
+          // onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="row g-3">
             <div className="col-12">
               <div style={{ textAlign: "left" }}>
@@ -76,6 +153,7 @@ function EditProductForm() {
                 // placeholder=" name"
                 defaultValue={productDetail.product_name}
                 required=""
+                ref={productNameRef}
               />
             </div>
 
@@ -91,6 +169,7 @@ function EditProductForm() {
                 style={{ height: 200 }}
                 defaultValue={productDetail.product_description}
                 required=""
+                ref={productDescriptionRef}
               />
             </div>
 
@@ -105,10 +184,11 @@ function EditProductForm() {
                 id="category"
                 aria-label="Floating label select example"
                 required=""
-                onChange={handleSelectChange}
+                onChange={handleCategoryChange}
                 ref={categoryRef}
               >
-                <option selected>Select Category</option>
+                {/* <option value="" selected>{productDetail.category.name}</option> */}
+                <option selected>select category</option>
                 {categories && categories.length > 0 ? (
                   categories.map((category) => {
                     return <option value={category.id}>{category.name}</option>;
@@ -121,7 +201,7 @@ function EditProductForm() {
               </select>
             </div>
 
-            <div className="col-12">
+            <div className={subCategoryDisable ? "d-none" : "col-12"}>
               <div style={{ textAlign: "left" }}>
                 <label htmlFor="subcategory" className="form-label required">
                   Subcategory
@@ -132,12 +212,12 @@ function EditProductForm() {
                 id="subcategory"
                 aria-label="Floating label select example"
                 required=""
-                disabled={isDisable}
+                ref={subCategoryRef}
               >
+                {console.log({ subCategories })}
                 <option selected>Select Subcategory</option>
-                {categories[categoryIndex].subcategories &&
-                categories[categoryIndex].subcategories.length > 0 ? (
-                  categories[categoryIndex].subcategories.map((subCategory) => {
+                {subCategories && subCategories.length > 0 ? (
+                  subCategories.map((subCategory) => {
                     return (
                       <option value={subCategory.id}>{subCategory.name}</option>
                     );
@@ -161,8 +241,9 @@ function EditProductForm() {
                 id="currency"
                 aria-label="Floating label select example"
                 required=""
+                ref={currencyRef}
               >
-                <option selected>INR (Indian Rupee)</option>
+                <option selected>{productDetail.currency}</option>
                 <option value={1}>One</option>
                 <option value={2}>Two</option>
                 <option value={3}>Three</option>
@@ -183,9 +264,10 @@ function EditProductForm() {
                 className="form-control"
                 id="minOrderQuantity"
                 placeholder=""
-                defaultValue={1}
+                defaultValue={productDetail.min_order_quantity}
                 required=""
                 min={1}
+                ref={minOrderRef}
               />
             </div>
 
@@ -203,89 +285,101 @@ function EditProductForm() {
                 className="form-control"
                 id="maxOrderQuantity"
                 placeholder=""
-                defaultValue={5}
+                defaultValue={productDetail.max_order_quantity}
                 required=""
                 min={0}
+                ref={maxOrderRef}
               />
             </div>
           </div>
+        </form>
 
-          <div className="modal-footer">
+        <form
+          className="edit-product-form"
+          style={{ marginTop: "10px" }}
+          noValidate=""
+          // onSubmit={handleSubmit(onSubmit)}
+          // id="product_status"
+        >
+          <div className="d-flex justify-content-between">
+            <label htmlFor="currency" className="form-label required">
+              Product Status
+            </label>
             <button
-              type="button"
-              className="btn btn-danger"
+              style={{ backgroundColor: "#FFFF00" }}
               onClick={() => {
-                navigate(`/products/${productId}`);
+                setProductStatusDisable(false);
               }}
             >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-success"
-              // onClick={}
-            >
-              Update
+              <FontAwesomeIcon
+                icon={faPencil}
+                fade
+                style={{ color: "#0d0d0c" }}
+              />
             </button>
           </div>
+
+          <select
+            className="form-select"
+            // id="product"
+            aria-label="Floating label select example"
+            required=""
+            disabled={productStatusDisable}
+            ref={productStatusRef}
+          >
+            <option value="" selected>
+              {productDetail.product_status}
+            </option>
+            {productDetail.product_status !== "published" && (
+              <option value="published">Published</option>
+            )}
+            {productDetail.product_status !== "unpublished" && (
+              <option value="unpublished">Unpublished</option>
+            )}
+            {productDetail.product_status !== "draft" && (
+              <option value="draft">Draft</option>
+            )}
+            {productDetail.product_status !== "submitted_for_review" && (
+              <option value="submitted_for_review" disabled="true">
+                Submitted for review
+              </option>
+            )}
+            {productDetail.product_status !== "review_rejected" && (
+              <option value="review_rejected" disabled="true">
+                Review Rejected
+              </option>
+            )}
+            {productDetail.product_status !== "trashed" && (
+              <option value="trashed" disabled="true">
+                Trashed
+              </option>
+            )}
+          </select>
         </form>
+
+        <div
+          className="d-flex justify-content-center"
+          style={{ marginTop: "25px" }}
+        >
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => {
+              navigate(`/products/${productId}`);
+            }}
+          >
+            Close
+          </button>
+          <button
+            style={{ marginLeft: "10px" }}
+            type="button"
+            className="btn btn-success"
+            onClick={() => handleSubmit()}
+          >
+            Update
+          </button>
+        </div>
       </div>
-
-      {/* <div
-className="col-12"
-style={{ marginTop: "30px", textAlign: "end" }}
->
-<select disabled={isDisable}>
-  <option value="" selected>
-    {product.product_status}
-  </option>
-  {product.product_status !== "published" && (
-    <option value="published">Published</option>
-  )}
-  {product.product_status !== "unpublished" && (
-    <option value="unpublished">Unpublished</option>
-  )}
-  {product.product_status !== "draft" && (
-    <option value="draft">Draft</option>
-  )}
-  {product.product_status !== "submitted_for_review" && (
-    <option value="submitted_for_review">
-      Submitted for review
-    </option>
-  )}
-  {product.product_status !== "review_rejected" && (
-    <option value="review_rejected">Review Rejected</option>
-  )}
-  {product.product_status !== "trashed" && (
-    <option value="trashed">Trashed</option>
-  )}
-</select>
-<button
-  style={{ backgroundColor: "#FFFF00" }}
-  onClick={() => {
-    setIsDisable(false);
-  }}
->
-  <FontAwesomeIcon
-    icon={faPencil}
-    fade
-    style={{ color: "#0d0d0c" }}
-  />
-</button>
-
-<div>
-  <button
-    type="button"
-    className="btn btn-success "
-    disabled={isDisable}
-    onClick={() => {
-      setIsDisable(true);
-    }}
-  >
-    Save Changes
-  </button>
-</div>
-</div> */}
     </>
   );
 }
