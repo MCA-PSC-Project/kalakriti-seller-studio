@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../components/Modal";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -16,6 +18,8 @@ function EditProductForm() {
   const [productDetail, setProductDetail] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [showModal, setShowModal] = useState(true);
+  const [modalProperties, setModalProperties] = useState({});
 
   const productNameRef = useRef(null);
   const productDescriptionRef = useRef(null);
@@ -57,8 +61,11 @@ function EditProductForm() {
     console.log(productDescriptionRef.current.value);
     const productDescription = productDescriptionRef.current.value;
     console.log(categoryRef.current.value);
-    const category = categoryRef.current.value;
+    //  console.log(categoryRef.current.name);
+     console.log(productDetail.category.id);
+     const category = categoryRef.current.value;
     console.log(subCategoryRef.current.value);
+    console.log(productDetail.subcategory.id);
     const subCategory = subCategoryRef.current.value;
     console.log(currencyRef.current.value);
     const currency = currencyRef.current.value;
@@ -67,37 +74,38 @@ function EditProductForm() {
     console.log(maxOrderRef.current.value);
     const maxOrder = maxOrderRef.current.value ;
 
-    api
-    .put(`/sellers/products/${productId}`, {
-      product_name: productName,
-      product_description :productDescription,
-      category_id: category,
-      subcategory_id: subCategory,
-      currency: currency,
-      min_order_quantity: minOrder,
-      max_order_quantity: maxOrder,
-    })
-    .then((response) => {
-      console.log(response);
-      if (response.status === 201) {
-        console.log("reset password link sent to email ", email);
-        setShowModal(true);
-        setModalProperties({
-          title: "Message",
-          body: "Reset password link sent to email successfully",
-          cancelButtonPresent: false,
-        });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      setShowModal(true);
-      setModalProperties({
-        title: "Message",
-        body: "Some error occured in sending reset password link to email",
-        cancelButtonPresent: false,
-      });
-    });
+
+    // api
+    // .put(`/sellers/products/${productId}`, {
+    //   product_name: productName ||productDetail.product_name ,
+    //   product_description :productDescription ||productDetail.product_description ,
+    //   category_id: category || productDetail.category.id,
+    //   subcategory_id: subCategory || productDetail.subcategory.id,
+    //   currency: currency ||productDetail.currency,
+    //   min_order_quantity: minOrder || productDetail.min_order_quantity,
+    //   max_order_quantity: maxOrder || productDetail.max_order_quantity,
+    // })
+    // .then((response) => {
+    //   console.log(response);
+    //   if (response.status === 200) {
+    //     console.log("Product Details Updated");
+    //     setShowModal(true);
+    //     setModalProperties({
+    //       title: "Message",
+    //       body: "Product Details Updated",
+    //       cancelButtonPresent: false,
+    //     });
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+    //   setShowModal(true);
+    //   setModalProperties({
+    //     title: "Message",
+    //     body: "Some error occured in updating product details",
+    //     cancelButtonPresent: false,
+    //   });
+    // });
     // console.log(productStatusRef.current.value);
   };
 
@@ -129,6 +137,16 @@ function EditProductForm() {
 
   return (
     <>
+     {showModal && (
+        <Modal
+          title={modalProperties.title}
+          body={modalProperties.body}
+          cancelButtonPresent={modalProperties.cancelButtonPresent}
+          onClose={() => {
+            setShowModal(false);
+            window.location.reload();
+          }}
+        />)}
       <div className="text-center">
         <h1>Edit product details</h1>
       </div>
@@ -188,7 +206,6 @@ function EditProductForm() {
                 ref={categoryRef}
               >
                 {/* <option value="" selected>{productDetail.category.name}</option> */}
-                <option selected>select category</option>
                 {categories && categories.length > 0 ? (
                   categories.map((category) => {
                     return <option value={category.id}>{category.name}</option>;
@@ -215,7 +232,7 @@ function EditProductForm() {
                 ref={subCategoryRef}
               >
                 {console.log({ subCategories })}
-                <option selected>Select Subcategory</option>
+                {/* <option selected value={productDetail.subCategory.id}>{productDetail.subCategory.name}</option> */}
                 {subCategories && subCategories.length > 0 ? (
                   subCategories.map((subCategory) => {
                     return (
@@ -374,6 +391,8 @@ function EditProductForm() {
             style={{ marginLeft: "10px" }}
             type="button"
             className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modal"
             onClick={() => handleSubmit()}
           >
             Update

@@ -11,6 +11,8 @@ import NavBar from "../components/NavBar";
 import React, { useState, useEffect, useRef } from "react";
 import profilePicSample from "../assets/profilePicSample.jpg";
 import ProductImage from "../components/ProductImage";
+import Modal from "../components/Modal";
+
 
 const addProductSchema = yup
   .object({
@@ -100,14 +102,41 @@ function AddProductForm() {
   };
 
   const [images, setImages] = useState([]);
+  const [count, setCount] = useState(2);
+  const [productImageDisable,setProductImageDisable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalProperties, setModalProperties] = useState({});
+
 
   const handleProductImage = () => {
     console.log('hello in product image');
+    console.log(count);
+    setCount(count+1);
     setImages([...images, <ProductImage />]);
+    if (count==6){
+        setProductImageDisable(true);
+        setShowModal(true);
+        setModalProperties({
+          title: "Message",
+          body: "you have crossed number of image uploading limit",
+          cancelButtonPresent: false,
+        });
+        
+    }
   };
 
   return (
     <>
+         {showModal && (
+        <Modal
+          title={modalProperties.title}
+          body={modalProperties.body}
+          cancelButtonPresent={modalProperties.cancelButtonPresent}
+          onClose={() => {
+            setShowModal(false);
+            window.location.reload();
+          }}
+        />)}
       <NavBar />
       <div className="container">
         <div className="text-center">
@@ -381,6 +410,9 @@ function AddProductForm() {
                   {images}
                  <div style={{textAlign:"right"}}>
                     <button 
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal"
+                      disabled={productImageDisable}
                        onClick={()=>{
                          handleProductImage();
                       }}
