@@ -14,8 +14,8 @@ function EditProductForm() {
   const { productId } = state;
   const navigate = useNavigate();
   const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
-  const [productStatusDisable, setProductStatusDisable] = useState(true);
-  const [productDetail, setProductDetail] = useState([]);
+  const [productStatusDisabled, setProductStatusDisabled] = useState(true);
+  const [productDetail, setProductDetail] = useState({});
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [showModal, setShowModal] = useState(true);
@@ -75,37 +75,37 @@ function EditProductForm() {
     const maxOrder = maxOrderRef.current.value ;
 
 
-    // api
-    // .put(`/sellers/products/${productId}`, {
-    //   product_name: productName ||productDetail.product_name ,
-    //   product_description :productDescription ||productDetail.product_description ,
-    //   category_id: category || productDetail.category.id,
-    //   subcategory_id: subCategory || productDetail.subcategory.id,
-    //   currency: currency ||productDetail.currency,
-    //   min_order_quantity: minOrder || productDetail.min_order_quantity,
-    //   max_order_quantity: maxOrder || productDetail.max_order_quantity,
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    //   if (response.status === 200) {
-    //     console.log("Product Details Updated");
-    //     setShowModal(true);
-    //     setModalProperties({
-    //       title: "Message",
-    //       body: "Product Details Updated",
-    //       cancelButtonPresent: false,
-    //     });
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    //   setShowModal(true);
-    //   setModalProperties({
-    //     title: "Message",
-    //     body: "Some error occured in updating product details",
-    //     cancelButtonPresent: false,
-    //   });
-    // });
+    api
+    .put(`/sellers/products/${productId}`, {
+      product_name: productName ||productDetail.product_name ,
+      product_description :productDescription ||productDetail.product_description ,
+      category_id: category || productDetail.category.id,
+      subcategory_id: subCategory || productDetail.subcategory.id,
+      currency: currency ||productDetail.currency,
+      min_order_quantity: minOrder || productDetail.min_order_quantity,
+      max_order_quantity: maxOrder || productDetail.max_order_quantity,
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Product Details Updated");
+        setShowModal(true);
+        setModalProperties({
+          title: "Message",
+          body: "Product Details Updated",
+          cancelButtonPresent: false,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      setShowModal(true);
+      setModalProperties({
+        title: "Message",
+        body: "Some error occured in updating product details",
+        cancelButtonPresent: false,
+      });
+    });
     // console.log(productStatusRef.current.value);
   };
 
@@ -113,7 +113,10 @@ function EditProductForm() {
     api
       .get(`/products/${productId}`)
       .then((response) => {
-        setProductDetail(response.data === null ? [] : response.data);
+        setProductDetail(response.data === null ? {} : response.data);
+        if(response.data.subcategory.id !== null){
+          setSubCategoryDisabled(false);
+        }
         console.log(response.data);
       })
       .catch((err) => {
@@ -205,7 +208,7 @@ function EditProductForm() {
                 onChange={handleCategoryChange}
                 ref={categoryRef}
               >
-                {/* <option value="" selected>{productDetail.category.name}</option> */}
+                <option value={productDetail.category?.id} selected>{productDetail.category?.name}</option>
                 {categories && categories.length > 0 ? (
                   categories.map((category) => {
                     return <option value={category.id}>{category.name}</option>;
@@ -232,7 +235,7 @@ function EditProductForm() {
                 ref={subCategoryRef}
               >
                 {console.log({ subCategories })}
-                {/* <option selected value={productDetail.subCategory.id}>{productDetail.subCategory.name}</option> */}
+                <option selected value={productDetail.subcategory?.id}>{productDetail.subcategory?.name}</option>
                 {subCategories && subCategories.length > 0 ? (
                   subCategories.map((subCategory) => {
                     return (
@@ -312,20 +315,21 @@ function EditProductForm() {
         </form>
 
         <form
-          className="edit-product-form"
+          className="edit-product-status-form"
           style={{ marginTop: "10px" }}
           noValidate=""
           // onSubmit={handleSubmit(onSubmit)}
           // id="product_status"
         >
           <div className="d-flex justify-content-between">
-            <label htmlFor="currency" className="form-label required">
+            <label htmlFor="" className="d-flex justify-content-between">
               Product Status
             </label>
             <button
+              type="button"
               style={{ backgroundColor: "#FFFF00" }}
-              onClick={() => {
-                setProductStatusDisable(false);
+              onClick={(event)=>{
+                setProductStatusDisabled(false);
               }}
             >
               <FontAwesomeIcon
@@ -341,7 +345,7 @@ function EditProductForm() {
             // id="product"
             aria-label="Floating label select example"
             required=""
-            disabled={productStatusDisable}
+            disabled={productStatusDisabled}
             ref={productStatusRef}
           >
             <option value="" selected>
