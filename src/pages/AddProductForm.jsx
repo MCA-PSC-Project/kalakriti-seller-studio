@@ -115,28 +115,11 @@ function AddProductForm() {
     setImages([...images, <ProductImage />]);
     if (count==6){
         setProductImageDisable(true);
-        setShowModal(true);
-        setModalProperties({
-          title: "Message",
-          body: "you have crossed number of image uploading limit",
-          cancelButtonPresent: false,
-        });
-        
     }
   };
 
   return (
     <>
-         {showModal && (
-        <Modal
-          title={modalProperties.title}
-          body={modalProperties.body}
-          cancelButtonPresent={modalProperties.cancelButtonPresent}
-          onClose={() => {
-            setShowModal(false);
-            window.location.reload();
-          }}
-        />)}
       <NavBar />
       <div className="container">
         <div className="text-center">
@@ -410,8 +393,7 @@ function AddProductForm() {
                   {images}
                  <div style={{textAlign:"right"}}>
                     <button 
-                       data-bs-toggle="modal"
-                       data-bs-target="#modal"
+                   
                       disabled={productImageDisable}
                        onClick={()=>{
                          handleProductImage();

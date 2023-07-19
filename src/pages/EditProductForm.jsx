@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../components/Modal";
+import "./EditProductForm.css";
+
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -54,7 +56,7 @@ function EditProductForm() {
   //   formState: { errors },
   // } = useForm({});
 
-  const handleSubmit = () => {
+  const handleProductDetails = () => {
     console.log("form");
     console.log(productNameRef.current.value);
     const productName = productNameRef.current.value;
@@ -62,8 +64,8 @@ function EditProductForm() {
     const productDescription = productDescriptionRef.current.value;
     console.log(categoryRef.current.value);
     //  console.log(categoryRef.current.name);
-     console.log(productDetail.category.id);
-     const category = categoryRef.current.value;
+    console.log(productDetail.category.id);
+    const category = categoryRef.current.value;
     console.log(subCategoryRef.current.value);
     console.log(productDetail.subcategory.id);
     const subCategory = subCategoryRef.current.value;
@@ -72,27 +74,59 @@ function EditProductForm() {
     console.log(minOrderRef.current.value);
     const minOrder = minOrderRef.current.value;
     console.log(maxOrderRef.current.value);
-    const maxOrder = maxOrderRef.current.value ;
-
+    const maxOrder = maxOrderRef.current.value;
 
     api
-    .put(`/sellers/products/${productId}`, {
-      product_name: productName ||productDetail.product_name ,
-      product_description :productDescription ||productDetail.product_description ,
-      category_id: category || productDetail.category.id,
-      subcategory_id: subCategory || productDetail.subcategory.id,
-      currency: currency ||productDetail.currency,
-      min_order_quantity: minOrder || productDetail.min_order_quantity,
-      max_order_quantity: maxOrder || productDetail.max_order_quantity,
+      .put(`/sellers/products/${productId}`, {
+        product_name: productName || productDetail.product_name,
+        product_description:
+          productDescription || productDetail.product_description,
+        category_id: category || productDetail.category.id,
+        subcategory_id: subCategory || productDetail.subcategory.id,
+        currency: currency || productDetail.currency,
+        min_order_quantity: minOrder || productDetail.min_order_quantity,
+        max_order_quantity: maxOrder || productDetail.max_order_quantity,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          console.log("Product Details Updated");
+          setShowModal(true);
+          setModalProperties({
+            title: "Message",
+            body: "Product Details Updated",
+            cancelButtonPresent: false,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setShowModal(true);
+        setModalProperties({
+          title: "Message",
+          body: "Some error occured in updating product details",
+          cancelButtonPresent: false,
+        });
+      });
+  };
+
+
+  const handleProductStatus=()=>{
+    console.log(productStatusRef.current.value);
+    const productStatus = productStatusRef.current.value;
+    api
+    .patch(`/sellers/products/${productId}`, {
+       product_status : productStatus,
+  
     })
     .then((response) => {
       console.log(response);
       if (response.status === 200) {
-        console.log("Product Details Updated");
+        console.log("Product Status Updated");
         setShowModal(true);
         setModalProperties({
           title: "Message",
-          body: "Product Details Updated",
+          body: "Product Status Updated",
           cancelButtonPresent: false,
         });
       }
@@ -102,19 +136,19 @@ function EditProductForm() {
       setShowModal(true);
       setModalProperties({
         title: "Message",
-        body: "Some error occured in updating product details",
+        body: "Some error occured in updating product status",
         cancelButtonPresent: false,
       });
     });
-    // console.log(productStatusRef.current.value);
-  };
+
+  }
 
   useEffect(() => {
     api
       .get(`/products/${productId}`)
       .then((response) => {
         setProductDetail(response.data === null ? {} : response.data);
-        if(response.data.subcategory.id !== null){
+        if (response.data.subcategory.id !== null) {
           setSubCategoryDisabled(false);
         }
         console.log(response.data);
@@ -140,7 +174,7 @@ function EditProductForm() {
 
   return (
     <>
-     {showModal && (
+      {showModal && (
         <Modal
           title={modalProperties.title}
           body={modalProperties.body}
@@ -149,11 +183,16 @@ function EditProductForm() {
             setShowModal(false);
             window.location.reload();
           }}
-        />)}
+        />
+      )}
       <div className="text-center">
         <h1>Edit product details</h1>
       </div>
+   
+     
       <div className="mx-auto col-10 col-md-8 col-lg-6">
+      <fieldset>
+        <legend>Product Details</legend>
         <form
           className="edit-product-form"
           id="product_detail"
@@ -208,7 +247,9 @@ function EditProductForm() {
                 onChange={handleCategoryChange}
                 ref={categoryRef}
               >
-                <option value={productDetail.category?.id} selected>{productDetail.category?.name}</option>
+                <option value={productDetail.category?.id} selected>
+                  {productDetail.category?.name}
+                </option>
                 {categories && categories.length > 0 ? (
                   categories.map((category) => {
                     return <option value={category.id}>{category.name}</option>;
@@ -235,7 +276,9 @@ function EditProductForm() {
                 ref={subCategoryRef}
               >
                 {console.log({ subCategories })}
-                <option selected value={productDetail.subcategory?.id}>{productDetail.subcategory?.name}</option>
+                <option selected value={productDetail.subcategory?.id}>
+                  {productDetail.subcategory?.name}
+                </option>
                 {subCategories && subCategories.length > 0 ? (
                   subCategories.map((subCategory) => {
                     return (
@@ -311,9 +354,29 @@ function EditProductForm() {
                 ref={maxOrderRef}
               />
             </div>
+
+            <div   className="d-flex justify-content-center"
+          style={{ marginTop: "25px" }}
+        >
+            <button
+            style={{ marginLeft: "10px" }}
+            type="button"
+            className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modal"
+            onClick={() => handleProductDetails()}
+          >
+            Update
+          </button>
+            </div>
           </div>
         </form>
+    
+         </fieldset>
 
+       <fieldset style={{marginTop:"50px"}}>
+        <legend>Product Status</legend>
+      
         <form
           className="edit-product-status-form"
           style={{ marginTop: "10px" }}
@@ -321,65 +384,80 @@ function EditProductForm() {
           // onSubmit={handleSubmit(onSubmit)}
           // id="product_status"
         >
-          <div className="d-flex justify-content-between">
-            <label htmlFor="" className="d-flex justify-content-between">
-              Product Status
-            </label>
-            <button
-              type="button"
-              style={{ backgroundColor: "#FFFF00" }}
-              onClick={(event)=>{
-                setProductStatusDisabled(false);
-              }}
+            <div className="d-flex justify-content-between">
+              <label htmlFor="" className="d-flex justify-content-between">
+                Product Status
+              </label>
+              <button
+                type="button"
+                style={{ backgroundColor: "#FFFF00" }}
+                onClick={(event) => {
+                  setProductStatusDisabled(false);
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  fade
+                  style={{ color: "#0d0d0c" }}
+                />
+              </button>
+            </div>
+            <select
+              className="form-select"
+              // id="product"
+              aria-label="Floating label select example"
+              required=""
+              disabled={productStatusDisabled}
+              ref={productStatusRef}
             >
-              <FontAwesomeIcon
-                icon={faPencil}
-                fade
-                style={{ color: "#0d0d0c" }}
-              />
-            </button>
-          </div>
+              <option value="" selected>
+                {productDetail.product_status}
+              </option>
+              {productDetail.product_status !== "published" && (
+                <option value="published">Published</option>
+              )}
+              {productDetail.product_status !== "unpublished" && (
+                <option value="unpublished">Unpublished</option>
+              )}
+              {productDetail.product_status !== "draft" && (
+                <option value="draft">Draft</option>
+              )}
+              {productDetail.product_status !== "submitted_for_review" && (
+                <option value="submitted_for_review" disabled="true">
+                  Submitted for review
+                </option>
+              )}
+              {productDetail.product_status !== "review_rejected" && (
+                <option value="review_rejected" disabled="true">
+                  Review Rejected
+                </option>
+              )}
+              {productDetail.product_status !== "trashed" && (
+                <option value="trashed">
+                  Trashed
+                </option>
+              )}
+            </select>
 
-          <select
-            className="form-select"
-            // id="product"
-            aria-label="Floating label select example"
-            required=""
-            disabled={productStatusDisabled}
-            ref={productStatusRef}
+            <div   className="d-flex justify-content-center"
+          style={{ marginTop: "25px" }}
+        >
+            <button
+            style={{ marginLeft: "10px" }}
+            type="button"
+            className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modal"
+            onClick={() => handleProductStatus()}
           >
-            <option value="" selected>
-              {productDetail.product_status}
-            </option>
-            {productDetail.product_status !== "published" && (
-              <option value="published">Published</option>
-            )}
-            {productDetail.product_status !== "unpublished" && (
-              <option value="unpublished">Unpublished</option>
-            )}
-            {productDetail.product_status !== "draft" && (
-              <option value="draft">Draft</option>
-            )}
-            {productDetail.product_status !== "submitted_for_review" && (
-              <option value="submitted_for_review" disabled="true">
-                Submitted for review
-              </option>
-            )}
-            {productDetail.product_status !== "review_rejected" && (
-              <option value="review_rejected" disabled="true">
-                Review Rejected
-              </option>
-            )}
-            {productDetail.product_status !== "trashed" && (
-              <option value="trashed" disabled="true">
-                Trashed
-              </option>
-            )}
-          </select>
+            Update Product Status
+          </button>
+            </div>
         </form>
+        </fieldset>
 
         <div
-          className="d-flex justify-content-center"
+          className="d-flex justify-content-end"
           style={{ marginTop: "25px" }}
         >
           <button
@@ -391,18 +469,11 @@ function EditProductForm() {
           >
             Close
           </button>
-          <button
-            style={{ marginLeft: "10px" }}
-            type="button"
-            className="btn btn-success"
-            data-bs-toggle="modal"
-            data-bs-target="#modal"
-            onClick={() => handleSubmit()}
-          >
-            Update
-          </button>
+    
         </div>
-      </div>
+
+        </div>   
+
     </>
   );
 }
