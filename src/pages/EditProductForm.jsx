@@ -34,6 +34,15 @@ function EditProductForm() {
   // const [categoryID, setCategoryID] = useState([]);
   var categoryID, categoryIN, categoryIndex;
 
+ const handleModalClose = () => {
+  if (modalProperties.onClose) {
+    modalProperties.onClose();
+  } else {
+    // setShowModal(false);
+  }
+ };
+
+
   const handleCategoryChange = (event) => {
     categoryID = categoryRef.current.value;
     categoryIN = categoryRef.current.selectedIndex;
@@ -128,6 +137,10 @@ function EditProductForm() {
           title: "Message",
           body: "Product Status Updated",
           cancelButtonPresent: false,
+          onClose: () => {
+            setShowModal(false);
+            // window.location.reload();
+          },
         });
       }
     })
@@ -138,6 +151,10 @@ function EditProductForm() {
         title: "Message",
         body: "Some error occured in updating product status",
         cancelButtonPresent: false,
+        onClose: () => {
+          setShowModal(false);
+          // window.location.reload();
+        },
       });
     });
 
@@ -179,10 +196,8 @@ function EditProductForm() {
           title={modalProperties.title}
           body={modalProperties.body}
           cancelButtonPresent={modalProperties.cancelButtonPresent}
-          onClose={() => {
-            setShowModal(false);
-            window.location.reload();
-          }}
+          
+          onClose={handleModalClose}
         />
       )}
       <div className="text-center">
@@ -471,6 +486,7 @@ function EditProductForm() {
           </button>
     
         </div>
+  
 
         </div>   
 
