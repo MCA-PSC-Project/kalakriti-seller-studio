@@ -123,7 +123,7 @@ function ProductImage(){
                       disabled={!dpUpdateMode}
                       onClick={handleImageUpload}
                     >
-                      Update
+                      save
                     </button>
                   </p>
 

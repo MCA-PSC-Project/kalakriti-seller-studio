@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../utils/api";
 function EditProductForm() {
   const { state } = useLocation();
-  const { productId } = state;
+  const { productId,productStatusOG } = state;
   const navigate = useNavigate();
   const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
   const [productStatusDisabled, setProductStatusDisabled] = useState(true);
@@ -88,8 +88,7 @@ function EditProductForm() {
     api
       .put(`/sellers/products/${productId}`, {
         product_name: productName || productDetail.product_name,
-        product_description:
-          productDescription || productDetail.product_description,
+        product_description:productDescription || productDetail.product_description,
         category_id: category || productDetail.category.id,
         subcategory_id: subCategory || productDetail.subcategory.id,
         currency: currency || productDetail.currency,
@@ -162,7 +161,7 @@ function EditProductForm() {
 
   useEffect(() => {
     api
-      .get(`/products/${productId}`)
+      .get(`/products/${productId}/?product_status=${productStatusOG}`)
       .then((response) => {
         setProductDetail(response.data === null ? {} : response.data);
         if (response.data.subcategory.id !== null) {
@@ -172,7 +171,8 @@ function EditProductForm() {
       })
       .catch((err) => {
         console.error(err);
-        console.log(productId);
+        console.log("product id",productId);
+        console.log("product status", productStatusOG); 
       });
   }, []);
 

@@ -8,7 +8,7 @@ import Toast from "../components/Toast";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
 
-function Products() {
+function Orders() {
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
   const navigate = useNavigate();
@@ -48,9 +48,9 @@ function Products() {
       )}
       <NavBar />
       <h1 style={{ backgroundColor: "#FC4FCE", textAlign: "center" }}>
-        Your Products
+        Ordered Products
       </h1>
-      <div className="new-button">
+      {/* <div className="new-button">
         <button
           type="button"
           className="raise btn btn-warning btn-lg"
@@ -60,7 +60,7 @@ function Products() {
         >
           + Add New Product
         </button>
-      </div>
+      </div> */}
 
       <div className="d-flex justify-content-center align-items-center">
         <div className="text-left">
@@ -70,7 +70,6 @@ function Products() {
                 <ProductHorizontalCard
                   key={product.id}
                   productId={product.id}
-                  productStatus={product.product_status}
                   imgSrc={product.base_product_item.media.path}
                   cardTitle={product.product_name}
                   originalPrice={product.base_product_item.original_price}
@@ -97,7 +96,6 @@ function Products() {
 
 function ProductHorizontalCard({
   productId,
-  productStatus,
   imgSrc,
   cardTitle,
   originalPrice,
@@ -112,12 +110,7 @@ function ProductHorizontalCard({
       className="card mb-3"
       style={{ maxWidth: 1000 }}
       onClick={(event) => {
-        navigate(`/products/${productId}`, {
-          state: {
-            productId: productId,
-            productStatus: productStatus,
-          },
-        });
+        navigate(`/products/${productId}`);
       }}
     >
       {/* navigate(`/products/${productId}`, {
@@ -181,4 +174,4 @@ function ProductHorizontalCard({
   );
 }
 
-export default Products;
+export default Orders;

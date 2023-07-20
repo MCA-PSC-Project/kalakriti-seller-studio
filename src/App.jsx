@@ -16,12 +16,12 @@ import Products from "./pages/Products";
 import AddProductForm from "./pages/AddProductForm";
 import AuthConsumer from "./hooks/useAuth";
 import Product from "./pages/Product";
+import Orders from "./pages/Orders";
 import LoginMobile from "./pages/auth/LoginMobile";
 import ResetPassword from "./pages/reset/ResetPassword";
 import LoginMotp from "./pages/auth/LoginMotp";
 import { useState } from "react";
 import EditProductForm from "./pages/EditProductForm";
-
 
 export const appName = import.meta.env.VITE_APP_NAME;
 
@@ -94,6 +94,15 @@ const App = () => {
           />
           <Route
             exact
+            path="/orders"
+            element={
+              <RequireAuth>
+                <Orders />
+              </RequireAuth>
+            }
+          />
+          <Route
+            exact
             path="/products"
             element={
               <RequireAuth>
@@ -101,12 +110,12 @@ const App = () => {
               </RequireAuth>
             }
           />
-           <Route
+          <Route
             path="/products/:productId"
             element={
               <RequireAuth>
-            <Product />
-            </RequireAuth>
+                <Product />
+              </RequireAuth>
             }
           />
 
@@ -121,13 +130,13 @@ const App = () => {
           />
 
           <Route
-               exact
-               path="/products/edit"
-               element={
-                 <RequireAuth>
-                   <EditProductForm/>
-                 </RequireAuth>
-               }
+            exact
+            path="/products/edit"
+            element={
+              <RequireAuth>
+                <EditProductForm />
+              </RequireAuth>
+            }
           />
         </Routes>
       </BrowserRouter>

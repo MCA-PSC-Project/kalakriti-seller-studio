@@ -22,6 +22,7 @@ import api from "../utils/api";
 import AuthConsumer from "../hooks/useAuth";
 import Toast from "../components/Toast";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Product() {
   const [showToast, setShowToast] = useState(false);
@@ -39,7 +40,8 @@ function Product() {
     }
   }, [showToast]);
 
-  const { productId } = useParams();
+  // const { productId } = useParams();
+  // const { productStatus} = useParams();
   const { authed, logout } = AuthConsumer();
   const isLoggedIn = authed ? true : false;
   const [product, setProduct] = useState({});
@@ -48,25 +50,25 @@ function Product() {
   const [quantity, setQuantity] = useState(null);
   const [isProductReviewsShown, setIsProductReviewsShown] = useState(false);
   const [mediaSrcList, setMediaSrcList] = useState([]);
-  
+  const { state } = useLocation();
+  const { productId,productStatus} = state;
+
   // const [isItemInWishlist, setIsItemInWishlist] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // window.scrollTo({
-    //   top: 0,
-    //   left: 0,
-    //   behavior: "smooth",
-    // });
     api
-      .get(`/products/${productId}`)
+      .get(`/products/${productId}?product_status=${productStatus}`)
       .then((response) => {
         setProduct(response.data === null ? {} : response.data);
         console.log(response.data);
         console.log(productId);
+        console.log(productStatus);
       })
       .catch((err) => {
         console.error(err);
+        console.log(productId);
+        console.log(productStatus);
       });
   }, []);
 
@@ -123,55 +125,7 @@ function Product() {
       });
   }, [isProductReviewsShown]);
 
-  // const handleWishlistClick = () => {
-  //   if (!isItemInWishlist) {
-  //     api
-  //       .post(`/wishlists`, { product_item_id: selectedProductItem?.id })
-  //       .then((response) => {
-  //         console.log(response);
-  //         if (response.data) {
-  //           setIsItemInWishlist(true);
-  //           console.log("item added to wishlist successfully");
-  //           setShowToast(true);
-  //           setToastProperties({
-  //             toastType: "success",
-  //             toastMessage: "item added to wishlist successfully",
-  //           });
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //         setShowToast(true);
-  //         setToastProperties({
-  //           toastType: "error",
-  //           toastMessage: "some error occured in adding item to wishlist",
-  //         });
-  //       });
-  //   } else if (isItemInWishlist) {
-  //     api
-  //       .delete(`/wishlists/${selectedProductItem?.id}`)
-  //       .then((response) => {
-  //         console.log(response);
-  //         if (response.data) {
-  //           console.log("item removed from wishlist successfully");
-  //           setIsItemInWishlist(false);
-  //           setShowToast(true);
-  //           setToastProperties({
-  //             toastType: "success",
-  //             toastMessage: "item removed from wishlist successfully",
-  //           });
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //         setShowToast(true);
-  //         setToastProperties({
-  //           toastType: "error",
-  //           toastMessage: "some error occured in removing item from wishlist",
-  //         });
-  //       });
-  //   }
-  // };
+
 
   return (
     <>
@@ -203,6 +157,7 @@ function Product() {
                     navigate(`/products/edit`, {
                       state: {
                         productId: productId,
+                        productStatusOG: productStatus,
                       },
                     });
                   }}
