@@ -157,7 +157,7 @@ function Product() {
                     navigate(`/products/edit`, {
                       state: {
                         productId: productId,
-                        productStatusOG: productStatus,
+                        productStatus: productStatus,
                       },
                     });
                   }}

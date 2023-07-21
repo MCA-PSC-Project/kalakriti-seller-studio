@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../utils/api";
 function EditProductForm() {
   const { state } = useLocation();
-  const { productId,productStatusOG } = state;
+  const { productId,productStatus } = state;
   const navigate = useNavigate();
   const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
   const [productStatusDisabled, setProductStatusDisabled] = useState(true);
@@ -161,7 +161,7 @@ function EditProductForm() {
 
   useEffect(() => {
     api
-      .get(`/products/${productId}/?product_status=${productStatusOG}`)
+      .get(`/products/${productId}?product_status=${productStatus}`)
       .then((response) => {
         setProductDetail(response.data === null ? {} : response.data);
         if (response.data.subcategory.id !== null) {
@@ -172,7 +172,7 @@ function EditProductForm() {
       .catch((err) => {
         console.error(err);
         console.log("product id",productId);
-        console.log("product status", productStatusOG); 
+        console.log("product status", productStatus); 
       });
   }, []);
 
@@ -265,6 +265,7 @@ function EditProductForm() {
                 <option value={productDetail.category?.id} selected>
                   {productDetail.category?.name}
                 </option>
+                
                 {categories && categories.length > 0 ? (
                   categories.map((category) => {
                     return <option value={category.id}>{category.name}</option>;
@@ -479,7 +480,13 @@ function EditProductForm() {
             type="button"
             className="btn btn-danger"
             onClick={() => {
-              navigate(`/products/${productId}`);
+              navigate(`/products/${productId}?product_status=${productStatus}`, {
+                state: {
+                  productId: productId,
+                  productStatus: productStatus,
+                },
+              });
+             
             }}
           >
             Close

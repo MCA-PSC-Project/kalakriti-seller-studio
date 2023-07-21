@@ -118,6 +118,66 @@ function AddProductForm() {
     }
   };
 
+  const addNewProduct = () => {
+    api
+      .post(`/sellers/products`, {
+          product_name: productName,
+          product_description: productDescription,
+          category_id: category,
+          subcategory_id: subcategory,
+          currency: currency,
+          min_order_quantity: minOrderQuantity,
+          max_order_quantity: maxOrderQuantity,
+          // "product_items": [
+          //   {
+          //     "variant": "BASE",
+          //     "variant_value": "BASE",
+          //     "product_variant_name": "BASE",
+          //     "SKU": "123345",
+          //     "original_price": 1000,
+          //     "offer_price": 500,
+          //     "quantity_in_stock": 10,
+          //     "media_list": [
+          //       {
+          //         "media_id": 1,
+          //         "display_order": 1
+          //       },
+          //       {
+          //         "media_id": 2,
+          //         "display_order": 2
+          //       },
+          //          {
+          //         "media_id": 3,
+          //         "display_order": 3
+          //       }
+          //     ]
+          //   }
+          // ]
+      
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("Product created successfully");
+          setShowModal(true);
+          setModalProperties({
+            title: "Message",
+            body: "Product created successfully",
+            cancelButtonPresent: false,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Some error occured in creating product");
+        console.error(error);
+        setShowModal(true);
+        setModalProperties({
+          title: "Message",
+          body: "Some error occured in creating product",
+          cancelButtonPresent: false,
+        });
+      });
+  };
+
   return (
     <>
       <NavBar />
@@ -407,7 +467,9 @@ function AddProductForm() {
                   <button
                     type="submit"
                     className="w-100 btn btn-lg btn-success"
-                    onClick={(e) => handleSubmit(e)}
+                    onClick={() => {
+                      addNewProduct();
+                    }}
                   >
                     Submit
                   </button>
