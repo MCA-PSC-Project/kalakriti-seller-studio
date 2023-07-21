@@ -12,6 +12,7 @@ import React, { useState, useEffect, useRef } from "react";
 import profilePicSample from "../assets/profilePicSample.jpg";
 import ProductImage from "../components/ProductImage";
 import Modal from "../components/Modal";
+import api from  "../utils/api";
 
 
 const addProductSchema = yup
@@ -63,6 +64,14 @@ const addProductSchema = yup
   .required();
 
 function AddProductForm() {
+  const [images, setImages] = useState([]);
+  const [count, setCount] = useState(2);
+  const [productImageDisable,setProductImageDisable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalProperties, setModalProperties] = useState({});
+  const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
 
   const {
     register: addProductForm,
@@ -72,27 +81,70 @@ function AddProductForm() {
     resolver: yupResolver(addProductSchema),
   });
 
+  const productNameRef = useRef(null);
+  const productDescriptionRef = useRef(null);
+  const categoryRef = useRef(null);
+  const subCategoryRef = useRef(null);
+  const currencyRef = useRef(null);
+  const minOrderRef = useRef(null);
+  const maxOrderRef = useRef(null);
+  const productVariantNameRef = useRef(null);
+  const SKURef = useRef(null);
+  const originalPriceRef = useRef(null);
+  const offerPriceRef = useState(null);
+
+
+
+  useEffect(() => {
+    api
+      .get(`/categories`)
+      .then((response) => {
+        setCategories(response.data === null ? [] : response.data);
+        console.log(response.data);
+        console.log(categoryID);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+var categoryID,categoryIN,categoryIndex;
+  const handleCategoryChange = (event) => {
+    categoryID = categoryRef.current.value;
+    categoryIN = categoryRef.current.selectedIndex;
+    console.log(categoryID);
+
+    categoryIndex = categoryIN - 1;
+    console.log(categoryIndex);
+    console.log(categories[categoryIndex].subcategories);
+    if (categories[categoryIndex].subcategories) {
+      setSubCategoryDisabled(false);
+      setSubCategories(categories[categoryIndex].subcategories);
+    } else {
+      setSubCategoryDisabled(true);
+    }
+  };
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const bodyContent = JSON.stringify({
-        product_name: data.productName,
-        product_description: data.productDescription,
-        category,
-        subcategory,
-        min_order_quantity: data.minOrderQuantity,
-        max_order_quantity: data.maxOrderQuantity,
-        product_variant_name: data.productVariantName,
-        SKU: data.SKU,
-        original_price: data.originalPrice,
-        offer_price: data.offerPrice,
-        media_list: data.mediaList,
-      });
-      const response = await AuthService.register(bodyContent);
-      // if (result.data) {
-      //   // navigate("/profile");
-      // }
+      // const bodyContent = JSON.stringify({
+      //   product_name: data.productName,
+      //   product_description: data.productDescription,
+      //   category,
+      //   subcategory,
+      //   min_order_quantity: data.minOrderQuantity,
+      //   max_order_quantity: data.maxOrderQuantity,
+      //   product_variant_name: data.productVariantName,
+      //   SKU: data.SKU,
+      //   original_price: data.originalPrice,
+      //   offer_price: data.offerPrice,
+      //   media_list: data.mediaList,
+      // });
+      // const response = await AuthService.register(bodyContent);
+      // // if (result.data) {
+      // //   // navigate("/profile");
+      // // }
       alert("Form submitted!!!");
       console.log(response.data);
       alert(response.data);
@@ -101,11 +153,7 @@ function AddProductForm() {
     }
   };
 
-  const [images, setImages] = useState([]);
-  const [count, setCount] = useState(2);
-  const [productImageDisable,setProductImageDisable] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [modalProperties, setModalProperties] = useState({});
+
 
 
   const handleProductImage = () => {
@@ -205,6 +253,7 @@ function AddProductForm() {
                     defaultValue=""
                     required=""
                     {...addProductForm("productName")}
+                    ref={productNameRef}
                   />
                   {errors.productName && (
                     <span style={{ color: "red" }}>
@@ -228,6 +277,7 @@ function AddProductForm() {
                     defaultValue={""}
                     required=""
                     {...addProductForm("productDescription")}
+                    ref={productDescriptionRef}
                   />
                   {errors.productDescriptions && (
                     <span style={{ color: "red" }}>
@@ -246,11 +296,19 @@ function AddProductForm() {
                       id="category"
                       aria-label="Floating label select example"
                       required=""
+                      ref={categoryRef}
+                      onChange={handleCategoryChange}
                     >
                       <option selected>Select Category</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
+                      {categories && categories.length > 0 ? (
+                  categories.map((category) => {
+                    return <option value={category.id}>{category.name}</option>;
+                  })
+                ) : (
+                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+                    No Category Found!!
+                  </h1>
+                )}
                     </select>
                   </div>
                   {errors.category && (
@@ -273,11 +331,21 @@ function AddProductForm() {
                       id="subcategory"
                       aria-label="Floating label select example"
                       required=""
+                      ref={subCategoryRef}
+                      disabled={subCategoryDisable}
                     >
                       <option selected>Select Subcategory</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
+                      {subCategories && subCategories.length > 0 ? (
+                  subCategories.map((subCategory) => {
+                    return (
+                      <option value={subCategory.id}>{subCategory.name}</option>
+                    );
+                  })
+                ) : (
+                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+                    No subCategory Found!!
+                  </h1>
+                )}
                     </select>
                   </div>
                   {errors.subcategory && (
@@ -297,6 +365,7 @@ function AddProductForm() {
                       id="currency"
                       aria-label="Floating label select example"
                       required=""
+                      ref={currencyRef}
                     >
                       <option selected>INR (Indian Rupee)</option>
                       <option value={1}>One</option>
@@ -328,6 +397,7 @@ function AddProductForm() {
                       required=""
                       min={1}
                       {...addProductForm("minOrderQuantity")}
+                      ref={minOrderRef}
                     />
                   </div>
                   {errors.minOrderQuantity && (
@@ -354,6 +424,7 @@ function AddProductForm() {
                       required=""
                       min={0}
                       {...addProductForm("maxOrderQuantity")}
+                      ref={maxOrderRef}
                     />
                   </div>
                   {errors.maxOrderQuantity && (
@@ -378,6 +449,7 @@ function AddProductForm() {
                     defaultValue=""
                     required=""
                     {...addProductForm("productVariantName")}
+                    ref={productVariantNameRef}
                   />
                   {errors.productVariantName && (
                     <span style={{ color: "red" }}>
@@ -398,6 +470,7 @@ function AddProductForm() {
                     defaultValue=""
                     required=""
                     {...addProductForm("SKU")}
+                    ref={SKURef}
                   />
                   {errors.SKU && (
                     <span style={{ color: "red" }}>{errors.SKU.message}</span>
@@ -420,6 +493,7 @@ function AddProductForm() {
                     required=""
                     min={0}
                     {...addProductForm("originalPrice")}
+                    ref={originalPriceRef}
                   />
                   {errors.originalPrice && (
                     <span style={{ color: "red" }}>
@@ -441,6 +515,7 @@ function AddProductForm() {
                     required=""
                     min={0}
                     {...addProductForm("offerPrice")}
+                    ref={offerPriceRef}
                   />
                   {errors.offerPrice && (
                     <span style={{ color: "red" }}>
@@ -453,7 +528,6 @@ function AddProductForm() {
                   {images}
                  <div style={{textAlign:"right"}}>
                     <button 
-                   
                       disabled={productImageDisable}
                        onClick={()=>{
                          handleProductImage();
@@ -467,9 +541,7 @@ function AddProductForm() {
                   <button
                     type="submit"
                     className="w-100 btn btn-lg btn-success"
-                    onClick={() => {
-                      addNewProduct();
-                    }}
+                    onClick={(e) => handleSubmit(e)}
                   >
                     Submit
                   </button>

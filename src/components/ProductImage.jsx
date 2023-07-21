@@ -114,7 +114,7 @@ function ProductImage(){
                       id="select-image"
                       onChange={handleImageChange}
                     /><br/>
-                     <button
+                     {/* <button
                       type="button"
                       style={{ marginTop: 20, marginLeft: 60 }}
                       className="btn btn-success"
@@ -124,7 +124,7 @@ function ProductImage(){
                       onClick={handleImageUpload}
                     >
                       save
-                    </button>
+                    </button> */}
                   </p>
 
                 
