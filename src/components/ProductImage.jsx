@@ -16,11 +16,11 @@ function ProductImage(){
     });
   
   
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
+  // const config = {
+  //   headers: {
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // };
 
 
   const handleImageChange = (event) => {
@@ -32,63 +32,63 @@ function ProductImage(){
     }
   };
 
-  const handleImageUpload = () => {
-    const formData = new FormData();
-    formData.append("file", selectedImage);
-    console.log("formdata= ", formData);
-    api
-      .post(`/uploads/image`, formData, config)
-      .then((response) => {
-        if (response.status === 201) {
-          // console.log("image selected");
-          console.log("response=", response.data);
-          const mediaId = response.data.id;
-          api
-            .patch(`/sellers/profile`, {
-              dp_id: mediaId,
-            })
-            .then((response) => {
-              if (response.status === 200) {
-                console.log("Image successfully uploaded");
-                setShowModal(true);
-                setModalProperties({
-                  title: "Message",
-                  body: "image successfully uploaded",
-                  cancelButtonPresent: false,
-                  onClose: () => {
-                    setShowModal(false);
-                    // window.location.reload();
-                  },
-                });
-              }
-            })
-            .catch((error) => {
-              console.error("Some error occured ");
-              console.error(error);
-              setShowModal(true);
-              setModalProperties({
-                title: "Message",
-                body: "Some error occured in updloading image",
-                cancelButtonPresent: false,
-                onClose: () => {
-                  setShowModal(false);
-                //   window.location.reload();
-                },
-              });
-            });
-        }
-      })
-      .catch((error) => {
-        console.error("Some error occured ");
-        console.error(error);
-        setShowModal(true);
-        setModalProperties({
-          title: "Message",
-          body: "Some error occured in uploading image",
-          cancelButtonPresent: false,
-        });
-      });
-  };
+  // const handleImageUpload = () => {
+  //   const formData = new FormData();
+  //   formData.append("file", selectedImage);
+  //   console.log("formdata= ", formData);
+  //   api
+  //     .post(`/uploads/image`, formData, config)
+  //     .then((response) => {
+  //       if (response.status === 201) {
+  //         // console.log("image selected");
+  //         console.log("response=", response.data);
+  //         const mediaId = response.data.id;
+  //         api
+  //           .patch(`/sellers/profile`, {
+  //             dp_id: mediaId,
+  //           })
+  //           .then((response) => {
+  //             if (response.status === 200) {
+  //               console.log("Image successfully uploaded");
+  //               setShowModal(true);
+  //               setModalProperties({
+  //                 title: "Message",
+  //                 body: "image successfully uploaded",
+  //                 cancelButtonPresent: false,
+  //                 onClose: () => {
+  //                   setShowModal(false);
+  //                   // window.location.reload();
+  //                 },
+  //               });
+  //             }
+  //           })
+  //           .catch((error) => {
+  //             console.error("Some error occured ");
+  //             console.error(error);
+  //             setShowModal(true);
+  //             setModalProperties({
+  //               title: "Message",
+  //               body: "Some error occured in updloading image",
+  //               cancelButtonPresent: false,
+  //               onClose: () => {
+  //                 setShowModal(false);
+  //               //   window.location.reload();
+  //               },
+  //             });
+  //           });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Some error occured ");
+  //       console.error(error);
+  //       setShowModal(true);
+  //       setModalProperties({
+  //         title: "Message",
+  //         body: "Some error occured in uploading image",
+  //         cancelButtonPresent: false,
+  //       });
+  //     });
+  // };
 
     return(
             

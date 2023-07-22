@@ -12,8 +12,7 @@ import React, { useState, useEffect, useRef } from "react";
 import profilePicSample from "../assets/profilePicSample.jpg";
 import ProductImage from "../components/ProductImage";
 import Modal from "../components/Modal";
-import api from  "../utils/api";
-
+import api from "../utils/api";
 
 const addProductSchema = yup
   .object({
@@ -66,7 +65,7 @@ const addProductSchema = yup
 function AddProductForm() {
   const [images, setImages] = useState([]);
   const [count, setCount] = useState(2);
-  const [productImageDisable,setProductImageDisable] = useState(false);
+  const [productImageDisable, setProductImageDisable] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
   const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
@@ -88,12 +87,13 @@ function AddProductForm() {
   const currencyRef = useRef(null);
   const minOrderRef = useRef(null);
   const maxOrderRef = useRef(null);
+  const variantRef = useRef(null);
+  const variantValueRef = useRef(null);
   const productVariantNameRef = useRef(null);
   const SKURef = useRef(null);
   const originalPriceRef = useRef(null);
-  const offerPriceRef = useState(null);
-
-
+  const offerPriceRef = useRef(null);
+  const quantityInStockRef = useRef(null);
 
   useEffect(() => {
     api
@@ -108,7 +108,7 @@ function AddProductForm() {
       });
   }, []);
 
-var categoryID,categoryIN,categoryIndex;
+  var categoryID, categoryIN, categoryIndex;
   const handleCategoryChange = (event) => {
     categoryID = categoryRef.current.value;
     categoryIN = categoryRef.current.selectedIndex;
@@ -125,105 +125,158 @@ var categoryID,categoryIN,categoryIndex;
     }
   };
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    try {
-      // const bodyContent = JSON.stringify({
-      //   product_name: data.productName,
-      //   product_description: data.productDescription,
-      //   category,
-      //   subcategory,
-      //   min_order_quantity: data.minOrderQuantity,
-      //   max_order_quantity: data.maxOrderQuantity,
-      //   product_variant_name: data.productVariantName,
-      //   SKU: data.SKU,
-      //   original_price: data.originalPrice,
-      //   offer_price: data.offerPrice,
-      //   media_list: data.mediaList,
-      // });
-      // const response = await AuthService.register(bodyContent);
-      // // if (result.data) {
-      // //   // navigate("/profile");
-      // // }
-      alert("Form submitted!!!");
-      console.log(response.data);
-      alert(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   };
 
+  const onSubmit = () => {
+    console.log("form");
 
+    // console.log(productNameRef.current.value);
+    // console.log(productDescriptionRef.current.value);
+    // try {
 
+    // const mediaList = []
+    // for(i=0;i<=count;i++){
+    // const formData = new FormData();
+    //   formData.append("file", selectedImage);
+    //   console.log("formdata= ", formData);
+    //   api
+    //     .post(`/uploads/image`, formData, config)
+    //     .then((response) => {
+    //       if (response.status === 201) {
+    //         // console.log("image selected");
+    //         console.log("response=", response.data);
+    //         mediaList.append(response.data.id);
+    //       }})
+    //     }
+    // const bodyContent = JSON.stringify({
+    //   product_name: data.productName,
+    //   product_description: data.productDescription,
+    //   category,
+    //   subcategory,
+    //   min_order_quantity: data.minOrderQuantity,
+    //   max_order_quantity: data.maxOrderQuantity,
+    //   product_variant_name: data.productVariantName,
+    //   SKU: data.SKU,
+    //   original_price: data.originalPrice,
+    //   offer_price: data.offerPrice,
+    //   media_list: data.mediaList,
+    // });
+    // const response = await AuthService.register(bodyContent);
+    // // if (result.data) {
+    // //   // navigate("/profile");
+    // // }
+    // alert("Form submitted!!!");
+    // console.log(response.data);
+    // alert(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
 
   const handleProductImage = () => {
-    console.log('hello in product image');
+    console.log("hello in product image");
     console.log(count);
-    setCount(count+1);
+    setCount(count + 1);
     setImages([...images, <ProductImage />]);
-    if (count==6){
-        setProductImageDisable(true);
+    if (count == 6) {
+      setProductImageDisable(true);
     }
   };
 
   const addNewProduct = () => {
-    api
-      .post(`/sellers/products`, {
-          product_name: productName,
-          product_description: productDescription,
-          category_id: category,
-          subcategory_id: subcategory,
-          currency: currency,
-          min_order_quantity: minOrderQuantity,
-          max_order_quantity: maxOrderQuantity,
-          // "product_items": [
-          //   {
-          //     "variant": "BASE",
-          //     "variant_value": "BASE",
-          //     "product_variant_name": "BASE",
-          //     "SKU": "123345",
-          //     "original_price": 1000,
-          //     "offer_price": 500,
-          //     "quantity_in_stock": 10,
-          //     "media_list": [
-          //       {
-          //         "media_id": 1,
-          //         "display_order": 1
-          //       },
-          //       {
-          //         "media_id": 2,
-          //         "display_order": 2
-          //       },
-          //          {
-          //         "media_id": 3,
-          //         "display_order": 3
-          //       }
-          //     ]
-          //   }
-          // ]
-      
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          console.log("Product created successfully");
-          setShowModal(true);
-          setModalProperties({
-            title: "Message",
-            body: "Product created successfully",
-            cancelButtonPresent: false,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Some error occured in creating product");
-        console.error(error);
-        setShowModal(true);
-        setModalProperties({
-          title: "Message",
-          body: "Some error occured in creating product",
-          cancelButtonPresent: false,
-        });
-      });
+    console.log("form");
+    console.log(productNameRef.current.value);
+    const productName = productNameRef.current.value;
+    console.log(productDescriptionRef.current.value);
+    const productDescription = productDescriptionRef.current.value;
+    console.log(categoryRef.current.value);
+    //  console.log(categoryRef.current.name);
+
+    const category = categoryRef.current.value;
+    console.log(subCategoryRef.current.value);
+
+    const subCategory = subCategoryRef.current.value;
+    console.log(currencyRef.current.value);
+    const currency = currencyRef.current.value;
+    console.log(minOrderRef.current.value);
+    const minOrder = minOrderRef.current.value;
+    console.log(maxOrderRef.current.value);
+    const maxOrder = maxOrderRef.current.value;
+    console.log(variantRef.current.value);
+    const variant = variantRef.current.value;
+    console.log(variantValueRef.current.value);
+    const variantValue = variantValueRef.current.value;
+    console.log(productVariantNameRef.current.value);
+    const productVariantName = productVariantNameRef.current.value;
+    console.log(SKURef.current.value);
+    const SKU = SKURef.current.value;
+    console.log(originalPriceRef.current.value);
+    const originalPrice = originalPriceRef.current.value;
+    console.log(offerPriceRef.current.value);
+    const offerPrice = offerPriceRef.current.value;
+    console.log(quantityInStockRef.current.value);
+    const quantityInStock = quantityInStockRef.current.value;
+    // api
+    //   .post(`/sellers/products`, {
+    //       product_name: productName,
+    //       product_description: productDescription,
+    //       category_id: category,
+    //       subcategory_id: subcategory || null,
+    //       currency: currency,
+    //       min_order_quantity: minOrderQuantity,
+    //       max_order_quantity: maxOrderQuantity,
+    // "product_items": [
+    //   {
+    //     "variant": "BASE",
+    //     "variant_value": "BASE",
+    //     product_variant_name: productVariantName,
+    //     "SKU": SKU,
+    //     "original_price": originalPrice,
+    //     "offer_price": offerPrice,
+    //     "quantity_in_stock": 10,
+    //     "media_list": [
+    //       {
+    //         "media_id": 1,
+    //         "display_order": 1
+    //       },
+    //       {
+    //         "media_id": 2,
+    //         "display_order": 2
+    //       },
+    //          {
+    //         "media_id": 3,
+    //         "display_order": 3
+    //       }
+    //     ]
+    //   }
+    // ]
+
+    // })
+    // .then((response) => {
+    //   if (response.status === 201) {
+    //     console.log("Product created successfully");
+    //     setShowModal(true);
+    //     setModalProperties({
+    //       title: "Message",
+    //       body: "Product created successfully",
+    //       cancelButtonPresent: false,
+    //     });
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error("Some error occured in creating product");
+    //   console.error(error);
+    //   setShowModal(true);
+    //   setModalProperties({
+    //     title: "Message",
+    //     body: "Some error occured in creating product",
+    //     cancelButtonPresent: false,
+    //   });
+    // });
   };
 
   return (
@@ -238,7 +291,7 @@ var categoryID,categoryIN,categoryIndex;
             <form
               className="add-product-form"
               noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
+              // onSubmit={handleSubmit(onSubmit)}
             >
               <div className="row g-3">
                 <div className="col-12">
@@ -301,14 +354,21 @@ var categoryID,categoryIN,categoryIndex;
                     >
                       <option selected>Select Category</option>
                       {categories && categories.length > 0 ? (
-                  categories.map((category) => {
-                    return <option value={category.id}>{category.name}</option>;
-                  })
-                ) : (
-                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
-                    No Category Found!!
-                  </h1>
-                )}
+                        categories.map((category) => {
+                          return (
+                            <option value={category.id}>{category.name}</option>
+                          );
+                        })
+                      ) : (
+                        <h1
+                          style={{
+                            backgroundColor: "red",
+                            textAlign: "center",
+                          }}
+                        >
+                          No Category Found!!
+                        </h1>
+                      )}
                     </select>
                   </div>
                   {errors.category && (
@@ -336,16 +396,23 @@ var categoryID,categoryIN,categoryIndex;
                     >
                       <option selected>Select Subcategory</option>
                       {subCategories && subCategories.length > 0 ? (
-                  subCategories.map((subCategory) => {
-                    return (
-                      <option value={subCategory.id}>{subCategory.name}</option>
-                    );
-                  })
-                ) : (
-                  <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
-                    No subCategory Found!!
-                  </h1>
-                )}
+                        subCategories.map((subCategory) => {
+                          return (
+                            <option value={subCategory.id}>
+                              {subCategory.name}
+                            </option>
+                          );
+                        })
+                      ) : (
+                        <h1
+                          style={{
+                            backgroundColor: "red",
+                            textAlign: "center",
+                          }}
+                        >
+                          No subCategory Found!!
+                        </h1>
+                      )}
                     </select>
                   </div>
                   {errors.subcategory && (
@@ -434,6 +501,55 @@ var categoryID,categoryIN,categoryIndex;
                   )}
                 </div>
 
+                <div className="col-md-4">
+                  <div>
+                    <label htmlFor="variant" className="form-label required">
+                      Variant
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="variant"
+                      placeholder="BASE"
+                      defaultValue="BASE"
+                      required=""
+                      ref={variantRef}
+                    />
+                  </div>
+                  {errors.maxOrderQuantity && (
+                    <span style={{ color: "red" }}>
+                      {errors.maxOrderQuantity.message}
+                    </span>
+                  )}
+                </div>
+
+                <div className="col-md-4">
+                  <div>
+                    <label
+                      htmlFor="variantValue"
+                      className="form-label required"
+                      placeholder="BASE"
+                      defaultValue="BASE"
+                      required=""
+                    >
+                      variant value
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="variantValue"
+                      placeholder=""
+                      required=""
+                      ref={variantValueRef}
+                    />
+                  </div>
+                  {errors.maxOrderQuantity && (
+                    <span style={{ color: "red" }}>
+                      {errors.maxOrderQuantity.message}
+                    </span>
+                  )}
+                </div>
+
                 <div className="col-12">
                   <label
                     htmlFor="productVariantName"
@@ -513,7 +629,6 @@ var categoryID,categoryIN,categoryIndex;
                     placeholder=""
                     defaultValue=""
                     required=""
-                    min={0}
                     {...addProductForm("offerPrice")}
                     ref={offerPriceRef}
                   />
@@ -523,25 +638,51 @@ var categoryID,categoryIN,categoryIndex;
                     </span>
                   )}
                 </div>
+
+                <div className="col-md-4">
+                  <div>
+                    <label
+                      htmlFor="quantityInStock"
+                      className="form-label required"
+                    >
+                      Quantity In Stock
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="quantityInStock"
+                      placeholder=""
+                      required=""
+                      ref={quantityInStockRef}
+                    />
+                  </div>
+                  {errors.maxOrderQuantity && (
+                    <span style={{ color: "red" }}>
+                      {errors.maxOrderQuantity.message}
+                    </span>
+                  )}
+                </div>
+
                 <div>
-                  <ProductImage/>
+                  <ProductImage />
                   {images}
-                 <div style={{textAlign:"right"}}>
-                    <button 
+                  <div style={{ textAlign: "right" }}>
+                    <button
                       disabled={productImageDisable}
-                       onClick={()=>{
-                         handleProductImage();
+                      onClick={() => {
+                        handleProductImage();
                       }}
-                    >Add More ++</button>
+                    >
+                      Add More ++
+                    </button>
                   </div>
                 </div>
-             
 
                 <div className="col-12">
                   <button
-                    type="submit"
+                    type="button"
                     className="w-100 btn btn-lg btn-success"
-                    onClick={(e) => handleSubmit(e)}
+                    onClick={() => addNewProduct()}
                   >
                     Submit
                   </button>
