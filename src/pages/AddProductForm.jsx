@@ -10,9 +10,10 @@ import "./AddProductForm.css";
 import NavBar from "../components/NavBar";
 import React, { useState, useEffect, useRef } from "react";
 import profilePicSample from "../assets/profilePicSample.jpg";
-import ProductImage from "../components/ProductImage";
+// import ProductImage from "../components/ProductImage";
 import Modal from "../components/Modal";
 import api from "../utils/api";
+
 
 const addProductSchema = yup
   .object({
@@ -696,6 +697,79 @@ function AddProductForm() {
       <Footer />
     </>
   );
+}
+
+
+function ProductImage(){
+    
+
+  const [dpUpdateMode, setDpUpdateMode] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
+
+  
+    const {
+    //   register: addProductForm,
+    //   handleSubmit,
+      formState: { errors },
+    } = useForm({
+    //   resolver: yupResolver(addProductSchema),
+    });
+  
+  
+  // const config = {
+  //   headers: {
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // };
+
+
+  const handleImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setSelectedImage(img);
+      setImageURL(URL.createObjectURL(img));
+      setDpUpdateMode(true);
+    }
+  };
+
+
+
+    return(
+            
+                <div className="col-12">
+                  <div>
+                    <label htmlFor="mediaList" className="form-label required">
+                      Upload medias for the product
+                    </label>
+                    <p>
+                    {selectedImage && (
+                      <img
+                        src={imageURL ?? selectedImage}
+                        class="rounded-circle"
+                        alt="preview"
+                        width="200"
+                        height="200"
+                      />
+                    )}
+                    <br />
+                    <input
+                      accept="image/*"
+                      type="file"
+                      id="select-image"
+                      onChange={handleImageChange}
+                    /><br/>
+          
+                  </p>
+
+                
+                  </div>
+                  {errors.mediaList && (
+                    <span style={{ color: "red" }}>
+                      {errors.mediaList.message}
+                    </span>
+                  )}
+                </div>
+    );
 }
 
 export default AddProductForm;
