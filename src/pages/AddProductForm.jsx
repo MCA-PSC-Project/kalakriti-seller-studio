@@ -668,6 +668,7 @@ function AddProductForm() {
                   {images}
                   <div style={{ textAlign: "right" }}>
                     <button
+                    type="button"
                       disabled={productImageDisable}
                       onClick={() => {
                         handleProductImage();
