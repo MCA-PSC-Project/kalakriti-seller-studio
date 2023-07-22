@@ -14,7 +14,6 @@ import profilePicSample from "../assets/profilePicSample.jpg";
 import Modal from "../components/Modal";
 import api from "../utils/api";
 
-
 const addProductSchema = yup
   .object({
     productName: yup.string().required("Product Name is required"),
@@ -132,59 +131,33 @@ function AddProductForm() {
     },
   };
 
-  const onSubmit = () => {
-    console.log("form");
-
-    // console.log(productNameRef.current.value);
-    // console.log(productDescriptionRef.current.value);
-    // try {
-
-    // const mediaList = []
-    // for(i=0;i<=count;i++){
-    // const formData = new FormData();
-    //   formData.append("file", selectedImage);
-    //   console.log("formdata= ", formData);
-    //   api
-    //     .post(`/uploads/image`, formData, config)
-    //     .then((response) => {
-    //       if (response.status === 201) {
-    //         // console.log("image selected");
-    //         console.log("response=", response.data);
-    //         mediaList.append(response.data.id);
-    //       }})
-    //     }
-    // const bodyContent = JSON.stringify({
-    //   product_name: data.productName,
-    //   product_description: data.productDescription,
-    //   category,
-    //   subcategory,
-    //   min_order_quantity: data.minOrderQuantity,
-    //   max_order_quantity: data.maxOrderQuantity,
-    //   product_variant_name: data.productVariantName,
-    //   SKU: data.SKU,
-    //   original_price: data.originalPrice,
-    //   offer_price: data.offerPrice,
-    //   media_list: data.mediaList,
-    // });
-    // const response = await AuthService.register(bodyContent);
-    // // if (result.data) {
-    // //   // navigate("/profile");
-    // // }
-    // alert("Form submitted!!!");
-    // console.log(response.data);
-    // alert(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
 
   const handleProductImage = () => {
     console.log("hello in product image");
     console.log(count);
     setCount(count + 1);
-    setImages([...images, <ProductImage />]);
+    setImages([...images, <ProductImage onSelectImage={(selectedImage)=>{uploadImage(selectedImage);}}/>]);
     if (count == 6) {
       setProductImageDisable(true);
+    }
+  };
+
+  
+  const uploadImage = (selectedImage) => {
+    const mediaList = [];
+    for (let i = 0; i <= count; i++) {
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+      console.log("formdata= ", formData);
+      api.post(`/uploads/image`, formData, config).then((response) => {
+        if (response.status === 201) {
+          // console.log("image selected");
+          console.log("response=", response.data);
+          mediaList.append(response.data.id);
+        } else {
+          console.log("error");
+        }
+      });
     }
   };
 
@@ -221,6 +194,7 @@ function AddProductForm() {
     const offerPrice = offerPriceRef.current.value;
     console.log(quantityInStockRef.current.value);
     const quantityInStock = quantityInStockRef.current.value;
+
     // api
     //   .post(`/sellers/products`, {
     //       product_name: productName,
@@ -669,7 +643,7 @@ function AddProductForm() {
                   {images}
                   <div style={{ textAlign: "right" }}>
                     <button
-                    type="button"
+                      type="button"
                       disabled={productImageDisable}
                       onClick={() => {
                         handleProductImage();
@@ -699,77 +673,78 @@ function AddProductForm() {
   );
 }
 
-
-function ProductImage(){
-    
-
+function ProductImage({onSelectImage}) {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [dpUpdateMode, setDpUpdateMode] = useState(false);
   const [imageURL, setImageURL] = useState(null);
 
-  
-    const {
+  const {
     //   register: addProductForm,
     //   handleSubmit,
-      formState: { errors },
-    } = useForm({
+    formState: { errors },
+  } = useForm({
     //   resolver: yupResolver(addProductSchema),
-    });
-  
-  
+  });
+
   // const config = {
   //   headers: {
   //     "Content-Type": "multipart/form-data",
   //   },
   // };
 
+  
+  useEffect(() => {
+       if(selectedImage){
+        console.log(selectedImage);
+        onSelectImage=()=>{
+          onSelectImage(selectedImage);
+        }
+       }
+  }, [selectedImage]);
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
       setSelectedImage(img);
       setImageURL(URL.createObjectURL(img));
-      setDpUpdateMode(true);
+      // setDpUpdateMode(true);
+    
     }
   };
 
 
 
-    return(
-            
-                <div className="col-12">
-                  <div>
-                    <label htmlFor="mediaList" className="form-label required">
-                      Upload medias for the product
-                    </label>
-                    <p>
-                    {selectedImage && (
-                      <img
-                        src={imageURL ?? selectedImage}
-                        class="rounded-circle"
-                        alt="preview"
-                        width="200"
-                        height="200"
-                      />
-                    )}
-                    <br />
-                    <input
-                      accept="image/*"
-                      type="file"
-                      id="select-image"
-                      onChange={handleImageChange}
-                    /><br/>
-          
-                  </p>
-
-                
-                  </div>
-                  {errors.mediaList && (
-                    <span style={{ color: "red" }}>
-                      {errors.mediaList.message}
-                    </span>
-                  )}
-                </div>
-    );
+  return (
+    <div className="col-12">
+      <div>
+        <label htmlFor="mediaList" className="form-label required">
+          Upload medias for the product
+        </label>
+        <p>
+          {selectedImage && (
+            <img
+              src={imageURL ?? selectedImage}
+              class="rounded-circle"
+              alt="preview"
+              width="200"
+              height="200"
+            />
+          )}
+          <br />
+          <input
+            accept="image/*"
+            type="file"
+            id="select-image"
+            onChange={handleImageChange}
+          />
+          <br />
+        </p>
+      </div>
+      {errors.mediaList && (
+        <span style={{ color: "red" }}>{errors.mediaList.message}</span>
+      )}
+    </div>
+  );
 }
 
 export default AddProductForm;
