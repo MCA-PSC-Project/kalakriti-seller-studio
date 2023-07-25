@@ -136,7 +136,9 @@ function AddProductForm() {
     console.log("hello in product image");
     console.log(count);
     setCount(count + 1);
-    setImages([...images, <ProductImage onSelectImage={(selectedImage)=>{uploadImage(selectedImage);}}/>]);
+    setImages([...images, <ProductImage onSelectImage={(selectedImage)=>{console.log("in arrow function");
+      uploadImage(selectedImage);}}
+      />]);
     if (count == 6) {
       setProductImageDisable(true);
     }
@@ -144,6 +146,7 @@ function AddProductForm() {
 
   
   const uploadImage = (selectedImage) => {
+    console.log("upload image called");
     const mediaList = [];
     for (let i = 0; i <= count; i++) {
       const formData = new FormData();
