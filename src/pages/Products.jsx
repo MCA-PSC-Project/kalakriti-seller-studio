@@ -7,8 +7,10 @@ import api from "../utils/api";
 import Toast from "../components/Toast";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/loading/Loading";
 
 function Products() {
+  const [isLoading, setIsLoading] = useState(true); // add a state variable to track the loading status
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
   const navigate = useNavigate();
@@ -29,11 +31,15 @@ function Products() {
     api
       .get(`/sellers/products`)
       .then((response) => {
-        setProducts(response.data === null ? [] : response.data);
-        console.log(response.data);
+        if (response.status === 200) {
+          console.log(response.data);
+          setProducts(response.data === null ? [] : response.data);
+          setIsLoading(false); // set isLoading to false when the data has been fetched
+        }
       })
       .catch((err) => {
         console.error(err);
+        setIsLoading(false); // set isLoading to false even if there is an error
       });
   }, []);
 
@@ -46,51 +52,59 @@ function Products() {
           onClose={() => setShowToast(false)}
         />
       )}
-      <NavBar />
-      <h1 style={{ backgroundColor: "#FC4FCE", textAlign: "center" }}>
-        Your Products
-      </h1>
-      <div className="new-button">
-        <button
-          type="button"
-          className="raise btn btn-warning btn-lg"
-          onClick={() => {
-            navigate(`/products/add`);
-          }}
-        >
-          + Add New Product
-        </button>
-      </div>
+      {isLoading ? ( // display the Loading component while the data is being fetched
+        <Loading />
+      ) : (
+        <>
+          <NavBar />
+          <h1 style={{ backgroundColor: "#FC4FCE", textAlign: "center" }}>
+            Your Products
+          </h1>
+          <div className="new-button">
+            <button
+              type="button"
+              className="raise btn btn-warning btn-lg"
+              onClick={() => {
+                navigate(`/products/add`);
+              }}
+            >
+              + Add New Product
+            </button>
+          </div>
 
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="text-left">
-          {products && products.length > 0 ? (
-            products.map((product) => {
-              return (
-                <ProductHorizontalCard
-                  key={product.id}
-                  productId={product.id}
-                  productStatus={product.product_status}
-                  imgSrc={product.base_product_item.media.path}
-                  cardTitle={product.product_name}
-                  originalPrice={product.base_product_item.original_price}
-                  offerPrice={product.base_product_item.offer_price}
-                  average_rating={product.average_rating}
-                  ratingCount={product.rating_count}
-                  quantityInStock={product.base_product_item.quantity_in_stock}
-                  // onDelete={() => handleDelete(product.product_item.id)}
-                  // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
-                />
-              );
-            })
-          ) : (
-            <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
-              No Products Found!!
-            </h1>
-          )}
-        </div>
-      </div>
-      <Footer />
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="text-left">
+              {products && products.length > 0 ? (
+                products.map((product) => {
+                  return (
+                    <ProductHorizontalCard
+                      key={product.id}
+                      productId={product.id}
+                      productStatus={product.product_status}
+                      imgSrc={product.base_product_item.media.path}
+                      cardTitle={product.product_name}
+                      originalPrice={product.base_product_item.original_price}
+                      offerPrice={product.base_product_item.offer_price}
+                      average_rating={product.average_rating}
+                      ratingCount={product.rating_count}
+                      quantityInStock={
+                        product.base_product_item.quantity_in_stock
+                      }
+                      // onDelete={() => handleDelete(product.product_item.id)}
+                      // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
+                    />
+                  );
+                })
+              ) : (
+                <h1 style={{ backgroundColor: "red", textAlign: "center" }}>
+                  No Products Found!!
+                </h1>
+              )}
+            </div>
+          </div>
+          <Footer />
+        </>
+      )}
     </>
   );
 }

@@ -22,6 +22,8 @@ import ResetPassword from "./pages/reset/ResetPassword";
 import LoginMotp from "./pages/auth/LoginMotp";
 import { useState } from "react";
 import EditProductForm from "./pages/EditProductForm";
+import SearchResultsPage from "./pages/SearchResultsPage";
+import ErrorPage from "./pages/error_page/ErrorPage";
 
 export const appName = import.meta.env.VITE_APP_NAME;
 
@@ -138,6 +140,9 @@ const App = () => {
               </RequireAuth>
             }
           />
+
+          <Route path="/search-results" element={<SearchResultsPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </div>
