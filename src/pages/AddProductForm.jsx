@@ -188,8 +188,7 @@ function AddProductForm() {
     const offerPrice = offerPriceRef.current.value;
     console.log(quantityInStockRef.current.value);
     const quantityInStock = quantityInStockRef.current.value;
-    
-    
+
     console.log("productImages=", productImages);
     const mediaIds = [];
     const promises = [];
@@ -213,65 +212,65 @@ function AddProductForm() {
 
     Promise.all(promises).then(() => {
       console.log("mediaIds=", mediaIds);
+
+      // api
+      //   .post(`/sellers/products`, {
+      //       product_name: productName,
+      //       product_description: productDescription,
+      //       category_id: category,
+      //       subcategory_id: subcategory || null,
+      //       currency: currency,
+      //       min_order_quantity: minOrderQuantity,
+      //       max_order_quantity: maxOrderQuantity,
+      // "product_items": [
+      //   {
+      //     "variant": "BASE",
+      //     "variant_value": "BASE",
+      //     product_variant_name: productVariantName,
+      //     "SKU": SKU,
+      //     "original_price": originalPrice,
+      //     "offer_price": offerPrice,
+      //     "quantity_in_stock": 10,
+      //     "media_list": [
+      //       {
+      //         "media_id": 1,
+      //         "display_order": 1
+      //       },
+      //       {
+      //         "media_id": 2,
+      //         "display_order": 2
+      //       },
+      //          {
+      //         "media_id": 3,
+      //         "display_order": 3
+      //       }
+      //     ]
+      //   }
+      // ]
+
+      // })
+      // .then((response) => {
+      //   if (response.status === 201) {
+      //     console.log("Product created successfully");
+      //     setShowModal(true);
+      //     setModalProperties({
+      //       title: "Message",
+      //       body: "Product created successfully",
+      //       cancelButtonPresent: false,
+      //     });
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("Some error occured in creating product");
+      //   console.error(error);
+      //   setShowModal(true);
+      //   setModalProperties({
+      //     title: "Message",
+      //     body: "Some error occured in creating product",
+      //     cancelButtonPresent: false,
+      //   });
+      // });
     });
-
-    // api
-    //   .post(`/sellers/products`, {
-    //       product_name: productName,
-    //       product_description: productDescription,
-    //       category_id: category,
-    //       subcategory_id: subcategory || null,
-    //       currency: currency,
-    //       min_order_quantity: minOrderQuantity,
-    //       max_order_quantity: maxOrderQuantity,
-    // "product_items": [
-    //   {
-    //     "variant": "BASE",
-    //     "variant_value": "BASE",
-    //     product_variant_name: productVariantName,
-    //     "SKU": SKU,
-    //     "original_price": originalPrice,
-    //     "offer_price": offerPrice,
-    //     "quantity_in_stock": 10,
-    //     "media_list": [
-    //       {
-    //         "media_id": 1,
-    //         "display_order": 1
-    //       },
-    //       {
-    //         "media_id": 2,
-    //         "display_order": 2
-    //       },
-    //          {
-    //         "media_id": 3,
-    //         "display_order": 3
-    //       }
-    //     ]
-    //   }
-    // ]
-
-    // })
-    // .then((response) => {
-    //   if (response.status === 201) {
-    //     console.log("Product created successfully");
-    //     setShowModal(true);
-    //     setModalProperties({
-    //       title: "Message",
-    //       body: "Product created successfully",
-    //       cancelButtonPresent: false,
-    //     });
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error("Some error occured in creating product");
-    //   console.error(error);
-    //   setShowModal(true);
-    //   setModalProperties({
-    //     title: "Message",
-    //     body: "Some error occured in creating product",
-    //     cancelButtonPresent: false,
-    //   });
-    // });
   };
 
   const [productImageCount, setProductImageCount] = useState(1);
