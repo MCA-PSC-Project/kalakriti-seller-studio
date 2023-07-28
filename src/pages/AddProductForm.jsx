@@ -188,25 +188,32 @@ function AddProductForm() {
     const offerPrice = offerPriceRef.current.value;
     console.log(quantityInStockRef.current.value);
     const quantityInStock = quantityInStockRef.current.value;
+    
+    
     console.log("productImages=", productImages);
-
     const mediaIds = [];
+    const promises = [];
     for (const productImage of productImages) {
       const formData = new FormData();
       formData.append("file", productImage);
       console.log("formdata= ", formData);
 
-      api.post(`/uploads/image`, formData, config).then((response) => {
-        if (response.status === 201) {
-          // console.log("image selected");
-          console.log("response=", response.data);
-          mediaIds.push(response.data.id);
-        } else {
-          console.log("error");
-        }
-      });
+      const promise = api
+        .post(`/uploads/image`, formData, config)
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("response=", response.data);
+            mediaIds.push(response.data.id);
+          } else {
+            console.log("error");
+          }
+        });
+      promises.push(promise);
     }
-    console.log("mediaIds=", mediaIds);
+
+    Promise.all(promises).then(() => {
+      console.log("mediaIds=", mediaIds);
+    });
 
     // api
     //   .post(`/sellers/products`, {
