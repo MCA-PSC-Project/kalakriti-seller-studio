@@ -63,9 +63,7 @@ const addProductSchema = yup
   .required();
 
 function AddProductForm() {
-  let productImages = [];
-  // const [images, setImages] = useState([]);
-  // const [count, setCount] = useState(2);
+  const [productImages, setProductImages] = useState([]);
   const [productImageDisabled, setProductImageDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
@@ -650,16 +648,12 @@ function AddProductForm() {
                           "productImageDisabled=",
                           productImageDisabled
                         );
-                        console.log("selectedImage=", selectedImage);
-
-                        // uploadImage(selectedImage);
-                        // setImages([...images, selectedImage]);
-                        productImages.push(selectedImage);
-                        console.log("productImages=", productImages);
+                        // console.log("selectedImage=", selectedImage);
+                        setProductImages([...productImages, selectedImage]);
                       }}
                     />
                   ))}
-                  {/* {images} */}
+                  {/* {productImages} */}
                   <div style={{ textAlign: "right" }}>
                     <button
                       type="button"
