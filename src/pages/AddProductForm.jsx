@@ -63,7 +63,8 @@ const addProductSchema = yup
   .required();
 
 function AddProductForm() {
-  const [images, setImages] = useState([]);
+  let productImages = [];
+  // const [images, setImages] = useState([]);
   // const [count, setCount] = useState(2);
   const [productImageDisabled, setProductImageDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -131,45 +132,30 @@ function AddProductForm() {
     },
   };
 
-  const handleProductImageSelection = () => {
-    console.log("handleProductImageSelection");
-    console.log(count);
-    setCount(count + 1);
+  // const handleProductImageSelection = (selectedImage) => {
+  //   console.log("handleProductImageSelection");
+  //   setImages([...images, selectedImage]);
+  // };
 
-    if (count == 6) {
-      setProductImageDisabled(true);
-    }
-    return (
-      <ProductImage
-        onSelectImage={(selectedImage) => {
-          console.log("in arrow function");
-          uploadImage(selectedImage);
-        }}
-      />
-    );
-  };
-
-  const uploadImage = (selectedImage) => {
-    setImages([...images, selectedImage]);
-
-    console.log("upload image called");
-    const mediaList = [];
-    for (let i = 0; i <= productImageCount; i++) {
-      const formData = new FormData();
-      formData.append("file", selectedImage);
-      console.log("formdata= ", formData);
-      // api.post(`/uploads/image`, formData, config).then((response) => {
-      //   if (response.status === 201) {
-      //     // console.log("image selected");
-      //     console.log("response=", response.data);
-      //     mediaList.append(response.data.id);
-      //   } else {
-      //     console.log("error");
-      //   }
-      // });
-      console.log("images=", images);
-    }
-  };
+  // const uploadImage = (selectedImage) => {
+  //   console.log("upload image called");
+  //   const mediaList = [];
+  //   for (let i = 0; i <= productImageCount; i++) {
+  //     const formData = new FormData();
+  //     formData.append("file", selectedImage);
+  //     console.log("formdata= ", formData);
+  //     // api.post(`/uploads/image`, formData, config).then((response) => {
+  //     //   if (response.status === 201) {
+  //     //     // console.log("image selected");
+  //     //     console.log("response=", response.data);
+  //     //     mediaList.append(response.data.id);
+  //     //   } else {
+  //     //     console.log("error");
+  //     //   }
+  //     // });
+  //     console.log("images=", images);
+  //   }
+  // };
 
   const addNewProduct = () => {
     console.log("form");
@@ -262,6 +248,7 @@ function AddProductForm() {
     //     cancelButtonPresent: false,
     //   });
     // });
+    console.log("productImages=", productImages);
   };
 
   const [productImageCount, setProductImageCount] = useState(1);
@@ -663,17 +650,22 @@ function AddProductForm() {
                           "productImageDisabled=",
                           productImageDisabled
                         );
+                        console.log("selectedImage=", selectedImage);
+
+                        // uploadImage(selectedImage);
+                        // setImages([...images, selectedImage]);
+                        productImages.push(selectedImage);
+                        console.log("productImages=", productImages);
                       }}
                     />
                   ))}
-                  {images}
+                  {/* {images} */}
                   <div style={{ textAlign: "right" }}>
                     <button
                       type="button"
                       disabled={productImageDisabled}
                       onClick={() => {
                         setProductImageDisabled(true);
-                        // handleProductImageSelection();
                         handleAddMoreClick();
                       }}
                     >
