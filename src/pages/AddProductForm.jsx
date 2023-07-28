@@ -65,7 +65,7 @@ const addProductSchema = yup
 function AddProductForm() {
   const [images, setImages] = useState([]);
   const [count, setCount] = useState(2);
-  const [productImageDisable, setProductImageDisable] = useState(true);
+  const [productImageDisabled, setProductImageDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
   const [subCategoryDisabled, setSubCategoryDisabled] = useState(true);
@@ -145,7 +145,7 @@ function AddProductForm() {
       />,
     ]);
     if (count == 6) {
-      setProductImageDisable(true);
+      setProductImageDisabled(true);
     }
   };
 
@@ -648,16 +648,20 @@ function AddProductForm() {
                 <div>
                   <ProductImage
                     onSelectImage={(selectedImage) => {
-                      setProductImageDisable(false);
-                      console.log("productImageDisable=", productImageDisable);
+                      setProductImageDisabled(false);
+                      console.log(
+                        "productImageDisabled=",
+                        productImageDisabled
+                      );
                     }}
                   />
                   {images}
                   <div style={{ textAlign: "right" }}>
                     <button
                       type="button"
-                      disabled={productImageDisable}
+                      disabled={productImageDisabled}
                       onClick={() => {
+                        setProductImageDisabled(true);
                         handleProductImage();
                       }}
                     >
