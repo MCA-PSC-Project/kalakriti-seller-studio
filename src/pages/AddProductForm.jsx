@@ -27,7 +27,7 @@ const addProductSchema = yup
       .typeError("Must be numeric.")
       .integer("Must be an integer.")
       .min(1, "Minimum 1")
-      .max(999999, "Maximum 999.999")
+      .max(999999, "Maximum 999999")
       // .transform((value) => (isNaN(value) ? undefined : value))
       .required("Minimum order quantity is required"),
     maxOrderQuantity: yup
@@ -65,10 +65,10 @@ const addProductSchema = yup
 function AddProductForm() {
   const [images, setImages] = useState([]);
   const [count, setCount] = useState(2);
-  const [productImageDisable, setProductImageDisable] = useState(false);
+  const [productImageDisable, setProductImageDisable] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
-  const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
+  const [subCategoryDisabled, setSubCategoryDisabled] = useState(true);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
@@ -131,20 +131,24 @@ function AddProductForm() {
     },
   };
 
-
   const handleProductImage = () => {
     console.log("hello in product image");
     console.log(count);
     setCount(count + 1);
-    setImages([...images, <ProductImage onSelectImage={(selectedImage)=>{console.log("in arrow function");
-      uploadImage(selectedImage);}}
-      />]);
+    setImages([
+      ...images,
+      <ProductImage
+        onSelectImage={(selectedImage) => {
+          console.log("in arrow function");
+          uploadImage(selectedImage);
+        }}
+      />,
+    ]);
     if (count == 6) {
       setProductImageDisable(true);
     }
   };
 
-  
   const uploadImage = (selectedImage) => {
     console.log("upload image called");
     const mediaList = [];
@@ -370,7 +374,7 @@ function AddProductForm() {
                       aria-label="Floating label select example"
                       required=""
                       ref={subCategoryRef}
-                      disabled={subCategoryDisable}
+                      disabled={subCategoryDisabled}
                     >
                       <option selected>Select Subcategory</option>
                       {subCategories && subCategories.length > 0 ? (
@@ -642,7 +646,12 @@ function AddProductForm() {
                 </div>
 
                 <div>
-                  <ProductImage />
+                  <ProductImage
+                    onSelectImage={(selectedImage) => {
+                      setProductImageDisable(false);
+                      console.log("productImageDisable=", productImageDisable);
+                    }}
+                  />
                   {images}
                   <div style={{ textAlign: "right" }}>
                     <button
@@ -676,7 +685,7 @@ function AddProductForm() {
   );
 }
 
-function ProductImage({onSelectImage}) {
+function ProductImage({ onSelectImage }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [dpUpdateMode, setDpUpdateMode] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -695,14 +704,15 @@ function ProductImage({onSelectImage}) {
   //   },
   // };
 
-  
   useEffect(() => {
-       if(selectedImage){
-        console.log(selectedImage);
-        onSelectImage=()=>{
-          onSelectImage(selectedImage);
-        }
-       }
+    if (selectedImage) {
+      console.log("selectedImage=", selectedImage);
+      // onSelectImage = () => {
+      //   console.log("passed selectedImage to parent=", selectedImage);
+      //   onSelectImage(selectedImage);
+      // };
+      onSelectImage(selectedImage);
+    }
   }, [selectedImage]);
 
   const handleImageChange = (event) => {
@@ -711,11 +721,8 @@ function ProductImage({onSelectImage}) {
       setSelectedImage(img);
       setImageURL(URL.createObjectURL(img));
       // setDpUpdateMode(true);
-    
     }
   };
-
-
 
   return (
     <div className="col-12">
