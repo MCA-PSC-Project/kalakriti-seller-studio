@@ -64,7 +64,7 @@ const addProductSchema = yup
 
 function AddProductForm() {
   const [images, setImages] = useState([]);
-  const [count, setCount] = useState(2);
+  // const [count, setCount] = useState(2);
   const [productImageDisabled, setProductImageDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
@@ -154,7 +154,7 @@ function AddProductForm() {
 
     console.log("upload image called");
     const mediaList = [];
-    for (let i = 0; i <= count; i++) {
+    for (let i = 0; i <= productImageCount; i++) {
       const formData = new FormData();
       formData.append("file", selectedImage);
       console.log("formdata= ", formData);
