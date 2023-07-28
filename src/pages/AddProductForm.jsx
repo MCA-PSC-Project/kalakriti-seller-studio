@@ -64,7 +64,7 @@ const addProductSchema = yup
 
 function AddProductForm() {
   const [productImages, setProductImages] = useState([]);
-  const [productImageDisabled, setProductImageDisabled] = useState(true);
+  const [addMoreDisabled, setAddMoreDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
   const [subCategoryDisabled, setSubCategoryDisabled] = useState(true);
@@ -155,7 +155,7 @@ function AddProductForm() {
   //   }
   // };
 
-  const addNewProduct = () => {
+  const submitNewProduct = () => {
     console.log("form");
     console.log(productNameRef.current.value);
     const productName = productNameRef.current.value;
@@ -188,6 +188,25 @@ function AddProductForm() {
     const offerPrice = offerPriceRef.current.value;
     console.log(quantityInStockRef.current.value);
     const quantityInStock = quantityInStockRef.current.value;
+    console.log("productImages=", productImages);
+
+    const mediaIds = [];
+    for (const productImage of productImages) {
+      const formData = new FormData();
+      formData.append("file", productImage);
+      console.log("formdata= ", formData);
+
+      api.post(`/uploads/image`, formData, config).then((response) => {
+        if (response.status === 201) {
+          // console.log("image selected");
+          console.log("response=", response.data);
+          mediaIds.push(response.data.id);
+        } else {
+          console.log("error");
+        }
+      });
+    }
+    console.log("mediaIds=", mediaIds);
 
     // api
     //   .post(`/sellers/products`, {
@@ -246,12 +265,15 @@ function AddProductForm() {
     //     cancelButtonPresent: false,
     //   });
     // });
-    console.log("productImages=", productImages);
   };
 
   const [productImageCount, setProductImageCount] = useState(1);
   const handleAddMoreClick = () => {
-    setProductImageCount(productImageCount + 1);
+    if (productImageCount < 6) {
+      setProductImageCount(productImageCount + 1);
+    } else {
+      setAddMoreDisabled(true);
+    }
   };
 
   return (
@@ -643,11 +665,8 @@ function AddProductForm() {
                     <ProductImage
                       key={index}
                       onSelectImage={(selectedImage) => {
-                        setProductImageDisabled(false);
-                        console.log(
-                          "productImageDisabled=",
-                          productImageDisabled
-                        );
+                        setAddMoreDisabled(false);
+                        console.log("productImageDisabled=", addMoreDisabled);
                         // console.log("selectedImage=", selectedImage);
                         setProductImages([...productImages, selectedImage]);
                       }}
@@ -657,9 +676,9 @@ function AddProductForm() {
                   <div style={{ textAlign: "right" }}>
                     <button
                       type="button"
-                      disabled={productImageDisabled}
+                      disabled={addMoreDisabled}
                       onClick={() => {
-                        setProductImageDisabled(true);
+                        setAddMoreDisabled(true);
                         handleAddMoreClick();
                       }}
                     >
@@ -672,7 +691,7 @@ function AddProductForm() {
                   <button
                     type="button"
                     className="w-100 btn btn-lg btn-success"
-                    onClick={() => addNewProduct()}
+                    onClick={() => submitNewProduct()}
                   >
                     Submit
                   </button>
