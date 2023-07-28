@@ -131,40 +131,43 @@ function AddProductForm() {
     },
   };
 
-  const handleProductImage = () => {
-    console.log("hello in product image");
+  const handleProductImageSelection = () => {
+    console.log("handleProductImageSelection");
     console.log(count);
     setCount(count + 1);
-    setImages([
-      ...images,
+
+    if (count == 6) {
+      setProductImageDisabled(true);
+    }
+    return (
       <ProductImage
         onSelectImage={(selectedImage) => {
           console.log("in arrow function");
           uploadImage(selectedImage);
         }}
-      />,
-    ]);
-    if (count == 6) {
-      setProductImageDisabled(true);
-    }
+      />
+    );
   };
 
   const uploadImage = (selectedImage) => {
+    setImages([...images, selectedImage]);
+
     console.log("upload image called");
     const mediaList = [];
     for (let i = 0; i <= count; i++) {
       const formData = new FormData();
       formData.append("file", selectedImage);
       console.log("formdata= ", formData);
-      api.post(`/uploads/image`, formData, config).then((response) => {
-        if (response.status === 201) {
-          // console.log("image selected");
-          console.log("response=", response.data);
-          mediaList.append(response.data.id);
-        } else {
-          console.log("error");
-        }
-      });
+      // api.post(`/uploads/image`, formData, config).then((response) => {
+      //   if (response.status === 201) {
+      //     // console.log("image selected");
+      //     console.log("response=", response.data);
+      //     mediaList.append(response.data.id);
+      //   } else {
+      //     console.log("error");
+      //   }
+      // });
+      console.log("images=", images);
     }
   };
 
@@ -259,6 +262,11 @@ function AddProductForm() {
     //     cancelButtonPresent: false,
     //   });
     // });
+  };
+
+  const [productImageCount, setProductImageCount] = useState(1);
+  const handleAddMoreClick = () => {
+    setProductImageCount(productImageCount + 1);
   };
 
   return (
@@ -646,15 +654,18 @@ function AddProductForm() {
                 </div>
 
                 <div>
-                  <ProductImage
-                    onSelectImage={(selectedImage) => {
-                      setProductImageDisabled(false);
-                      console.log(
-                        "productImageDisabled=",
-                        productImageDisabled
-                      );
-                    }}
-                  />
+                  {[...Array(productImageCount)].map((_, index) => (
+                    <ProductImage
+                      key={index}
+                      onSelectImage={(selectedImage) => {
+                        setProductImageDisabled(false);
+                        console.log(
+                          "productImageDisabled=",
+                          productImageDisabled
+                        );
+                      }}
+                    />
+                  ))}
                   {images}
                   <div style={{ textAlign: "right" }}>
                     <button
@@ -662,7 +673,8 @@ function AddProductForm() {
                       disabled={productImageDisabled}
                       onClick={() => {
                         setProductImageDisabled(true);
-                        handleProductImage();
+                        // handleProductImageSelection();
+                        handleAddMoreClick();
                       }}
                     >
                       Add More ++
