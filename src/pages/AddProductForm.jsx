@@ -27,7 +27,7 @@ const addProductSchema = yup
       .typeError("Must be numeric.")
       .integer("Must be an integer.")
       .min(1, "Minimum 1")
-      .max(999999, "Maximum 999.999")
+      .max(999999, "Maximum 999999")
       // .transform((value) => (isNaN(value) ? undefined : value))
       .required("Minimum order quantity is required"),
     maxOrderQuantity: yup
@@ -63,12 +63,11 @@ const addProductSchema = yup
   .required();
 
 function AddProductForm() {
-  const [images, setImages] = useState([]);
-  const [count, setCount] = useState(2);
-  const [productImageDisable, setProductImageDisable] = useState(false);
+  const [productImages, setProductImages] = useState([]);
+  const [addMoreDisabled, setAddMoreDisabled] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalProperties, setModalProperties] = useState({});
-  const [subCategoryDisable, setSubCategoryDisabled] = useState(true);
+  const [subCategoryDisabled, setSubCategoryDisabled] = useState(true);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
@@ -131,7 +130,12 @@ function AddProductForm() {
     },
   };
 
+  // const handleProductImageSelection = (selectedImage) => {
+  //   console.log("handleProductImageSelection");
+  //   setImages([...images, selectedImage]);
+  // };
 
+<<<<<<< HEAD
   const handleProductImage = () => {
     console.log("hello in product image");
     console.log(count);
@@ -143,28 +147,29 @@ function AddProductForm() {
       setProductImageDisable(true);
     }
   };
+=======
+  // const uploadImage = (selectedImage) => {
+  //   console.log("upload image called");
+  //   const mediaList = [];
+  //   for (let i = 0; i <= productImageCount; i++) {
+  //     const formData = new FormData();
+  //     formData.append("file", selectedImage);
+  //     console.log("formdata= ", formData);
+  //     // api.post(`/uploads/image`, formData, config).then((response) => {
+  //     //   if (response.status === 201) {
+  //     //     // console.log("image selected");
+  //     //     console.log("response=", response.data);
+  //     //     mediaList.append(response.data.id);
+  //     //   } else {
+  //     //     console.log("error");
+  //     //   }
+  //     // });
+  //     console.log("images=", images);
+  //   }
+  // };
+>>>>>>> ec2491f709cd5d35e0b76c4be45c24448636579e
 
-  
-  const uploadImage = (selectedImage) => {
-    console.log("upload image called");
-    const mediaList = [];
-    for (let i = 0; i <= count; i++) {
-      const formData = new FormData();
-      formData.append("file", selectedImage);
-      console.log("formdata= ", formData);
-      api.post(`/uploads/image`, formData, config).then((response) => {
-        if (response.status === 201) {
-          // console.log("image selected");
-          console.log("response=", response.data);
-          mediaList.append(response.data.id);
-        } else {
-          console.log("error");
-        }
-      });
-    }
-  };
-
-  const addNewProduct = () => {
+  const submitNewProduct = () => {
     console.log("form");
     console.log(productNameRef.current.value);
     const productName = productNameRef.current.value;
@@ -198,63 +203,97 @@ function AddProductForm() {
     console.log(quantityInStockRef.current.value);
     const quantityInStock = quantityInStockRef.current.value;
 
-    // api
-    //   .post(`/sellers/products`, {
-    //       product_name: productName,
-    //       product_description: productDescription,
-    //       category_id: category,
-    //       subcategory_id: subcategory || null,
-    //       currency: currency,
-    //       min_order_quantity: minOrderQuantity,
-    //       max_order_quantity: maxOrderQuantity,
-    // "product_items": [
-    //   {
-    //     "variant": "BASE",
-    //     "variant_value": "BASE",
-    //     product_variant_name: productVariantName,
-    //     "SKU": SKU,
-    //     "original_price": originalPrice,
-    //     "offer_price": offerPrice,
-    //     "quantity_in_stock": 10,
-    //     "media_list": [
-    //       {
-    //         "media_id": 1,
-    //         "display_order": 1
-    //       },
-    //       {
-    //         "media_id": 2,
-    //         "display_order": 2
-    //       },
-    //          {
-    //         "media_id": 3,
-    //         "display_order": 3
-    //       }
-    //     ]
-    //   }
-    // ]
+    console.log("productImages=", productImages);
+    const mediaIds = [];
+    const promises = [];
+    for (const productImage of productImages) {
+      const formData = new FormData();
+      formData.append("file", productImage);
+      console.log("formdata= ", formData);
 
-    // })
-    // .then((response) => {
-    //   if (response.status === 201) {
-    //     console.log("Product created successfully");
-    //     setShowModal(true);
-    //     setModalProperties({
-    //       title: "Message",
-    //       body: "Product created successfully",
-    //       cancelButtonPresent: false,
-    //     });
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error("Some error occured in creating product");
-    //   console.error(error);
-    //   setShowModal(true);
-    //   setModalProperties({
-    //     title: "Message",
-    //     body: "Some error occured in creating product",
-    //     cancelButtonPresent: false,
-    //   });
-    // });
+      const promise = api
+        .post(`/uploads/image`, formData, config)
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("response=", response.data);
+            mediaIds.push(response.data.id);
+          } else {
+            console.log("error");
+          }
+        });
+      promises.push(promise);
+    }
+
+    Promise.all(promises).then(() => {
+      console.log("mediaIds=", mediaIds);
+
+      // api
+      //   .post(`/sellers/products`, {
+      //       product_name: productName,
+      //       product_description: productDescription,
+      //       category_id: category,
+      //       subcategory_id: subcategory || null,
+      //       currency: currency,
+      //       min_order_quantity: minOrderQuantity,
+      //       max_order_quantity: maxOrderQuantity,
+      // "product_items": [
+      //   {
+      //     "variant": "BASE",
+      //     "variant_value": "BASE",
+      //     product_variant_name: productVariantName,
+      //     "SKU": SKU,
+      //     "original_price": originalPrice,
+      //     "offer_price": offerPrice,
+      //     "quantity_in_stock": 10,
+      //     "media_list": [
+      //       {
+      //         "media_id": 1,
+      //         "display_order": 1
+      //       },
+      //       {
+      //         "media_id": 2,
+      //         "display_order": 2
+      //       },
+      //          {
+      //         "media_id": 3,
+      //         "display_order": 3
+      //       }
+      //     ]
+      //   }
+      // ]
+
+      // })
+      // .then((response) => {
+      //   if (response.status === 201) {
+      //     console.log("Product created successfully");
+      //     setShowModal(true);
+      //     setModalProperties({
+      //       title: "Message",
+      //       body: "Product created successfully",
+      //       cancelButtonPresent: false,
+      //     });
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("Some error occured in creating product");
+      //   console.error(error);
+      //   setShowModal(true);
+      //   setModalProperties({
+      //     title: "Message",
+      //     body: "Some error occured in creating product",
+      //     cancelButtonPresent: false,
+      //   });
+      // });
+    });
+  };
+
+  const [productImageCount, setProductImageCount] = useState(1);
+  const handleAddMoreClick = () => {
+    if (productImageCount < 6) {
+      setProductImageCount(productImageCount + 1);
+    } else {
+      setAddMoreDisabled(true);
+    }
   };
 
   return (
@@ -370,7 +409,7 @@ function AddProductForm() {
                       aria-label="Floating label select example"
                       required=""
                       ref={subCategoryRef}
-                      disabled={subCategoryDisable}
+                      disabled={subCategoryDisabled}
                     >
                       <option selected>Select Subcategory</option>
                       {subCategories && subCategories.length > 0 ? (
@@ -642,14 +681,25 @@ function AddProductForm() {
                 </div>
 
                 <div>
-                  <ProductImage />
-                  {images}
+                  {[...Array(productImageCount)].map((_, index) => (
+                    <ProductImage
+                      key={index}
+                      onSelectImage={(selectedImage) => {
+                        setAddMoreDisabled(false);
+                        console.log("productImageDisabled=", addMoreDisabled);
+                        // console.log("selectedImage=", selectedImage);
+                        setProductImages([...productImages, selectedImage]);
+                      }}
+                    />
+                  ))}
+                  {/* {productImages} */}
                   <div style={{ textAlign: "right" }}>
                     <button
                       type="button"
-                      disabled={productImageDisable}
+                      disabled={addMoreDisabled}
                       onClick={() => {
-                        handleProductImage();
+                        setAddMoreDisabled(true);
+                        handleAddMoreClick();
                       }}
                     >
                       Add More ++
@@ -661,7 +711,7 @@ function AddProductForm() {
                   <button
                     type="button"
                     className="w-100 btn btn-lg btn-success"
-                    onClick={() => addNewProduct()}
+                    onClick={() => submitNewProduct()}
                   >
                     Submit
                   </button>
@@ -676,7 +726,7 @@ function AddProductForm() {
   );
 }
 
-function ProductImage({onSelectImage}) {
+function ProductImage({ onSelectImage }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [dpUpdateMode, setDpUpdateMode] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -695,14 +745,15 @@ function ProductImage({onSelectImage}) {
   //   },
   // };
 
-  
   useEffect(() => {
-       if(selectedImage){
-        console.log(selectedImage);
-        onSelectImage=()=>{
-          onSelectImage(selectedImage);
-        }
-       }
+    if (selectedImage) {
+      console.log("selectedImage=", selectedImage);
+      // onSelectImage = () => {
+      //   console.log("passed selectedImage to parent=", selectedImage);
+      //   onSelectImage(selectedImage);
+      // };
+      onSelectImage(selectedImage);
+    }
   }, [selectedImage]);
 
   const handleImageChange = (event) => {
@@ -711,11 +762,8 @@ function ProductImage({onSelectImage}) {
       setSelectedImage(img);
       setImageURL(URL.createObjectURL(img));
       // setDpUpdateMode(true);
-    
     }
   };
-
-
 
   return (
     <div className="col-12">
