@@ -8,6 +8,7 @@ import Toast from "../components/Toast";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
 
+
 function Orders() {
   const [showToast, setShowToast] = useState(false);
   const [toastProperties, setToastProperties] = useState({});
@@ -131,6 +132,8 @@ function ProductHorizontalCard({
   orderItemStatus,
 
 }) {
+  const [saveButtonDisable,setSaveButtonDisble] =useState(true);
+  const [productStatus, setProductStatus] = useState(true);
   const navigate = useNavigate();
   return (
     <div
@@ -187,7 +190,7 @@ function ProductHorizontalCard({
               <fieldset>
                 <legend>Order Item Status</legend>
                 
-                <select className="form-select form-select-lg mb-3" aria-label="Large select example">
+                <select className="form-select form-select-lg mb-3" aria-label="Large select example" disabled={productStatus}>
                 <option value="" selected>
                 {orderItemStatus}
               </option>
@@ -244,33 +247,18 @@ function ProductHorizontalCard({
                 </option>
               )}
             </select>
-            <button type="button">edit</button>
-            <button type ="button">Save Changes</button>
-             
+            <div className="d-flex justify-content-center">
+            <button type="button" className="btn btn-warning" style={{marginBottom:"20px"}}
+            onClick={(event) => {
+              setSaveButtonDisble(false);
+              setProductStatus(false);
+            }}>Edit</button>
+            <button type="button" className="btn btn-success" style={{marginLeft:"20px",marginBottom:"20px"}}
+            disabled={saveButtonDisable}>Save Change</button>
+            </div>
               </fieldset>
             </div>
             <div></div>
-            {/* <div className="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-              <button
-                type="button"
-                className="btn btn-outline-primary me-2"
-                onClick={onAddToCart}
-              >
-                Add To Cart
-              </button>
-
-              <button type="button" className="btn btn-outline-success me-2">
-                Buy Now
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-outline-danger me-2"
-                onClick={onDelete}
-              >
-                Remove From productlist
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
