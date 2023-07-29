@@ -69,8 +69,8 @@ function Orders() {
             orders.map((order) => {
               return (
                 <ProductHorizontalCard
-                  key={order.id}
-                  orderId={order.id}
+                  key={order.order_id}
+                  orderId={order.order_id}
                   imgSrc={order.media.path}
                   cardTitle={order.product_detail.product_name}
                   variantName={order.product_variant_name}
@@ -90,6 +90,7 @@ function Orders() {
                   pincode={order.shipping_address.pincode}
                   landmark={order.shipping_address.landmark}
                   SKU ={order.SKU}
+                  orderItemId ={order.order_item_detail.order_item_id}
                   orderItemStatus ={order.order_item_detail.order_item_status}
 
                   // onDelete={() => handleDelete(product.product_item.id)}
@@ -129,6 +130,7 @@ function ProductHorizontalCard({
   country,
   pincode,landmark,
   SKU,
+  orderItemId,
   orderItemStatus,
 
 }) {
@@ -153,25 +155,25 @@ function ProductHorizontalCard({
         <div className="col-md-8">
           <div className="card-body">
             <h2 className="card-title">{cardTitle}</h2>
-            <h3>SKU code - <b>{SKU}</b></h3>
-             <h4>Variant Name - {variantName}</h4>
+            <h3>Order:- {orderId}-{orderItemId}</h3>
+            <h6>SKU code - <b>{SKU}</b></h6>
+             <h6>Variant Name - {variantName}</h6>
             <div className="card-text">
-              <p style={{fontSize:"20px"}} >
-              <b>Quantity</b> - {quantity}<br/>
-               <b> Price -</b>
+              <p style={{fontSize:"16px"}} >
+              Quantity - {quantity}<br/>
+                Price -
                 <span>&#8377;</span>
                 <del>{originalPrice}</del>&nbsp;
                 <span>&#8377;</span>
                 {offerPrice}
               </p>
+              <p style={{fontSize:"16px"}}><b> Order Placed On -</b>{addedAt}</p>
             </div>
-            <div>
-              <p style={{fontSize:"20px"}}><b> Order Placed On -</b>{addedAt}</p>
-            </div>
+          
             <div>
               <fieldset>
                 <legend>Shipping Address</legend>
-                <p style={{fontSize:"20px"}}>
+                <p style={{fontSize:"16px"}}>
                 <b> Ship to -</b> {fullName}<br/>
                 <b>Mobile -</b> {mobileNo}<br/>
                 <b>Address - </b>{addressLine1}<br/>
@@ -190,7 +192,7 @@ function ProductHorizontalCard({
               <fieldset>
                 <legend>Order Item Status</legend>
                 
-                <select className="form-select form-select-lg mb-3" aria-label="Large select example" disabled={productStatus}>
+                <select className="form-select" aria-label="Default select example" disabled={productStatus}>
                 <option value="" selected>
                 {orderItemStatus}
               </option>
@@ -247,7 +249,7 @@ function ProductHorizontalCard({
                 </option>
               )}
             </select>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center" style={{marginTop:"20px"}}>
             <button type="button" className="btn btn-warning" style={{marginBottom:"20px"}}
             onClick={(event) => {
               setSaveButtonDisble(false);

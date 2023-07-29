@@ -134,20 +134,18 @@ function AddProductForm() {
   //   console.log("handleProductImageSelection");
   //   setImages([...images, selectedImage]);
   // };
+  // const handleProductImage = () => {
+  //   console.log("hello in product image");
+  //   console.log(count);
+  //   setCount(count + 1);
 
-<<<<<<< HEAD
-  const handleProductImage = () => {
-    console.log("hello in product image");
-    console.log(count);
-    setCount(count + 1);
-
-    setImages([...images, selectedImage]);
+  //   setImages([...images, selectedImage]);
     
-    if (count == 6) {
-      setProductImageDisable(true);
-    }
-  };
-=======
+  //   if (count == 6) {
+  //     setProductImageDisable(true);
+  //   }
+  // };
+
   // const uploadImage = (selectedImage) => {
   //   console.log("upload image called");
   //   const mediaList = [];
@@ -167,7 +165,7 @@ function AddProductForm() {
   //     console.log("images=", images);
   //   }
   // };
->>>>>>> ec2491f709cd5d35e0b76c4be45c24448636579e
+
 
   const submitNewProduct = () => {
     console.log("form");
