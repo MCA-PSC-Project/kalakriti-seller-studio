@@ -176,14 +176,14 @@ function AddProductForm() {
     console.log(categoryRef.current.value);
     //  console.log(categoryRef.current.name);
 
-    const category = categoryRef.current.value;
+    const category = parseInt(categoryRef.current.value);
 
 
     console.log(subCategoryRef.current.value);
-    if (subCategoryRef.current.value == null){
-         setSubCategory(0);
+    if (subCategoryRef.current.value == 0){
+         setSubCategory(null);
     }else{
-      setSubCategory(subCategoryRef.current.value);
+      setSubCategory(parseInt(subCategoryRef.current.value));
     }
   
     console.log(currencyRef.current.value);
@@ -234,7 +234,7 @@ function AddProductForm() {
     
 
       const media_list = [];
-      for (let i = 0; i <= productImageCount; i++) {
+      for (let i = 0; i < productImageCount; i++) {
         media_list.push({
           media_id: mediaIds[i],
           display_order: i+1,
@@ -261,8 +261,8 @@ function AddProductForm() {
           category_id: category,
           subcategory_id: subCategory,
           currency: currency,
-          min_order_quantity: minOrderQuantity,
-          max_order_quantity: maxOrderQuantity,
+          min_order_quantity: minOrder,
+          max_order_quantity: maxOrder,
           product_items: product_items_list,
         })
         .then((response) => {
@@ -277,6 +277,7 @@ function AddProductForm() {
           }
         })
         .catch((error) => {
+          console.log(media_list);
           console.error("Some error occured in creating product");
           console.error(error);
           setShowModal(true);
@@ -414,7 +415,7 @@ function AddProductForm() {
                       disabled={subCategoryDisabled}
                       defaultValue={0}
                     >
-                      <option selected>Select Subcategory</option>
+                      <option value="0" selected>Select Subcategory</option>
                       {subCategories && subCategories.length > 0 ? (
                         subCategories.map((subCategory) => {
                           return (
