@@ -83,6 +83,7 @@ function AddProductForm() {
   const productDescriptionRef = useRef(null);
   const categoryRef = useRef(null);
   const subCategoryRef = useRef(null);
+  const [subCategory,setSubCategory] = useState(null);
   const currencyRef = useRef(null);
   const minOrderRef = useRef(null);
   const maxOrderRef = useRef(null);
@@ -140,7 +141,7 @@ function AddProductForm() {
   //   setCount(count + 1);
 
   //   setImages([...images, selectedImage]);
-    
+
   //   if (count == 6) {
   //     setProductImageDisable(true);
   //   }
@@ -166,7 +167,6 @@ function AddProductForm() {
   //   }
   // };
 
-
   const submitNewProduct = () => {
     console.log("form");
     console.log(productNameRef.current.value);
@@ -177,9 +177,15 @@ function AddProductForm() {
     //  console.log(categoryRef.current.name);
 
     const category = categoryRef.current.value;
-    console.log(subCategoryRef.current.value);
 
-    const subCategory = subCategoryRef.current.value;
+
+    console.log(subCategoryRef.current.value);
+    if (subCategoryRef.current.value == null){
+         setSubCategory(0);
+    }else{
+      setSubCategory(subCategoryRef.current.value);
+    }
+  
     console.log(currencyRef.current.value);
     const currency = currencyRef.current.value;
     console.log(minOrderRef.current.value);
@@ -225,63 +231,61 @@ function AddProductForm() {
     Promise.all(promises).then(() => {
       console.log("mediaIds=", mediaIds);
 
-      // api
-      //   .post(`/sellers/products`, {
-      //       product_name: productName,
-      //       product_description: productDescription,
-      //       category_id: category,
-      //       subcategory_id: subcategory || null,
-      //       currency: currency,
-      //       min_order_quantity: minOrderQuantity,
-      //       max_order_quantity: maxOrderQuantity,
-      // "product_items": [
-      //   {
-      //     "variant": "BASE",
-      //     "variant_value": "BASE",
-      //     product_variant_name: productVariantName,
-      //     "SKU": SKU,
-      //     "original_price": originalPrice,
-      //     "offer_price": offerPrice,
-      //     "quantity_in_stock": 10,
-      //     "media_list": [
-      //       {
-      //         "media_id": 1,
-      //         "display_order": 1
-      //       },
-      //       {
-      //         "media_id": 2,
-      //         "display_order": 2
-      //       },
-      //          {
-      //         "media_id": 3,
-      //         "display_order": 3
-      //       }
-      //     ]
-      //   }
-      // ]
+    
 
-      // })
-      // .then((response) => {
-      //   if (response.status === 201) {
-      //     console.log("Product created successfully");
-      //     setShowModal(true);
-      //     setModalProperties({
-      //       title: "Message",
-      //       body: "Product created successfully",
-      //       cancelButtonPresent: false,
-      //     });
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error("Some error occured in creating product");
-      //   console.error(error);
-      //   setShowModal(true);
-      //   setModalProperties({
-      //     title: "Message",
-      //     body: "Some error occured in creating product",
-      //     cancelButtonPresent: false,
-      //   });
-      // });
+      const media_list = [];
+      for (let i = 0; i <= productImageCount; i++) {
+        media_list.push({
+          media_id: mediaIds[i],
+          display_order: i+1,
+        });
+      }
+     
+      const product_items_list =[];
+      product_items_list.push({
+       variant: variant,
+       variant_value: variantValue,
+       product_variant_name: productVariantName,
+       SKU: SKU,
+       original_price: originalPrice,
+       offer_price: offerPrice,
+       quantity_in_stock: quantityInStock,
+       media_list: media_list,
+      });
+    
+
+      api
+        .post(`/sellers/products`, {
+          product_name: productName,
+          product_description: productDescription,
+          category_id: category,
+          subcategory_id: subCategory,
+          currency: currency,
+          min_order_quantity: minOrderQuantity,
+          max_order_quantity: maxOrderQuantity,
+          product_items: product_items_list,
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("Product created successfully");
+            setShowModal(true);
+            setModalProperties({
+              title: "Message",
+              body: "Product created successfully",
+              cancelButtonPresent: false,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Some error occured in creating product");
+          console.error(error);
+          setShowModal(true);
+          setModalProperties({
+            title: "Message",
+            body: "Some error occured in creating product",
+            cancelButtonPresent: false,
+          });
+        });
     });
   };
 
@@ -408,6 +412,7 @@ function AddProductForm() {
                       required=""
                       ref={subCategoryRef}
                       disabled={subCategoryDisabled}
+                      defaultValue={0}
                     >
                       <option selected>Select Subcategory</option>
                       {subCategories && subCategories.length > 0 ? (
@@ -504,7 +509,7 @@ function AddProductForm() {
                       placeholder=""
                       defaultValue={5}
                       required=""
-                      min={0}
+                      min={1}
                       {...addProductForm("maxOrderQuantity")}
                       ref={maxOrderRef}
                     />
@@ -521,15 +526,23 @@ function AddProductForm() {
                     <label htmlFor="variant" className="form-label required">
                       Variant
                     </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="variant"
-                      placeholder="BASE"
-                      defaultValue="BASE"
-                      required=""
-                      ref={variantRef}
-                    />
+                   
+                   
+                    <select
+                        className="form-select"
+                        id="variant"
+                        aria-label="Floating label select example"
+                        required=""
+                        ref={variantRef}
+                        >
+                          <option value="">Select Variant</option>
+                          <option value="BASE" > BASE
+                          </option>
+                          <option value="COLOR">COLOR</option>
+                          <option value="MATERIAL">MATERIAL</option>
+                          <option value="SIZE">SIZE</option>
+                         
+                        </select>
                   </div>
                   {errors.maxOrderQuantity && (
                     <span style={{ color: "red" }}>
@@ -550,7 +563,7 @@ function AddProductForm() {
                       variant value
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       className="form-control"
                       id="variantValue"
                       placeholder=""
@@ -668,6 +681,7 @@ function AddProductForm() {
                       id="quantityInStock"
                       placeholder=""
                       required=""
+                      min={0}
                       ref={quantityInStockRef}
                     />
                   </div>
