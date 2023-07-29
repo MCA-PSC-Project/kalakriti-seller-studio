@@ -136,9 +136,9 @@ function AddProductForm() {
     console.log("hello in product image");
     console.log(count);
     setCount(count + 1);
-    setImages([...images, <ProductImage onSelectImage={(selectedImage)=>{console.log("in arrow function");
-      uploadImage(selectedImage);}}
-      />]);
+
+    setImages([...images, selectedImage]);
+    
     if (count == 6) {
       setProductImageDisable(true);
     }

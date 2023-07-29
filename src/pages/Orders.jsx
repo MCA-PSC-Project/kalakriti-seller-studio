@@ -24,12 +24,12 @@ function Orders() {
     }
   }, [showToast]);
 
-  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     api
-      .get(`/sellers/products`)
+      .get(`/order-list-for-seller`)
       .then((response) => {
-        setProducts(response.data === null ? [] : response.data);
+        setOrders(response.data === null ? [] : response.data);
         console.log(response.data);
       })
       .catch((err) => {
@@ -64,19 +64,26 @@ function Orders() {
 
       <div className="d-flex justify-content-center align-items-center">
         <div className="text-left">
-          {products && products.length > 0 ? (
-            products.map((product) => {
+          {orders && orders.length > 0 ? (
+            orders.map((order) => {
               return (
                 <ProductHorizontalCard
-                  key={product.id}
-                  productId={product.id}
-                  imgSrc={product.base_product_item.media.path}
-                  cardTitle={product.product_name}
-                  originalPrice={product.base_product_item.original_price}
-                  offerPrice={product.base_product_item.offer_price}
-                  average_rating={product.average_rating}
-                  ratingCount={product.rating_count}
-                  quantityInStock={product.base_product_item.quantity_in_stock}
+                  key={order.id}
+                  orderId={order.id}
+                  imgSrc={order.media.path}
+                  cardTitle={order.product_detail.product_name}
+                  originalPrice={order.order_item_detail.original_price}
+                  offerPrice={order.order_item_detail.offer_price}
+                  quantity={order.order_item_detail.quantity}
+                  addedAt={order.added_at}
+                  updatedAt={order.updated_at}
+                  fullName={order.shipping_address.full_name}
+                  mobileNo={order.shipping_address.mobileNo}
+                  addressLine1={order.shipping_address.address_line1}
+                  addressLine2={order.shipping_address.address_line2}
+                  city ={order.shipping_address.city}
+                  SKU ={order.SKU}
+
                   // onDelete={() => handleDelete(product.product_item.id)}
                   // onAddToCart={() => handleAddToCart(product.product_item.id, 1)}
                 />
@@ -95,23 +102,27 @@ function Orders() {
 }
 
 function ProductHorizontalCard({
-  productId,
+  orderId,
   imgSrc,
   cardTitle,
   originalPrice,
   offerPrice,
-  average_rating,
-  ratingCount,
-  quantityInStock,
+  quantity,
+  addedAt,
+  updatedAt,
+  fullName,
+  mobileNo,
+  addressLine1,
+  addressLine2,
+  city,
+  SKU,
+
 }) {
   const navigate = useNavigate();
   return (
     <div
       className="card mb-3"
       style={{ maxWidth: 1000 }}
-      onClick={(event) => {
-        navigate(`/products/${productId}`);
-      }}
     >
       {/* navigate(`/products/${productId}`, {
         state: {
