@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-
 import api from "../utils/api";
-
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
+import Loading from "../components/loading/Loading";
 
 function Orders() {
-
+  const [isLoading, setIsLoading] = useState(true); 
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     api
@@ -17,15 +16,21 @@ function Orders() {
       .then((response) => {
         setOrders(response.data === null ? [] : response.data);
         console.log(response.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error(err);
+        setIsLoading(false);
       });
   }, []);
 
 
   return (
     <>
+      {isLoading ? ( // display the Loading component while the data is being fetched
+        <Loading />
+      ) : (
+        <>
       <NavBar />
       <h1 style={{ backgroundColor: "#FC4FCE", textAlign: "center" }}>
         Ordered Products
@@ -86,6 +91,8 @@ function Orders() {
       </div>
       <Footer />
     </>
+      )}
+      </>
   );
 }
 
@@ -174,7 +181,6 @@ function ProductHorizontalCard({
       />
     )}
 
-    
     <div className="card mb-3" style={{ maxWidth: 1000 }}>
       <div className="row g-0" style={{ cursor: "pointer" }}>
         <div className="col-md-4">

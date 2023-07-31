@@ -83,7 +83,7 @@ function AddProductForm() {
   const productDescriptionRef = useRef(null);
   const categoryRef = useRef(null);
   const subCategoryRef = useRef(null);
-  const [subCategory,setSubCategory] = useState(null);
+  const [subCategory, setSubCategory] = useState(null);
   const currencyRef = useRef(null);
   const minOrderRef = useRef(null);
   const maxOrderRef = useRef(null);
@@ -178,14 +178,13 @@ function AddProductForm() {
 
     const category = parseInt(categoryRef.current.value);
 
-
     console.log(subCategoryRef.current.value);
-    if (subCategoryRef.current.value == 0){
-         setSubCategory(null);
-    }else{
+    if (subCategoryRef.current.value == 0) {
+      setSubCategory(null);
+    } else {
       setSubCategory(parseInt(subCategoryRef.current.value));
     }
-  
+
     console.log(currencyRef.current.value);
     const currency = currencyRef.current.value;
     console.log(minOrderRef.current.value);
@@ -231,28 +230,25 @@ function AddProductForm() {
     Promise.all(promises).then(() => {
       console.log("mediaIds=", mediaIds);
 
-    
-
       const media_list = [];
       for (let i = 0; i < productImageCount; i++) {
         media_list.push({
           media_id: mediaIds[i],
-          display_order: i+1,
+          display_order: i + 1,
         });
       }
-     
-      const product_items_list =[];
+
+      const product_items_list = [];
       product_items_list.push({
-       variant: variant,
-       variant_value: variantValue,
-       product_variant_name: productVariantName,
-       SKU: SKU,
-       original_price: originalPrice,
-       offer_price: offerPrice,
-       quantity_in_stock: quantityInStock,
-       media_list: media_list,
+        variant: variant,
+        variant_value: variantValue,
+        product_variant_name: productVariantName,
+        SKU: SKU,
+        original_price: originalPrice,
+        offer_price: offerPrice,
+        quantity_in_stock: quantityInStock,
+        media_list: media_list,
       });
-    
 
       api
         .post(`/sellers/products`, {
@@ -301,6 +297,17 @@ function AddProductForm() {
 
   return (
     <>
+      {showModal && (
+        <Modal
+          title={modalProperties.title}
+          body={modalProperties.body}
+          cancelButtonPresent={modalProperties.cancelButtonPresent}
+          onClose={() => {
+            setShowModal(false);
+            window.location.reload();
+          }}
+        />
+      )}
       <NavBar />
       <div className="container">
         <div className="text-center">
@@ -415,7 +422,9 @@ function AddProductForm() {
                       disabled={subCategoryDisabled}
                       defaultValue={0}
                     >
-                      <option value="0" selected>Select Subcategory</option>
+                      <option value="0" selected>
+                        Select Subcategory
+                      </option>
                       {subCategories && subCategories.length > 0 ? (
                         subCategories.map((subCategory) => {
                           return (
@@ -527,23 +536,20 @@ function AddProductForm() {
                     <label htmlFor="variant" className="form-label required">
                       Variant
                     </label>
-                   
-                   
+
                     <select
-                        className="form-select"
-                        id="variant"
-                        aria-label="Floating label select example"
-                        required=""
-                        ref={variantRef}
-                        >
-                          <option value="">Select Variant</option>
-                          <option value="BASE" > BASE
-                          </option>
-                          <option value="COLOR">COLOR</option>
-                          <option value="MATERIAL">MATERIAL</option>
-                          <option value="SIZE">SIZE</option>
-                         
-                        </select>
+                      className="form-select"
+                      id="variant"
+                      aria-label="Floating label select example"
+                      required=""
+                      ref={variantRef}
+                    >
+                      <option value="">Select Variant</option>
+                      <option value="BASE"> BASE</option>
+                      <option value="COLOR">COLOR</option>
+                      <option value="MATERIAL">MATERIAL</option>
+                      <option value="SIZE">SIZE</option>
+                    </select>
                   </div>
                   {errors.maxOrderQuantity && (
                     <span style={{ color: "red" }}>
@@ -724,6 +730,8 @@ function AddProductForm() {
                   <button
                     type="button"
                     className="w-100 btn btn-lg btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal"
                     onClick={() => submitNewProduct()}
                   >
                     Submit
