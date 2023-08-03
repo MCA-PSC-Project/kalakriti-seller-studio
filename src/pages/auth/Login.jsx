@@ -48,7 +48,7 @@ function Login() {
     if (success) {
       // Login was successful
       // navigate("/home");
-      navigate(state?.path || "/home");
+      navigate(state?.path || "/");
     } else {
       // Login failed
       console.log("Login failed");

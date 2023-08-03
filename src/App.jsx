@@ -34,7 +34,7 @@ function RequireAuth({ children }) {
   return authed === true ? (
     children
   ) : (
-    <Navigate to="/login" replace state={{ path: location.pathname }} />
+    <Navigate to="/landing-page" replace state={{ path: location.pathname }} />
   );
 }
 
@@ -44,10 +44,10 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/landing-page" element={<LandingPage />} />
           <Route
             exact
-            path="/home"
+            path="/"
             element={
               <RequireAuth>
                 <Home />
