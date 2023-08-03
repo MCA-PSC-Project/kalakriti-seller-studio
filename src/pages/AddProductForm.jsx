@@ -65,7 +65,7 @@ const addProductSchema = yup
 function AddProductForm() {
   const [productImages, setProductImages] = useState([]);
   const [addMoreDisabled, setAddMoreDisabled] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [modalProperties, setModalProperties] = useState({});
   const [subCategoryDisabled, setSubCategoryDisabled] = useState(true);
   const [categories, setCategories] = useState([]);
