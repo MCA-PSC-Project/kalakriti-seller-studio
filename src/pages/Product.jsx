@@ -82,36 +82,36 @@ function Product() {
     setQuantity(product?.min_order_quantity);
   }, [product]);
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  //   // window.scrollTo({
-  //   //   top: 0,
-  //   //   left: 0,
-  //   //   behavior: "smooth",
-  //   // });
-  //   if (selectedProductItem) {
-  //     console.log("selected pi=", selectedProductItem);
-  //     const localMediaSrcList = [];
-  //     const media_list = selectedProductItem?.media_list;
-  //     if (media_list) {
-  //       for (const media of media_list) {
-  //         localMediaSrcList.push(media.path);
-  //       }
-  //     }
-  //     setMediaSrcList(localMediaSrcList);
-  //   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // window.scrollTo({
+    //   top: 0,
+    //   left: 0,
+    //   behavior: "smooth",
+    // });
+    if (selectedProductItem) {
+      console.log("selected pi=", selectedProductItem);
+      const localMediaSrcList = [];
+      const media_list = selectedProductItem?.media_list;
+      if (media_list) {
+        for (const media of media_list) {
+          localMediaSrcList.push(media.path);
+        }
+      }
+      setMediaSrcList(localMediaSrcList);
+    }
 
-  //   api
-  //     .get(`/check-wishlists/${selectedProductItem?.id}`)
-  //     .then((response) => {
-  //       setIsItemInWishlist(response.data === null ? false : response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((err) => {
-  //       setIsItemInWishlist(false);
-  //       console.error(err);
-  //     });
-  // }, [selectedProductItem]);
+    // api
+    //   .get(`/check-wishlists/${selectedProductItem?.id}`)
+    //   .then((response) => {
+    //     setIsItemInWishlist(response.data === null ? false : response.data);
+    //     console.log(response.data);
+    //   })
+    //   .catch((err) => {
+    //     setIsItemInWishlist(false);
+    //     console.error(err);
+    //   });
+  }, [selectedProductItem]);
 
   useEffect(() => {
     api
@@ -433,7 +433,7 @@ function Product() {
               </div>
             </div>
             {/* for similar items */}
-            <div className="col-lg-4">
+            {/* <div className="col-lg-4">
               <div className="px-0 border rounded-2 shadow-0">
                 <div className="card">
                   <div className="card-body">
@@ -505,7 +505,7 @@ function Product() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
