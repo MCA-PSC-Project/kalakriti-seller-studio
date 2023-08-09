@@ -44,9 +44,8 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/landing-page" element={<LandingPage />} />
+          <Route path="/landing-page" element={<LandingPage />} />
           <Route
-            exact
             path="/"
             element={
               <RequireAuth>
@@ -54,7 +53,7 @@ const App = () => {
               </RequireAuth>
             }
           />
-          <Route exact path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/login/mobile"
             element={<LoginMobile setHasVisitedMobile={setHasVisitedMobile} />}
@@ -66,9 +65,8 @@ const App = () => {
             }
           />
           <Route path="/forgot-password" element={<ResetPassword />} />
-          <Route exact path="/register" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route
-            exact
             path="/profile"
             element={
               <RequireAuth>
@@ -77,7 +75,6 @@ const App = () => {
             }
           />
           <Route
-            exact
             path="/settings"
             element={
               <RequireAuth>
@@ -86,7 +83,6 @@ const App = () => {
             }
           />
           <Route
-            exact
             path="/notifications"
             element={
               <RequireAuth>
@@ -95,7 +91,6 @@ const App = () => {
             }
           />
           <Route
-            exact
             path="/orders"
             element={
               <RequireAuth>
@@ -104,7 +99,6 @@ const App = () => {
             }
           />
           <Route
-            exact
             path="/products"
             element={
               <RequireAuth>
@@ -122,7 +116,6 @@ const App = () => {
           />
 
           <Route
-            exact
             path="/products/add"
             element={
               <RequireAuth>
@@ -132,7 +125,6 @@ const App = () => {
           />
 
           <Route
-            exact
             path="/products/edit"
             element={
               <RequireAuth>
