@@ -464,10 +464,11 @@ function AddProductForm() {
                       required=""
                       ref={currencyRef}
                     >
-                      <option selected>INR (Indian Rupee)</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
+                      <option value={"INR"} selected>
+                        INR (Indian Rupee)
+                      </option>
+                      {/* <option value={"USD"}>USD (United States Dollar)</option> */}
+                      {/* <option value={"EUR"}>EUR (Euro)</option> */}
                     </select>
                   </div>
                   {errors.currency && (

@@ -1,5 +1,9 @@
 # KalaKriti App Seller Studio  
 
+`yarn run dev`  
+
+`yarn run build`  
+
 ## Deployment instruction
 
 For Dev(Debug)
